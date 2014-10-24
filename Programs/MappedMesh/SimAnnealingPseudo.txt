@@ -1,0 +1,68 @@
+
+initialize temperature (reduction factor e.g. 0.75 or 0.5)
+
+for i := 1...ntemps do
+
+  temperature := factor * temperature
+
+    for j := 1...nlimit do
+      for j := 1 to num Interior Nodes
+        dx = dy = dz = 0.0
+
+        for k:= 1..8 do
+          dx += NodePos.x - NeighPos.x 
+          dy += NodePos.y - NeighPos.y 
+          dz += NodePos.z - NeighPos.z 
+ 
+        dx /= 2.0;
+        dy /= 2.0;
+        dz /= 2.0;
+
+        rdx := random( ) * lengthXScale;
+        delta := P(dx, rdx, temperature, meanLength)
+        m := random( )
+
+        if delta < m then                 
+
+          NodePos.x += dx * temperature;
+          NodePos.y += dy * temperature;
+          NodePos.z += dz * temperature;
+
+       end if
+       
+       
+    end for
+
+  end for
+
+end for
+
+
+P(dx, rdx, temperature, meanLength)
+
+  delta = dx - rdx
+  deltaMag = abs( delta )/meanLength
+  prob = exp (-deltaMag/temperature)
+  return prob
+}
+
+
+
+
+
+s := s0; e := E(s)                           // Initial state, energy.
+sb := s; eb := e                             // Initial "best" solution
+k := 0                                       // Energy evaluation count.
+while k < kmax and e > emax                  // While time remains & not good enough:
+  sn := neighbour(s)                         //   Pick some neighbour.
+  en := E(sn)                                //   Compute its energy.
+  if en < eb then                            //   Is this a new best?
+    sb := sn; eb := en                       //     Yes, save it.
+  if random() < P(e, en, temp(k/kmax)) then  //   Should we move to it?
+    s := sn; e := en                         //     Yes, change state.
+  k := k + 1                                 //   One more evaluation done
+return sb                                    // Return the best solution found.
+
+
+
+

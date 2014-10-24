@@ -1,0 +1,269 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0107 
+header_name {.h} 
+code_name {.cxx}
+decl {\#include <stdio.h>} {} 
+
+decl {\#include <iostream>} {} 
+
+decl {\#include <CreateSurface.h>} {} 
+
+decl {\#include <FL/Fl_File_Chooser.h>} {} 
+
+decl {\#include <FL/fl_ask.h>} {} 
+
+class CreateSurfaceGui {open
+} {
+  Function {CreateSurfaceGui()} {open
+  } {
+    Fl_Window ctrlWindow {
+      label {Surface Generation} open
+      xywh {150 225 600 555} type Double box PLASTIC_UP_BOX color 218 visible
+    } {
+      Fl_File_Input inputImageEntry {
+        label {Input Image}
+        xywh {124 35 391 35} box PLASTIC_DOWN_BOX
+      }
+      Fl_File_Input resultSurfaceEntry {
+        label {Output Surface}
+        xywh {127 83 390 35}
+      }
+      Fl_Button runIcpButton {
+        label Run
+        callback {std::cout << "Fixed Surface: " << inputImageEntry->value() << std::endl;;
+std::cout << "Centered Surface: " << resultSurfaceEntry->value() << std::endl;;
+
+
+
+bool orientImage = orientImageOption->value();
+bool decimateSurface = DecimateOption->value();
+bool smoothSurface = SmoothSurfaceOption->value();
+bool laplacianSmoothing = LaplacianOption->value();
+bool windowedSincSmoothing = WindowedSincOption->value();
+
+
+double surfaceValue = surfaceValueEntry->value();
+double decimateReduction = ReductionFactorInput->value();
+double relaxationFactor = RelaxationInput->value();
+int numberOfIterations = static_cast<int>(IterationsInput->value());
+int windowedSincIteration = static_cast<int>(SincIterations->value());
+double passBand = PassBandValue->value();
+bool normalizeCoordinates = NormalizeCoordOption->value();
+bool boundarySmoothing = BoundarySmoothingOption->value();
+bool nonManifoldSmoothing = NonManifoldOption->value();
+
+
+std::cout << "Orient Image: " << orientImage << std::endl;;
+std::cout << "Decimate Surface: " << decimateSurface << std::endl;;
+std::cout << "Smooth Surface: " << smoothSurface << std::endl;;
+
+std::cout << "Surface Value: " << surfaceValue << std::endl;;
+std::cout << "Reduction Factor: " << decimateReduction << std::endl;;
+
+std::cout << "Laplacian Smoothing: " << laplacianSmoothing << std::endl;
+std::cout << "  Relaxation Factor: " << relaxationFactor << std::endl;;
+std::cout << "  Iterations: " << numberOfIterations << std::endl;;
+
+std::cout << "Windowed Sinc Smoothing: " << windowedSincSmoothing << std::endl;
+std::cout << "  Pass Band: " << passBand << std::endl;;
+std::cout << "  Iterations: " << windowedSincIteration << std::endl;;
+std::cout << "  Boundary Smoothing: " << boundarySmoothing << std::endl;;
+std::cout << "  Normalize Coordinates: " << normalizeCoordinates << std::endl;;
+std::cout << "  Non-Manifold Smoothing: " << nonManifoldSmoothing << std::endl;;
+
+CreateSurface( inputImageEntry->value(),
+		 resultSurfaceEntry->value(),
+		 orientImage,
+		 decimateSurface,
+		 smoothSurface,
+		 laplacianSmoothing,
+		 windowedSincSmoothing,
+		 surfaceValue,
+                 decimateReduction,
+                 numberOfIterations, 
+                 relaxationFactor,
+                 passBand,
+                 windowedSincIteration,
+                 boundarySmoothing,
+                 normalizeCoordinates,
+                 nonManifoldSmoothing);
+
+
+fl_message("Surface Generation Complete");}
+        tooltip {Orient Surface} xywh {15 510 105 25} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 183 selection_color 183 labelfont 1 align 16
+      }
+      Fl_Button quitButton {
+        label Quit
+        callback {exit(0);}
+        tooltip {Load Tensor image from file} xywh {480 515 105 25} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 1 selection_color 1 labelfont 1 align 16
+      }
+      Fl_Group {} {
+        label {Surface Generation} open
+        xywh {20 150 555 345} box PLASTIC_UP_BOX color 4 selection_color 4 labeltype ENGRAVED_LABEL align 5
+      } {
+        Fl_Group SmoothingGroup {
+          label Smoothing open
+          xywh {40 355 505 130} box PLASTIC_UP_BOX color 2 align 5
+        } {
+          Fl_Group LaplacianGroup {
+            label Laplacian open
+            xywh {55 375 155 90} box PLASTIC_UP_FRAME color 0 align 5
+          } {
+            Fl_Value_Input IterationsInput {
+              label Iterations
+              xywh {132 388 55 25} maximum 20000 step 1 value 200
+            }
+            Fl_Value_Input RelaxationInput {
+              label Relaxation
+              xywh {133 423 55 25}
+            }
+          }
+          Fl_Group WindowedSincGroup {
+            label {Windowed Sinc} open
+            xywh {225 375 310 90} box PLASTIC_UP_FRAME color 0 align 5 deactivate
+          } {
+            Fl_Value_Input SincIterations {
+              label Iterations
+              xywh {305 385 45 25} maximum 100 step 1 value 10
+            }
+            Fl_Value_Input PassBandValue {
+              label {Pass Band}
+              xywh {305 415 45 25} maximum 2 value 0.1
+            }
+            Fl_Check_Button NormalizeCoordOption {
+              label {Normalize Coordinates}
+              xywh {355 385 165 25} down_box DOWN_BOX
+            }
+            Fl_Check_Button BoundarySmoothingOption {
+              label {Boundary Smoothing}
+              xywh {355 405 150 25} down_box DOWN_BOX
+            }
+            Fl_Check_Button NonManifoldOption {
+              label {Non Manifold Smoothing}
+              xywh {355 425 175 25} down_box DOWN_BOX
+            }
+          }
+        }
+        Fl_Group DecimationGroup {
+          label Decimation open
+          xywh {285 271 220 60} box PLASTIC_UP_BOX color 2 align 5
+        } {
+          Fl_Value_Input ReductionFactorInput {
+            label {Reduction Factor}
+            xywh {410 286 60 25} value 0.9
+          }
+        }
+        Fl_Group {} {
+          label {Surface Generation} open selected
+          xywh {280 180 225 70} box PLASTIC_UP_BOX color 2 align 5
+        } {
+          Fl_Value_Input surfaceValueEntry {
+            label {Surface Value}
+            xywh {410 200 40 25} minimum -4096 maximum 4096 value 1
+          }
+        }
+        Fl_Group {} {
+          label Options open
+          xywh {35 180 165 145} box PLASTIC_UP_BOX color 2 align 5
+        } {
+          Fl_Check_Button orientImageOption {
+            label {Orient Image}
+            xywh {50 190 105 25} down_box DOWN_BOX value 1
+          }
+          Fl_Check_Button DecimateOption {
+            label {Decimate Surface}
+            callback {if (this->DecimateOption->value() == 0)
+{
+  DecimationGroup->deactivate();
+}
+else
+{
+  DecimationGroup->activate();
+}}
+            xywh {50 213 135 25} down_box DOWN_BOX value 1
+          }
+          Fl_Check_Button SmoothSurfaceOption {
+            label {Smooth Surface}
+            callback {if (this->SmoothSurfaceOption->value() == 0)
+{
+  IterationsInput->deactivate();
+  RelaxationInput->deactivate();
+  WindowedSincOption->deactivate();
+  LaplacianOption->deactivate();
+  SmoothingGroup->deactivate();
+}
+else
+{
+  IterationsInput->activate();
+  RelaxationInput->activate();
+  WindowedSincOption->activate();
+  LaplacianOption->activate();
+  SmoothingGroup->activate();
+}}
+            xywh {50 237 125 25} down_box DOWN_BOX value 1
+          }
+          Fl_Round_Button LaplacianOption {
+            label Laplacian
+            callback {if ( LaplacianOption->value() )
+{
+  WindowedSincGroup->deactivate();
+  LaplacianGroup->activate();
+}
+else
+{
+  WindowedSincGroup->activate();
+  LaplacianGroup->deactivate();
+}}
+            xywh {65 260 105 25} type Radio down_box ROUND_DOWN_BOX value 1
+          }
+          Fl_Round_Button WindowedSincOption {
+            label {Windowed Sinc}
+            callback {if ( WindowedSincOption->value() )
+{
+  WindowedSincGroup->activate();
+  LaplacianGroup->deactivate();
+}
+else
+{
+  WindowedSincGroup->deactivate();
+  LaplacianGroup->activate();
+}}
+            xywh {65 280 120 25} type Radio down_box ROUND_DOWN_BOX
+          }
+        }
+      }
+      Fl_Button selectFixedSurface {
+        label Select
+        callback {char * fileName = fl_file_chooser("Fixed Surface", "*.mask", "");
+
+
+
+if (fileName != NULL)
+{
+  std::cout << fileName << std::endl;
+  inputImageEntry->value(fileName);
+  //SetFixedSurfaceFile(fileName);
+}}
+        xywh {520 45 60 25} box PLASTIC_UP_BOX color 5 labelfont 1
+      }
+      Fl_Button selectResultSurface {
+        label Select
+        callback {char * fileName = fl_file_chooser("Fixed Surface", "*.stl", "");
+
+
+
+if (fileName != NULL)
+{
+  std::cout << fileName << std::endl;
+  resultSurfaceEntry->value(fileName);
+  //SetRegisteredSurfaceFile(fileName);
+}}
+        xywh {520 95 60 25} box PLASTIC_UP_BOX color 5 labelfont 1
+      }
+    }
+  }
+  Function {show(int argc, char **argv)} {open
+  } {
+    code {ctrlWindow->show(argc, argv);} {}
+  }
+} 

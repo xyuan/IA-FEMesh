@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<executable>
+  <category>
+  Meshing.ExportAbaqusFile
+  </category>
+  <title>
+  Abaqus Writer
+  </title>
+  <description>
+THis program will export an mesh into ABAQUS format.
+  </description>
+  <version>0.1.0.$Revision: 1.2 $(alpha)</version>
+  <documentation-url>http:://mimx.ccad.uiowa.edu/mimx</documentation-url>
+  <license></license>
+  <contributor>This tool was developed by Nicole Grosland and Vincent Magnotta. It was developed as part of an NIH NA-MIC Collaboration Grant EB005973.</contributor>
+  <acknowledgements>This command module was developed as part of an NIH NA-MIC Collaboration Grant EB005973.</acknowledgements>
+
+  <parameters>
+    <label>Meshing Input Files</label>
+    <description>Input Mesh Parameters</description>
+
+    <file>
+      <name>vtkMeshFileName</name>
+      <longflag>vtkMeshFileName</longflag>
+      <description>VTK Mesh</description>
+      <label>VTK Mesh</label>
+      <channel>input</channel>
+    </file>
+    
+  </parameters>
+  
+  <parameters>
+    <label>Output Parameters</label>
+    <description>Output Abaqus File Parameters</description>
+  
+    <file>
+      <name>abaqusFileName</name>
+      <longflag>abaqusFileName</longflag>
+      <description>Output Abaqus filename</description>
+      <label>Abaqus Filename</label>
+      <channel>output</channel>
+    </file> 
+    
+    <file>
+      <name>abaqusNodeElementFileName</name>
+      <longflag>abaqusNodeElementFileName</longflag>
+      <description>Output Abaqus Node/Element filename</description>
+      <label>Abaqus Node/Element Filename</label>
+      <channel>output</channel>
+    </file> 
+    
+    <string>
+      <name>userName</name>
+      <longflag>userName</longflag>
+      <description>User Name</description>
+      <label>User Name</label>
+      <channel>input</channel>
+    </string>
+    
+    <string>
+      <name>departmentName</name>
+      <longflag>departmentName</longflag>
+      <description>Department Name</description>
+      <label>Department Name</label>
+      <channel>input</channel>
+    </string>
+    
+    <string>
+      <name>addressLine1</name>
+      <longflag>addressLine1</longflag>
+      <description>Address Line 1</description>
+      <label>Address Line 1</label>
+      <channel>input</channel>
+    </string>
+    
+    <string>
+      <name>addressLine2</name>
+      <longflag>addressLine2</longflag>
+      <description>Address Line 2</description>
+      <label>Address Line 2</label>
+      <channel>input</channel>
+    </string>
+    
+    <string>
+      <name>materialPropertyName</name>
+      <longflag>materialPropertyName</longflag>
+      <description>Material Property Name</description>
+      <label>Material Property Name</label>
+      <channel>input</channel>
+    </string>
+    
+    <string>
+      <name>headingName</name>
+      <longflag>headingName</longflag>
+      <description>Heading Name</description>
+      <label>Heading Name</label>
+      <channel>input</channel>
+    </string>
+    
+  </parameters>
+
+</executable>

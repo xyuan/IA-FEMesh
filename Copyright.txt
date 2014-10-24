@@ -1,0 +1,51 @@
+Copyright (c) 2008 MIMX, The University of Iowa, Iowa City, IA  
+All rights reserved.
+
+Contributors:   N.M. Grosland,  V.A. Magnotta,  K Shivanna
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+ * Redistributions of source code must retain the above copyright notice,
+    this list of conditions and the following disclaimer.
+
+ * Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions and the following disclaimer in the documentation
+    and/or other materials provided with the distribution.
+
+ * In addition, redistributions of modified forms of the source or binary
+    code must carry prominent notices stating that the original code was
+    changed and the date of the change.
+
+ * All publications or advertising materials mentioning features or use of
+    this software are asked, but not required, to acknowledge that it was
+    developed by the Musculoskeletal Imaging, Modeling, and 
+    Experimentation (MIMX) Program at The University of Iowa, Iowa City, IA
+    and to credit the contributors.
+
+ * Neither the name MIMX, The University of Iowa, nor the names of the 
+    Contributors may be used to endorse or promote products derived from this 
+    software without specific prior written permission from the University or the 
+    Contributors, as appropriate for the name(s) to be used.
+
+* Modified source versions must be plainly marked as such, and must not be 
+      misrepresented as being the original software.
+   
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS ``AS IS''
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHORS OR CONTRIBUTORS BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING OUT OF OR IN CONNECTION 
+WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+
+See the web site: 
+
+     http://www.ccad.uiowa.edu/mimx 
+
+for more information.

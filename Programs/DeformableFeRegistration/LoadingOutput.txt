@@ -1,0 +1,320 @@
+<Node>
+	0	% Global object number
+	3 58.3426 58.3426 58.3426	% Node coordinates
+<Node>
+	1	% Global object number
+	3 56.9856 56.9856 64	% Node coordinates
+<Node>
+	2	% Global object number
+	3 58.3426 58.3426 69.6574	% Node coordinates
+<Node>
+	3	% Global object number
+	3 64 56.9856 56.9856	% Node coordinates
+<Node>
+	4	% Global object number
+	3 64 54.0066 64	% Node coordinates
+<Node>
+	5	% Global object number
+	3 64 56.9854 71.0142	% Node coordinates
+<Node>
+	6	% Global object number
+	3 69.6574 58.3426 58.3426	% Node coordinates
+<Node>
+	7	% Global object number
+	3 71.0142 56.9854 64	% Node coordinates
+<Node>
+	8	% Global object number
+	3 69.6574 58.3426 69.6574	% Node coordinates
+<Node>
+	9	% Global object number
+	3 56.9856 64 56.9856	% Node coordinates
+<Node>
+	10	% Global object number
+	3 54.0066 64 64	% Node coordinates
+<Node>
+	11	% Global object number
+	3 56.9854 64 71.0142	% Node coordinates
+<Node>
+	12	% Global object number
+	3 64 64 54.0066	% Node coordinates
+<Node>
+	13	% Global object number
+	3 63.9998 63.9998 63.9998	% Node coordinates
+<Node>
+	14	% Global object number
+	3 64 64 73.9934	% Node coordinates
+<Node>
+	15	% Global object number
+	3 71.0142 64 56.9854	% Node coordinates
+<Node>
+	16	% Global object number
+	3 73.9934 64 64	% Node coordinates
+<Node>
+	17	% Global object number
+	3 71.0144 64 71.0144	% Node coordinates
+<Node>
+	18	% Global object number
+	3 58.3426 69.6574 58.3426	% Node coordinates
+<Node>
+	19	% Global object number
+	3 56.9854 71.0142 64	% Node coordinates
+<Node>
+	20	% Global object number
+	3 58.3426 69.6574 69.6574	% Node coordinates
+<Node>
+	21	% Global object number
+	3 64 71.0142 56.9854	% Node coordinates
+<Node>
+	22	% Global object number
+	3 64 73.9934 64	% Node coordinates
+<Node>
+	23	% Global object number
+	3 64 71.0144 71.0144	% Node coordinates
+<Node>
+	24	% Global object number
+	3 69.6574 69.6574 58.3426	% Node coordinates
+<Node>
+	25	% Global object number
+	3 71.0144 71.0144 64	% Node coordinates
+<Node>
+	26	% Global object number
+	3 69.6574 69.6574 69.6574	% Node coordinates
+
+<END>  % End of nodes
+
+<MaterialLinearElasticity>
+	0	% Global object number
+	E  : 20	% Young modulus
+	A  : 1	% Beam crossection area
+	I  : 1	% Moment of inertia
+	nu : -0.3	% Poisson's ratio
+	h : 1	% Plate thickness
+	RhoC : 1	% Density times capacity
+	END:	% End of material definition
+
+<END>  % End of materials
+
+<Element3DC0LinearHexahedronStrain>
+	0	% Global object number
+	0	% Node #1 ID
+	1	% Node #2 ID
+	4	% Node #3 ID
+	3	% Node #4 ID
+	9	% Node #5 ID
+	10	% Node #6 ID
+	13	% Node #7 ID
+	12	% Node #8 ID
+	0	% MaterialLinearElasticity ID
+<Element3DC0LinearHexahedronStrain>
+	1	% Global object number
+	1	% Node #1 ID
+	2	% Node #2 ID
+	5	% Node #3 ID
+	4	% Node #4 ID
+	10	% Node #5 ID
+	11	% Node #6 ID
+	14	% Node #7 ID
+	13	% Node #8 ID
+	0	% MaterialLinearElasticity ID
+<Element3DC0LinearHexahedronStrain>
+	2	% Global object number
+	3	% Node #1 ID
+	4	% Node #2 ID
+	7	% Node #3 ID
+	6	% Node #4 ID
+	12	% Node #5 ID
+	13	% Node #6 ID
+	16	% Node #7 ID
+	15	% Node #8 ID
+	0	% MaterialLinearElasticity ID
+<Element3DC0LinearHexahedronStrain>
+	3	% Global object number
+	4	% Node #1 ID
+	5	% Node #2 ID
+	8	% Node #3 ID
+	7	% Node #4 ID
+	13	% Node #5 ID
+	14	% Node #6 ID
+	17	% Node #7 ID
+	16	% Node #8 ID
+	0	% MaterialLinearElasticity ID
+<Element3DC0LinearHexahedronStrain>
+	4	% Global object number
+	9	% Node #1 ID
+	10	% Node #2 ID
+	13	% Node #3 ID
+	12	% Node #4 ID
+	18	% Node #5 ID
+	19	% Node #6 ID
+	22	% Node #7 ID
+	21	% Node #8 ID
+	0	% MaterialLinearElasticity ID
+<Element3DC0LinearHexahedronStrain>
+	5	% Global object number
+	10	% Node #1 ID
+	11	% Node #2 ID
+	14	% Node #3 ID
+	13	% Node #4 ID
+	19	% Node #5 ID
+	20	% Node #6 ID
+	23	% Node #7 ID
+	22	% Node #8 ID
+	0	% MaterialLinearElasticity ID
+<Element3DC0LinearHexahedronStrain>
+	6	% Global object number
+	12	% Node #1 ID
+	13	% Node #2 ID
+	16	% Node #3 ID
+	15	% Node #4 ID
+	21	% Node #5 ID
+	22	% Node #6 ID
+	25	% Node #7 ID
+	24	% Node #8 ID
+	0	% MaterialLinearElasticity ID
+<Element3DC0LinearHexahedronStrain>
+	7	% Global object number
+	13	% Node #1 ID
+	14	% Node #2 ID
+	17	% Node #3 ID
+	16	% Node #4 ID
+	22	% Node #5 ID
+	23	% Node #6 ID
+	26	% Node #7 ID
+	25	% Node #8 ID
+	0	% MaterialLinearElasticity ID
+
+<END>  % End of elements
+
+<LoadNode>
+	0	% Global object number
+	0	% GN of element on which the load acts
+	0 	% Point number within the element
+	3 -28.8675 -28.8675 -28.8675	% Force vector (first number is the size of a vector)
+<LoadNode>
+	1	% Global object number
+	0	% GN of element on which the load acts
+	1 	% Point number within the element
+	3 -35.3553 -35.3553 -5.20343e-006	% Force vector (first number is the size of a vector)
+<LoadNode>
+	2	% Global object number
+	0	% GN of element on which the load acts
+	2 	% Point number within the element
+	3 -0.000347822 -50 -0.000347822	% Force vector (first number is the size of a vector)
+<LoadNode>
+	3	% Global object number
+	0	% GN of element on which the load acts
+	3 	% Point number within the element
+	3 -5.20343e-006 -35.3553 -35.3553	% Force vector (first number is the size of a vector)
+<LoadNode>
+	4	% Global object number
+	0	% GN of element on which the load acts
+	4 	% Point number within the element
+	3 -35.3553 -5.20343e-006 -35.3553	% Force vector (first number is the size of a vector)
+<LoadNode>
+	5	% Global object number
+	0	% GN of element on which the load acts
+	5 	% Point number within the element
+	3 -50 -0.000347822 -0.000347822	% Force vector (first number is the size of a vector)
+<LoadNode>
+	6	% Global object number
+	0	% GN of element on which the load acts
+	7 	% Point number within the element
+	3 -0.000347822 -0.000347822 -50	% Force vector (first number is the size of a vector)
+<LoadNode>
+	7	% Global object number
+	1	% GN of element on which the load acts
+	1 	% Point number within the element
+	3 -28.8673 -28.8673 28.868	% Force vector (first number is the size of a vector)
+<LoadNode>
+	8	% Global object number
+	1	% GN of element on which the load acts
+	2 	% Point number within the element
+	3 -5.20341e-006 -35.3558 35.3549	% Force vector (first number is the size of a vector)
+<LoadNode>
+	9	% Global object number
+	1	% GN of element on which the load acts
+	5 	% Point number within the element
+	3 -35.3558 -5.20341e-006 35.3549	% Force vector (first number is the size of a vector)
+<LoadNode>
+	10	% Global object number
+	1	% GN of element on which the load acts
+	6 	% Point number within the element
+	3 -0.000347799 -0.000347799 50	% Force vector (first number is the size of a vector)
+<LoadNode>
+	11	% Global object number
+	2	% GN of element on which the load acts
+	2 	% Point number within the element
+	3 35.3549 -35.3558 -5.20341e-006	% Force vector (first number is the size of a vector)
+<LoadNode>
+	12	% Global object number
+	2	% GN of element on which the load acts
+	3 	% Point number within the element
+	3 28.868 -28.8673 -28.8673	% Force vector (first number is the size of a vector)
+<LoadNode>
+	13	% Global object number
+	2	% GN of element on which the load acts
+	6 	% Point number within the element
+	3 50 -0.000347799 -0.000347799	% Force vector (first number is the size of a vector)
+<LoadNode>
+	14	% Global object number
+	2	% GN of element on which the load acts
+	7 	% Point number within the element
+	3 35.3549 -5.20341e-006 -35.3558	% Force vector (first number is the size of a vector)
+<LoadNode>
+	15	% Global object number
+	3	% GN of element on which the load acts
+	2 	% Point number within the element
+	3 28.8677 -28.8671 28.8677	% Force vector (first number is the size of a vector)
+<LoadNode>
+	16	% Global object number
+	3	% GN of element on which the load acts
+	6 	% Point number within the element
+	3 35.3553 -5.2034e-006 35.3553	% Force vector (first number is the size of a vector)
+<LoadNode>
+	17	% Global object number
+	4	% GN of element on which the load acts
+	4 	% Point number within the element
+	3 -28.8673 28.868 -28.8673	% Force vector (first number is the size of a vector)
+<LoadNode>
+	18	% Global object number
+	4	% GN of element on which the load acts
+	5 	% Point number within the element
+	3 -35.3558 35.3549 -5.20341e-006	% Force vector (first number is the size of a vector)
+<LoadNode>
+	19	% Global object number
+	4	% GN of element on which the load acts
+	6 	% Point number within the element
+	3 -0.000347799 50 -0.000347799	% Force vector (first number is the size of a vector)
+<LoadNode>
+	20	% Global object number
+	4	% GN of element on which the load acts
+	7 	% Point number within the element
+	3 -5.20341e-006 35.3549 -35.3558	% Force vector (first number is the size of a vector)
+<LoadNode>
+	21	% Global object number
+	5	% GN of element on which the load acts
+	5 	% Point number within the element
+	3 -28.8671 28.8677 28.8677	% Force vector (first number is the size of a vector)
+<LoadNode>
+	22	% Global object number
+	5	% GN of element on which the load acts
+	6 	% Point number within the element
+	3 -5.2034e-006 35.3553 35.3553	% Force vector (first number is the size of a vector)
+<LoadNode>
+	23	% Global object number
+	6	% GN of element on which the load acts
+	6 	% Point number within the element
+	3 35.3553 35.3553 -5.2034e-006	% Force vector (first number is the size of a vector)
+<LoadNode>
+	24	% Global object number
+	6	% GN of element on which the load acts
+	7 	% Point number within the element
+	3 28.8677 28.8677 -28.8671	% Force vector (first number is the size of a vector)
+<LoadNode>
+	25	% Global object number
+	7	% GN of element on which the load acts
+	6 	% Point number within the element
+	3 28.8675 28.8675 28.8675	% Force vector (first number is the size of a vector)
+
+<END>  % End of loads
+

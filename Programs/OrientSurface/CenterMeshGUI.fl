@@ -1,0 +1,190 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0106 
+header_name {.h} 
+code_name {.cxx}
+decl {\#include <stdio.h>} {} 
+
+decl {\#include <iostream>} {} 
+
+decl {\#include <OrientPolyData.h>} {} 
+
+decl {\#include <FL/Fl_File_Chooser.h>} {} 
+
+decl {\#include <FL/fl_ask.h>} {} 
+
+class CenterMeshGUI {open
+} {
+  Function {CenterMeshGUI()} {open
+  } {
+    Fl_Window ctrlWindow {
+      label {Surface Orientation} open
+      xywh {199 364 600 385} type Double box PLASTIC_UP_BOX color 218 visible
+    } {
+      Fl_File_Input fixedSurfaceEntry {
+        label {Original Surface}
+        xywh {124 35 391 35} box PLASTIC_DOWN_BOX
+      }
+      Fl_File_Input resultSurfaceEntry {
+        label {New Surface}
+        xywh {127 115 390 35}
+      }
+      Fl_Button runIcpButton {
+        label Run
+        callback {std::cout << "Fixed Surface: " << fixedSurfaceEntry->value() << std::endl;;
+std::cout << "Centered Surface: " << resultSurfaceEntry->value() << std::endl;;
+
+std::cout << "X axis: " << XaxisButton->value() << std::endl;;
+std::cout << "Y axis: " << YaxisButton->value() << std::endl;;
+std::cout << "Z axis: " << ZaxisButton->value() << std::endl;;
+
+std::cout << "Flip X axis: " << flipXButton->value() << std::endl;;
+std::cout << "Flip Y axis: " << flipYButton->value() << std::endl;;
+std::cout << "Flip Z axis: " << flipZButton->value() << std::endl;;
+
+int flipX = flipXButton->value();
+if (flipX == 0) flipX = 1;
+else flipX = -1;
+
+int flipY = flipYButton->value();
+if (flipY == 0) flipY = 1;
+else flipY = -1;
+
+int flipZ = flipZButton->value();
+if (flipZ == 0) flipZ = 1;
+else flipZ = -1;
+
+OrientPolyData( fixedSurfaceEntry->value(),
+		 resultSurfaceEntry->value(),
+		 XaxisButton->value(),
+		 YaxisButton->value(),
+		 ZaxisButton->value(),
+		 flipX,
+                 flipY,
+                 flipZ);
+
+
+fl_message("Surface Orientation Complete");}
+        tooltip {Orient Surface} xywh {15 335 105 25} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 183 selection_color 183 labelfont 1 align 16
+      }
+      Fl_Button quitButton {
+        label Quit
+        callback {exit(0);}
+        tooltip {Load Tensor image from file} xywh {470 335 105 25} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 1 selection_color 1 labelfont 1 align 16
+      }
+      Fl_Group {} {
+        label {Reorient Mesh} open
+        xywh {30 185 500 140} box PLASTIC_UP_BOX color 4 selection_color 4 labeltype ENGRAVED_LABEL align 5
+      } {
+        Fl_Group {} {
+          label {Axis Order} open
+          xywh {55 230 260 55} box PLASTIC_UP_BOX color 2 align 5
+        } {
+          Fl_Choice XaxisButton {
+            label {X:} open
+            xywh {80 240 45 25} down_box BORDER_BOX
+          } {
+            menuitem {} {
+              label X
+              xywh {5 5 100 20}
+            }
+            menuitem {} {
+              label Y
+              xywh {5 5 100 20}
+            }
+            menuitem {} {
+              label Z
+              xywh {5 5 100 20}
+            }
+          }
+          Fl_Choice YaxisButton {
+            label {Y:} open
+            xywh {160 240 45 25} down_box BORDER_BOX
+          } {
+            menuitem {} {
+              label X
+              xywh {15 15 100 20}
+            }
+            menuitem {} {
+              label Y
+              xywh {15 15 100 20}
+            }
+            menuitem {} {
+              label Z
+              xywh {15 15 100 20}
+            }
+          }
+          Fl_Choice ZaxisButton {
+            label {Z:} open
+            xywh {240 240 45 25} down_box BORDER_BOX
+          } {
+            menuitem {} {
+              label X
+              xywh {25 25 100 20}
+            }
+            menuitem {} {
+              label Y
+              xywh {25 25 100 20}
+            }
+            menuitem {} {
+              label Z
+              xywh {25 25 100 20}
+            }
+          }
+        }
+        Fl_Group {} {
+          label {Flip Axis} open
+          xywh {380 215 90 95} box PLASTIC_UP_BOX color 2 align 5
+        } {
+          Fl_Round_Button flipXButton {
+            label {Flip X}
+            xywh {390 230 60 20} down_box ROUND_DOWN_BOX
+          }
+          Fl_Round_Button flipYButton {
+            label {Flip Y}
+            xywh {390 250 60 20} down_box ROUND_DOWN_BOX
+          }
+          Fl_Round_Button flipZButton {
+            label {Flip Z}
+            xywh {390 270 60 20} down_box ROUND_DOWN_BOX
+          }
+        }
+      }
+      Fl_Button selectFixedSurface {
+        label Select
+        callback {char * fileName = fl_file_chooser("Fixed Surface", "*.stl", "");
+
+
+
+if (fileName != NULL)
+{
+  std::cout << fileName << std::endl;
+  fixedSurfaceEntry->value(fileName);
+  //SetFixedSurfaceFile(fileName);
+}}
+        xywh {520 45 60 25} box PLASTIC_UP_BOX color 5 labelfont 1
+      }
+      Fl_Button selectResultSurface {
+        label Select
+        callback {char * fileName = fl_file_chooser("Fixed Surface", "*.stl", "");
+
+
+
+if (fileName != NULL)
+{
+  std::cout << fileName << std::endl;
+  resultSurfaceEntry->value(fileName);
+  //SetRegisteredSurfaceFile(fileName);
+}}
+        xywh {520 125 60 25} box PLASTIC_UP_BOX color 5 labelfont 1
+      }
+    }
+  }
+  Function {show(int argc, char **argv)} {open
+  } {
+    code {ctrlWindow->show(argc, argv);
+XaxisButton->value(0);
+YaxisButton->value(1);
+ZaxisButton->value(2);} {selected
+    }
+  }
+} 

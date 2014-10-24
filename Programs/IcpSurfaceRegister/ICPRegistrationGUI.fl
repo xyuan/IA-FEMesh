@@ -1,0 +1,128 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0106 
+header_name {.h} 
+code_name {.cxx}
+decl {\#include <stdio.h>} {} 
+
+decl {\#include <iostream>} {} 
+
+decl {\#include <ICPregister.h>} {} 
+
+decl {\#include <FL/Fl_File_Chooser.h>} {} 
+
+decl {\#include <FL/fl_ask.h>} {selected
+} 
+
+class ICPRegistrationGUI {open
+} {
+  Function {ICPRegistrationGUI()} {open
+  } {
+    Fl_Window ctrlWindow {
+      label {ICP Surface Registration} open
+      xywh {251 320 600 385} type Double box PLASTIC_UP_BOX color 218 visible
+    } {
+      Fl_File_Input fixedSurfaceEntry {
+        label {Fixed Surface}
+        xywh {124 35 391 35} box PLASTIC_DOWN_BOX
+      }
+      Fl_File_Input movingSurfaceEntry {
+        label {Moving Surface}
+        xywh {126 75 389 35}
+      }
+      Fl_File_Input resultSurfaceEntry {
+        label {Registered Surface}
+        xywh {127 115 390 35}
+      }
+      Fl_Button runIcpButton {
+        label Run
+        callback {std::cout << "Fixed Surface: " << fixedSurfaceEntry->value() << std::endl;;
+std::cout << "Fixed Surface: " << movingSurfaceEntry->value() << std::endl;;
+std::cout << "Fixed Surface: " << resultSurfaceEntry->value() << std::endl;;
+
+std::cout << "Iterations: " << IterationEntry->value() << std::endl;;
+std::cout << "Distance: " << distanceEntry->value() << std::endl;;
+std::cout << "\# Points: " << numberOfPointsEntry->value() << std::endl;;
+
+ICPregistration( fixedSurfaceEntry->value(),
+		 movingSurfaceEntry->value(),
+		 resultSurfaceEntry->value(),
+		 IterationEntry->value(),
+		 numberOfPointsEntry->value(),
+		 distanceEntry->value()
+);
+
+
+fl_message("Surface Registration Complete");}
+        tooltip {Run Surface Registration} xywh {15 335 105 25} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 183 selection_color 183 labelfont 1 align 16
+      }
+      Fl_Button quitButton {
+        label Quit
+        callback {exit(0);}
+        tooltip {Load Tensor image from file} xywh {470 335 105 25} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 1 selection_color 1 labelfont 1 align 16
+      }
+      Fl_Group {} {
+        label {Registration Parameters} open
+        xywh {30 175 500 150} box PLASTIC_UP_BOX color 4 selection_color 4 labeltype ENGRAVED_LABEL align 5
+      } {
+        Fl_Value_Input IterationEntry {
+          label Iterations
+          tooltip {Number of Iterations} xywh {170 195 65 25} step 1 value 100
+        }
+        Fl_Value_Input distanceEntry {
+          label {Distance Threshold}
+          xywh {170 230 65 25} maximum 10 value 0.001
+        }
+        Fl_Value_Input numberOfPointsEntry {
+          label {Number of Points}
+          xywh {170 260 65 25} step 1 value 10000
+        }
+      }
+      Fl_Button selectFixedSurface {
+        label Select
+        callback {char * fileName = fl_file_chooser("Fixed Surface", "*.stl", "");
+
+
+
+if (fileName != NULL)
+{
+  std::cout << fileName << std::endl;
+  fixedSurfaceEntry->value(fileName);
+  //SetFixedSurfaceFile(fileName);
+}}
+        xywh {520 45 60 25} box PLASTIC_UP_BOX color 5 labelfont 1
+      }
+      Fl_Button selectMovingSurface {
+        label Select
+        callback {char * fileName = fl_file_chooser("Fixed Surface", "*.stl", "");
+
+
+
+if (fileName != NULL)
+{
+  std::cout << fileName << std::endl;
+  movingSurfaceEntry->value(fileName);
+  //SetMovingSurfaceFile(fileName);
+}}
+        xywh {520 85 60 25} box PLASTIC_UP_BOX color 5 labelfont 1
+      }
+      Fl_Button selectResultSurface {
+        label Select
+        callback {char * fileName = fl_file_chooser("Fixed Surface", "*.stl", "");
+
+
+
+if (fileName != NULL)
+{
+  std::cout << fileName << std::endl;
+  resultSurfaceEntry->value(fileName);
+  //SetRegisteredSurfaceFile(fileName);
+}}
+        xywh {520 125 60 25} box PLASTIC_UP_BOX color 5 labelfont 1
+      }
+    }
+  }
+  Function {show(int argc, char **argv)} {open
+  } {
+    code {ctrlWindow->show(argc, argv);} {}
+  }
+} 

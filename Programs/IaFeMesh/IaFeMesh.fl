@@ -1,0 +1,3865 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0107 
+header_name {.h} 
+code_name {.cxx}
+class IaFeMesh {open
+} {
+  Function {IaFeMesh()} {open
+  } {
+    Fl_Window MainWindow {
+      label {IA FE MESH} open
+      xywh {44 14 1024 714} type Double hide resizable
+      code0 {\#include "vtkInteractorStyleSwitch.h"}
+      code1 {\#include "vtkMimxPlanarStructuredGridSource.h"}
+    } {
+      Fl_Tabs MainWindowTabs {open
+        tooltip {Work Bench} xywh {3 90 372 665} align 21 resizable
+        code0 {\#include "mimxLinkedList.h"}
+      } {
+        Fl_Group ImageGroup {
+          label Image open
+          xywh {15 120 345 600} labeltype ENGRAVED_LABEL hide
+        } {
+          Fl_Group ClipImageFromBoxGroup {open
+            xywh {33 426 320 120} box UP_BOX
+          } {
+            Fl_Light_Button ClipImageBoxLightButton {
+              label Box
+              callback {if(ClipImageBoxLightButton->value())
+{
+	if(GetImageCheckedItem())
+	{
+		GetImageCheckedItem()->EnableBoxWidget(1);
+	}
+}
+else
+{
+	if(GetImageCheckedItem())
+	{
+		GetImageCheckedItem()->EnableBoxWidget(0);
+	}
+}}
+              xywh {80 451 50 25}
+            }
+            Fl_Light_Button ClipImageImagePlaneLightButton {
+              label {Image Plane}
+              callback {if(ClipImageImagePlaneLightButton->value())
+{
+	if(GetImageCheckedItem())
+	{
+		GetImageCheckedItem()->EnableImagePlaneWidget(1);
+	}
+}
+else
+{
+	if(GetImageCheckedItem())
+	{
+		GetImageCheckedItem()->EnableImagePlaneWidget(0);
+	}
+}}
+              xywh {58 485 100 25}
+            }
+            Fl_Return_Button ClipImageClipReturnButton {
+              label Clip
+              callback {if(GetImageCheckedItem())
+{
+	GetImageCheckedItem()->ClipImage();
+	GetImageCheckedItem()->ShowWidget(0);
+	this->vtkImageList.Add(new vtkMimxClipImageFromBox);
+	this->ImageCheckBrowser->add("Clipped Image");
+	this->ImageCheckBrowser->redraw();
+ 		
+ 	this->vtkImageList.GetValue(this->ImageCheckBrowser->nitems())
+		->SetInput(GetImageCheckedItem()->GetitkImageOutput());		
+        ImageCheckBrowser->check_none();
+        ImageCheckBrowser->set_checked(ImageCheckBrowser->nitems());
+
+	this->GetImageCheckedItem()->SetInteractor(VTKFlWindow);
+	this->GetImageCheckedItem()->DisplayWidgets();
+
+	this->FitView();
+        HideAll();
+       ImageGroup->show();
+
+	
+}}
+              xywh {238 470 80 25}
+            }
+            Fl_Button ClipImageGroupCloseButton {
+              label X
+              callback {ClipImageFromBoxGroup->hide();}
+              xywh {334 426 18 20}
+            }
+          }
+          Fl_Check_Browser ImageCheckBrowser {
+            callback {for(int i=1; i <= this->ImageCheckBrowser->nitems(); i++)
+{
+	this->vtkImageList.GetValue(i)->ShowWidget(0);
+}
+
+if(GetImageCheckedItem())
+{
+	GetImageCheckedItem()->ShowWidget(1);
+}
+
+	this->FitView();
+        HideAll();
+       ImageGroup->show();}
+            tooltip {Triangulated Surface} xywh {23 135 320 105} color 49 when 4 resizable
+          }
+        }
+        Fl_Group SurfaceGroup {
+          label Surf open
+          xywh {10 120 361 630} labeltype ENGRAVED_LABEL
+        } {
+          Fl_Group STLCheckBrowserGroup {
+            tooltip {Triangulated Surface} xywh {10 125 340 160}
+          } {
+            Fl_Check_Browser STLCheckBrowser {
+              callback {int item = STLCheckBrowser->value();
+
+if (STLCheckBrowser->nitems() == 1)
+  {
+  STLCheckBrowser->set_checked( 1 );
+  }
+else
+  {
+  if (STLCheckBrowser->checked(item))
+    {
+    STLCheckBrowser->check_none();
+    STLCheckBrowser->set_checked(item);
+    }
+  }
+
+/*    
+this->Reset();
+if(this->GetSTLCheckedItem())
+{
+this->GetSTLCheckedItem()->GetActor()->GetProperty()->SetColor(1.0,0.0,0.0);
+this->VTKRenderer->RemoveActor(this->GetSTLCheckedItem()->GetActor());
+this->VTKRenderer->AddActor(this->GetSTLCheckedItem()->GetActor());
+this->FitView();
+}
+*/}
+              tooltip {Triangulated Surface} xywh {23 135 320 110} color 49 when 4 resizable
+              code0 {\#include "vtkMimxSTLSource.h"}
+            }
+          }
+          Fl_Group SurfaceDistanceMapGroup {open
+            xywh {29 420 325 170} box UP_BOX align 17
+            code2 {\#include "vtkScalarBarActor.h"}
+            code3 {ScalarBarActor = vtkScalarBarActor::New();}
+          } {
+            Fl_Output DistanceMapTextoutput {
+              label {Distance Map (Closest Point)}
+              xywh {258 425 0 25}
+            }
+            Fl_Group SurfaceSourceTargetGroup {
+              label Surface
+              xywh {29 474 96 50}
+            } {
+              Fl_Round_Button SurfaceSourceRoundButton {
+                label Source
+                callback {SurfaceSource = this->GetSTLCheckedItem();}
+                tooltip {Surface on which Distance map is drawn} xywh {55 474 20 30} type Radio down_box ROUND_DOWN_BOX
+              }
+              Fl_Round_Button SurfaceTargetButton {
+                label Target
+                callback {SurfaceTarget = GetSTLCheckedItem();}
+                tooltip {Surface to which distance is calculated} xywh {55 503 15 21} type Radio down_box ROUND_DOWN_BOX
+              }
+            }
+            Fl_Group SurfaceDistanceMapType {
+              label {Gray/Color}
+              xywh {134 474 96 60}
+            } {
+              Fl_Round_Button SurfaceGrayScaleRoundButton {
+                label {Gray Scale}
+                tooltip {Gray Scale Color Map} xywh {137 502 88 25} type Radio down_box ROUND_DOWN_BOX
+              }
+              Fl_Round_Button SurfaceRGBScaleRoundButton {
+                label {RGB Scale}
+                tooltip {RGB (Rainbow) Color Map} xywh {136 479 89 25} type Radio down_box ROUND_DOWN_BOX
+              }
+            }
+            Fl_Button SurfaceDistanceMapComputeButton {
+              label Compute
+              callback {if(SurfaceSource !=NULL && SurfaceTarget !=NULL)
+{
+	if(!SurfaceGrayScaleRoundButton->value())
+{
+	if(!SpecifyMaxDistValueCheckButton->value())
+	{
+		if(SurfaceRGBScaleRoundButton->value())
+		{
+			SurfaceSource->ClosestPointDistanceMap(SurfaceTarget);
+			ScalarBarActor->SetLookupTable(SurfaceSource->GetPolyDataMapper()->GetLookupTable());
+			this->VTKRenderer->AddActor(ScalarBarActor);
+			this->VTKRenderer->RemoveActor(SurfaceTarget->GetActor());
+	
+		}
+	}
+	else
+	{
+			this->VTKRenderer->RemoveActor(ScalarBarActor);
+		SurfaceSource->ClosestPointDistanceMapMod
+			(SurfaceTarget,float(DistanceMapMaxValue->value()));
+//			this->VTKRenderer->RemoveActor(SurfaceSource->GetActor
+			SurfaceSource->GenerateLookupTableMod(ScalarBarActor,
+			float(DistanceMapMaxValue->value()));
+			this->VTKRenderer->AddActor(ScalarBarActor);
+	}
+}
+else
+{
+	if(!SpecifyMaxDistValueCheckButton->value())
+	{
+		if(SurfaceGrayScaleRoundButton->value())
+		{
+			SurfaceSource->ClosestPointDistanceMapGrayScale(SurfaceTarget);
+			ScalarBarActor->SetLookupTable(SurfaceSource->GetPolyDataMapper()->GetLookupTable());
+			this->VTKRenderer->AddActor(ScalarBarActor);
+			this->VTKRenderer->RemoveActor(SurfaceTarget->GetActor());
+	
+		}
+	}
+	else
+	{
+			this->VTKRenderer->RemoveActor(ScalarBarActor);
+		SurfaceSource->ClosestPointDistanceMapModGrayScale
+			(SurfaceTarget,float(DistanceMapMaxValue->value()));
+//			this->VTKRenderer->RemoveActor(SurfaceSource->GetActor
+			SurfaceSource->GenerateLookupTableModGrayScale(ScalarBarActor,
+			float(DistanceMapMaxValue->value()));
+			this->VTKRenderer->AddActor(ScalarBarActor);
+	}
+}
+	this->VTKRenderWindow->Render();					
+}}
+              tooltip {Compute the Distance Map} xywh {270 479 70 25}
+            }
+            Fl_Button SurfaceDistanceMapGroupCloseButton {
+              label X
+              callback {ScalarBarActor->Delete();
+SurfaceDistanceMapGroup->hide();}
+              tooltip Close xywh {341 420 13 20} labeltype EMBOSSED_LABEL
+            }
+            Fl_Group SpecifyDistanceMapMinMaxGroup {
+              xywh {51 545 303 45}
+            } {
+              Fl_Check_Button SpecifyMaxDistValueCheckButton {
+                label {Specify Max Value}
+                xywh {174 555 22 25} down_box DOWN_BOX align 4
+              }
+              Fl_Value_Input DistanceMapMaxValue {
+                label {Max value :}
+                xywh {296 555 35 25} value 1
+              }
+            }
+          }
+          Fl_Group ExtrudeSurfaceGroup {open
+            xywh {56 449 220 166} box UP_BOX hide
+          } {
+            Fl_Button ExtrudeSurfaceGroupCloseButton {
+              label X
+              callback {ExtrudeSurfaceGroup->hide();}
+              xywh {226 449 50 20}
+            }
+            Fl_Value_Input ExtrudeSurfaceExtrusionLengthInput {
+              label {Set Extrusion Length}
+              xywh {94 486 55 24} align 5 value 1
+            }
+            Fl_Round_Button ExtrudeSurfaceSetNormalDirection {
+              label {Flip Extrusion Direction}
+              xywh {90 534 64 15} type Radio down_box ROUND_DOWN_BOX
+            }
+            Fl_Return_Button ExtrudeSurfaceDoneButton {
+              label Done
+              callback {if(GetSTLCheckedItem())
+
+{
+	vtkMimxExtrudePolyData *extrude = vtkMimxExtrudePolyData::New();
+	extrude->SetInput(GetSTLCheckedItem()->GetPolyData());
+	extrude->SetExtrusionLength(double (ExtrudeSurfaceExtrusionLengthInput->value()));
+	extrude->SetReverseExtrusionDirection(int (ExtrudeSurfaceSetNormalDirection->value()));
+	extrude->Update();
+	
+	
+	this->vtkUGridList.Add(new vtkMimxUGrid);
+	this->UGridCheckBrowser->add("Extrude");
+	this->UGridCheckBrowser->redraw();
+
+        UGridCheckBrowser->check_none();
+        UGridCheckBrowser->set_checked(UGridCheckBrowser->nitems());
+	
+		
+	this->GetUGridCheckedItem()->UGrid->DeepCopy(extrude->GetOutput());
+	this->GetUGridCheckedItem()->UGrid->Modified();	
+        this->VTKRenderer->AddActor(this->vtkUGridList.GetLastItem()->GetActor());
+	this->FitView();
+        HideAll();
+	UnstructuredMeshGroup->show();
+	extrude->Delete();
+	
+}}
+              xywh {195 581 66 20}
+              code0 {\#include "vtkMimxExtrudePolyData.h"}
+            }
+          }
+          Fl_Group PatchSurfaceGroup {
+            label {Patch Surface} open
+            xywh {95 440 190 80} box UP_BOX hide
+          } {
+            Fl_Button PatchSurfaceGroupCloseButton {
+              label X
+              callback {PatchSurfaceGroup->hide();}
+              xywh {265 440 20 20}
+            }
+            Fl_Return_Button PatchSurfaceGroupPatchReturnButton {
+              label Patch
+              callback {vtkMimxPatchSurfaceMesh *patch = vtkMimxPatchSurfaceMesh::New();
+  patch->SetInput(this->GetSTLCheckedItem()->GetPolyData());
+  patch->Update();
+  
+  if(patch->GetOutput())
+  {
+  	this->vtkSTLSourceList.Add(vtkMimxSTLSource::New());
+	this->STLCheckBrowser->add("Patch");
+	this->STLCheckBrowser->redraw();
+
+        STLCheckBrowser->check_none();
+        STLCheckBrowser->set_checked(STLCheckBrowser->nitems());
+	
+	this->GetSTLCheckedItem()->GetPolyData()->DeepCopy(patch->GetOutput());
+	this->GetSTLCheckedItem()->GetPolyData()->Modified();	
+        this->VTKRenderer->AddActor(this->GetSTLCheckedItem()->GetActor());
+	this->FitView();
+        HideAll();
+        SurfaceGroup->show();
+  }
+  patch->Delete();}
+              xywh {149 472 76 23}
+              code0 {\#include "vtkMimxPatchSurfaceMesh.h"}
+            }
+          }
+        }
+        Fl_Group CurveGroup {
+          label Curve open
+          xywh {10 120 360 630} labeltype ENGRAVED_LABEL hide
+        } {
+          Fl_Check_Browser CurveCheckBrowser {
+            callback {this->Reset();
+if(this->GetCurveCheckedItem())
+{
+this->GetCurveCheckedItem()->GetActor()->GetProperty()->SetColor(1.0,0.0,0.0);
+this->VTKRenderer->RemoveActor(this->GetCurveCheckedItem()->GetActor());
+this->VTKRenderer->AddActor(this->GetCurveCheckedItem()->GetActor());
+this->FitView();
+}}
+            tooltip Curve xywh {23 135 320 105} color 49 when 4 resizable
+            code0 {\#include "vtkMimxSTLSource.h"}
+          }
+          Fl_Group CreateCurveGroup {open
+            xywh {40 489 300 110} box UP_BOX hide
+          } {
+            Fl_Input LineCurveLabelTextInput {
+              label {Line/Curve Label}
+              xywh {165 499 95 25}
+            }
+            Fl_Group CurvePickStartEndGroup {
+              label {Pick :} open
+              xywh {148 530 157 65} align 4
+            } {
+              Fl_Round_Button CurvePickStartRadioButton {
+                label Start
+                callback {this->vtkCurveList.Add(vtkMimxCurve::New());
+this->CurveCheckBrowser->add(this->LineCurveLabelTextInput->value());	
+this->CurveCheckBrowser->redraw();
+CurveCheckBrowser->check_none();
+CurveCheckBrowser->set_checked(CurveCheckBrowser->nitems());
+InteractorStyleSelect->SetActor(this->vtkCurveList.GetLastItem()->GetActor());
+InteractorStyleSelect->SetInteractorStyleSelectState(10);}
+                xywh {155 537 25 25} type Radio down_box ROUND_DOWN_BOX
+                code0 {\#include "vtkMimxCurve.h"}
+              }
+              Fl_Round_Button CurvePickEndRadioButton {
+                label End
+                callback {InteractorStyleSelect->SetInteractorStyleSelectState(0);}
+                xywh {155 565 25 25} type Radio down_box ROUND_DOWN_BOX
+              }
+              Fl_Round_Button ContinueCreateTraceRoundButton {
+                label Continue
+                callback {InteractorStyleSelect->SetActor(this->vtkCurveList.GetLastItem()->GetActor());
+InteractorStyleSelect->SetInteractorStyleSelectState(10);}
+                xywh {227 549 78 20} type Radio down_box ROUND_DOWN_BOX
+              }
+            }
+            Fl_Button CreateCurveGroupCloseButton {
+              label X
+              callback {CreateCurveGroup->hide();}
+              tooltip Close xywh {325 493 13 20} labeltype EMBOSSED_LABEL
+            }
+          }
+          Fl_Group PlanarTransInterpGroup {
+            xywh {20 446 300 164} box UP_BOX align 5 hide
+          } {
+            Fl_Group PlanarTransInterpTransGroup {
+              label {Select Curve}
+              xywh {105 457 59 94} box UP_BOX align 4
+            } {
+              Fl_Round_Button PlanarMeshTransInterpCurveSelectRadioButton1 {
+                label { 1}
+                callback {Curve[0] = NULL;
+Curve[0] = this->GetCurveCheckedItem();}
+                xywh {119 459 25 25} type Radio down_box ROUND_DOWN_BOX
+              }
+              Fl_Round_Button PlanarMeshTransInterpCurveSelectRadioButton2 {
+                label { 2}
+                callback {Curve[1] = NULL;
+Curve[1] = this->GetCurveCheckedItem();}
+                xywh {119 482 25 25} type Radio down_box ROUND_DOWN_BOX
+              }
+              Fl_Round_Button PlanarMeshTransInterpCurveSelectRadioButton3 {
+                label { 3}
+                callback {Curve[2] = NULL;
+Curve[2] = this->GetCurveCheckedItem();}
+                xywh {120 505 25 25} type Radio down_box ROUND_DOWN_BOX
+              }
+              Fl_Round_Button PlanarMeshTransInterpCurveSelectRadioButton4 {
+                label { 4}
+                callback {Curve[3] = NULL;
+Curve[3] = this->GetCurveCheckedItem();}
+                xywh {120 526 25 25} type Radio down_box ROUND_DOWN_BOX
+              }
+            }
+            Fl_Return_Button PlanarMeshTransInterpDoneButton {
+              label Done
+              callback {/*vtkCurveToitkPolygon3DSpatialObject* CurveToPolygon3DSpatialObject1= new vtkCurveToitkPolygon3DSpatialObject;
+CurveToPolygon3DSpatialObject1->SetInput(Curve1);
+vtkCurveToitkPolygon3DSpatialObject* CurveToPolygon3DSpatialObject2= new vtkCurveToitkPolygon3DSpatialObject;
+CurveToPolygon3DSpatialObject2->SetInput(Curve2);
+vtkCurveToitkPolygon3DSpatialObject* CurveToPolygon3DSpatialObject3= new vtkCurveToitkPolygon3DSpatialObject;
+CurveToPolygon3DSpatialObject3->SetInput(Curve3);
+vtkCurveToitkPolygon3DSpatialObject* CurveToPolygon3DSpatialObject4= new vtkCurveToitkPolygon3DSpatialObject;
+CurveToPolygon3DSpatialObject4->SetInput(Curve4);
+
+typedef itk::Polygon3DSpatialObject<3> CurveType3D;
+
+typedef itk::Mesh<double,3> MeshType;
+itk::CurveToStructuredPlanarMesh<CurveType3D,MeshType>::Pointer
+   CurveToStructuredPlanarMeshPointer = itk::CurveToStructuredPlanarMesh<CurveType3D,MeshType>::New();
+   CurveToStructuredPlanarMeshPointer->SetCurve(1,CurveToPolygon3DSpatialObject1->GetOutput());
+   CurveToStructuredPlanarMeshPointer->SetCurve(2,CurveToPolygon3DSpatialObject2->GetOutput());
+   CurveToStructuredPlanarMeshPointer->SetCurve(3,CurveToPolygon3DSpatialObject3->GetOutput());
+   CurveToStructuredPlanarMeshPointer->SetCurve(4,CurveToPolygon3DSpatialObject4->GetOutput());
+   CurveToStructuredPlanarMeshPointer->GenerateQuadrilateralMesh();
+   itkQuadMeshTovtkPolyData* convert = new itkQuadMeshTovtkPolyData;
+   convert->SetInput(CurveToStructuredPlanarMeshPointer->GetOutput());
+   vtkPolyDataMapper* mapper = vtkPolyDataMapper::New();
+   mapper->SetInput(convert->GetOutput());
+   vtkActor* interpactor = vtkActor::New();
+   interpactor->SetMapper(mapper);
+interpactor->GetProperty()->SetColor(1.0,0.0,0.0);
+   this->VTKRenderer->AddActor(interpactor);
+this->FitView();
+Curve1 = NULL;
+Curve2 = NULL;
+Curve3 = NULL;
+Curve4 = NULL;*/
+SurfaceGroup->show();}
+              xywh {180 490 75 25}
+            }
+            Fl_Button PlanarMeshTransInterpCreateGroupCloseButton {
+              label X
+              callback {PlanarTransInterpGroup->hide();}
+              tooltip Close xywh {305 452 13 25} labeltype EMBOSSED_LABEL
+            }
+            Fl_Value_Input PlanarStructuredMeshMeshSeedButtonI {
+              label {Mesh Seed :     I    }
+              xywh {150 571 25 25} value 1
+            }
+            Fl_Value_Input PlanarStructuredMeshMeshSeedButtonJ {
+              label {J :  }
+              xywh {232 570 25 25} value 1
+            }
+          }
+          Fl_Group EdgeSolidTransInterpGroup {
+            xywh {23 436 335 200} box UP_BOX hide
+          } {
+            Fl_Group EdgeToSolidMeshCurveSelectButtonGroup {
+              xywh {25 481 326 70}
+            } {
+              Fl_Round_Button CruveSolidTransInterpCurve1RadioButton {
+                label {Curve 1}
+                callback {Curve[0] = NULL;
+if(this->GetCurveCheckedItem())
+	Curve[0] = this->GetCurveCheckedItem();}
+                xywh {26 485 25 25} type Radio down_box ROUND_DOWN_BOX
+              }
+              Fl_Round_Button CruveSolidTransInterpCurve2RadioButton {
+                label {Curve 2}
+                callback {Curve[1] = NULL;
+if(this->GetCurveCheckedItem())
+	Curve[1] = this->GetCurveCheckedItem();}
+                xywh {105 485 25 25} type Radio down_box ROUND_DOWN_BOX
+              }
+              Fl_Round_Button CruveSolidTransInterpCurve3RadioButton {
+                label {Curve 3}
+                callback {Curve[2] = NULL;
+if(this->GetCurveCheckedItem())
+	Curve[2] = this->GetCurveCheckedItem();}
+                xywh {196 486 25 25} type Radio down_box ROUND_DOWN_BOX
+              }
+              Fl_Round_Button CruveSolidTransInterpCurve4RadioButton {
+                label {Curve 4}
+                callback {Curve[3] = NULL;
+if(this->GetCurveCheckedItem())
+	Curve[3] = this->GetCurveCheckedItem();}
+                xywh {276 485 25 25} type Radio down_box ROUND_DOWN_BOX
+              }
+              Fl_Round_Button CruveSolidTransInterpCurve5RadioButton {
+                label {Curve 5}
+                callback {Curve[4] = NULL;
+if(this->GetCurveCheckedItem())
+	Curve[4] = this->GetCurveCheckedItem();}
+                xywh {26 505 25 25} type Radio down_box ROUND_DOWN_BOX
+              }
+              Fl_Round_Button CruveSolidTransInterpCurve6RadioButton {
+                label {Curve 6}
+                callback {Curve[5] = NULL;
+if(this->GetCurveCheckedItem())
+	Curve[5] = this->GetCurveCheckedItem();}
+                xywh {105 505 25 25} type Radio down_box ROUND_DOWN_BOX
+              }
+              Fl_Round_Button CruveSolidTransInterpCurve7RadioButton {
+                label {Curve 7}
+                callback {Curve[6] = NULL;
+if(this->GetCurveCheckedItem())
+	Curve[6] = this->GetCurveCheckedItem();}
+                xywh {196 506 25 25} type Radio down_box ROUND_DOWN_BOX
+              }
+              Fl_Round_Button CruveSolidTransInterpCurve8RadioButton {
+                label {Curve 8}
+                callback {Curve[7] = NULL;
+if(this->GetCurveCheckedItem())
+	Curve[7] = this->GetCurveCheckedItem();}
+                xywh {276 505 25 25} type Radio down_box ROUND_DOWN_BOX
+              }
+              Fl_Round_Button CruveSolidTransInterpCurve9RadioButton {
+                label {Curve 9}
+                callback {Curve[8] = NULL;
+if(this->GetCurveCheckedItem())
+	Curve[8] = this->GetCurveCheckedItem();}
+                xywh {25 524 25 25} type Radio down_box ROUND_DOWN_BOX
+              }
+              Fl_Round_Button CruveSolidTransInterpCurve10RadioButton {
+                label {Curve 10}
+                callback {Curve[9] = NULL;
+if(this->GetCurveCheckedItem())
+	Curve[9] = this->GetCurveCheckedItem();}
+                xywh {104 524 25 25} type Radio down_box ROUND_DOWN_BOX
+              }
+              Fl_Round_Button CruveSolidTransInterpCurve11RadioButton {
+                label {Curve 11}
+                callback {Curve[10] = NULL;
+if(this->GetCurveCheckedItem())
+	Curve[10] = this->GetCurveCheckedItem();}
+                xywh {195 525 25 25} type Radio down_box ROUND_DOWN_BOX
+              }
+              Fl_Round_Button CruveSolidTransInterpCurve12RadioButton {
+                label {Curve 12}
+                callback {Curve[11] = NULL;
+if(this->GetCurveCheckedItem())
+	Curve[11] = this->GetCurveCheckedItem();}
+                xywh {275 524 25 25} type Radio down_box ROUND_DOWN_BOX
+              }
+            }
+            Fl_Group EdgeSolidMeshPlaneSelectGroup {
+              xywh {43 444 285 40}
+            } {
+              Fl_Round_Button EdgeToSolidPlaneSelectIJRadioButton {
+                label {Plane : IJ}
+                xywh {93 449 20 25} down_box ROUND_DOWN_BOX align 4
+              }
+              Fl_Round_Button EdgeToSolidPlaneSelectJKRadioButton {
+                label JK
+                xywh {147 449 20 25} down_box ROUND_DOWN_BOX align 4
+              }
+              Fl_Round_Button EdgeToSolidPlaneSelectKIRadioButton {
+                label KI
+                xywh {195 449 20 25} down_box ROUND_DOWN_BOX align 4
+              }
+              Fl_Round_Button EdgeToSolidPlaneSelectNoneRadioButton {
+                label None
+                xywh {281 449 20 25} down_box ROUND_DOWN_BOX align 4
+              }
+            }
+            Fl_Return_Button EdgeToSolidMeshDoneButton {
+              label Done
+              callback {int dim[3];
+dim[0] = int (CurveToSolidMeshSeedI->value());
+dim[1] = int (CurveToSolidMeshSeedJ->value());
+dim[2] = int (CurveToSolidMeshSeedK->value());
+vtkMimxEdgeToStructuredGrid *sgrid = vtkMimxEdgeToStructuredGrid::New();
+sgrid->SetDimensions(dim);
+for(int i=0; i<12; i++)
+{
+	if(Curve[i] == NULL)	Curve[i] = vtkMimxCurve::New();
+	sgrid->SetEdge(i,Curve[i]->PolyData);
+}
+if(EdgeToSolidPlaneSelectIJRadioButton->value())
+{	sgrid->SetPlane(1);}
+if(EdgeToSolidPlaneSelectJKRadioButton->value()){	sgrid->SetPlane(2);}
+if(EdgeToSolidPlaneSelectKIRadioButton->value()){	sgrid->SetPlane(3);}
+sgrid->Update();
+	vtkStructuredGridWriter* writer = vtkStructuredGridWriter::New();
+	writer->SetInput(sgrid->GetOutput());
+	writer->SetFileName("sgrid.vtk");
+	vtkStructuredGridReader *reader = vtkStructuredGridReader::New();
+	writer->Write();
+	reader->SetFileName("sgrid.vtk");
+	reader->Update();
+
+for(int i=0; i<12; i++)
+{
+	Curve[i]->PolyData->Modified();
+	this->VTKRenderer->AddActor(Curve[i]->GetActor());
+}
+vtkSolidStructuredGridSourceList.Add(vtkMimxSolidStructuredGridSource::New());
+this->vtkSolidStructuredGridSourceList.GetLastItem()->
+	SetStructuredGrid(reader->GetOutput());
+this->VTKRenderer->AddActor(vtkSolidStructuredGridSourceList.GetLastItem()->Actor);
+this->FitView();
+writer->Delete();
+reader->Delete();
+sgrid->Delete();}
+              xywh {273 606 65 25}
+              code0 {\#include "vtkMimxSolidStructuredGridSource.h"}
+              code1 {\#include "vtkMimxEdgeToStructuredGrid.h"}
+              code2 {\#include "vtkStructuredGridWriter.h"}
+              code3 {\#include "vtkStructuredGridReader.h"}
+            }
+            Fl_Button EdgeToSolidMeshCreateGroupCloseButtonhTransInterpCreateGroupCloseButton {
+              label X
+              callback {EdgeSolidTransInterpGroup->hide();}
+              tooltip Close xywh {344 436 13 25} labeltype EMBOSSED_LABEL
+            }
+            Fl_Value_Input CurveToSolidMeshSeedI {
+              label {Mesh Seed :   I:}
+              xywh {129 551 38 25} value 1
+            }
+            Fl_Value_Input CurveToSolidMeshSeedJ {
+              label {J: }
+              xywh {204 551 38 25} value 1
+            }
+            Fl_Value_Input CurveToSolidMeshSeedK {
+              label {K:  }
+              xywh {283 551 38 25} value 1
+            }
+          }
+        }
+        Fl_Group StructuredPlanarMeshGroup {
+          label {Plane Mesh} open
+          xywh {5 125 365 625} labeltype EMBOSSED_LABEL hide
+        } {
+          Fl_Group StructuredPlanarMeshBrowserGroup {open
+            xywh {15 135 355 615}
+          } {
+            Fl_Check_Browser StructuredPlanarMeshCheckBrowser {
+              xywh {23 135 320 105} color 47
+            }
+          }
+          Fl_Group CreateStructuredPlanarMeshGroup {
+            xywh {39 345 270 110} box UP_BOX align 17 hide
+          } {
+            Fl_Value_Input {} {
+              label {Number of Input curves}
+              xywh {206 370 25 25}
+            }
+          }
+        }
+        Fl_Group StructuredSolidMeshGroup {
+          label {Solid Mesh} open
+          xywh {3 115 368 640} labeltype EMBOSSED_LABEL hide
+        } {
+          Fl_Group SolidMeshCheckBrowserGroup {open
+            tooltip {Triangulated Surface} xywh {10 135 351 115}
+          } {
+            Fl_Check_Browser StructuredSolidMeshCheckBrowser {
+              tooltip {Triangulated Surface} xywh {23 135 320 105} color 49 resizable
+            }
+          }
+        }
+        Fl_Group UnstructuredMeshGroup {
+          label {Unstruct Mesh} open
+          xywh {5 115 370 640} labeltype ENGRAVED_LABEL hide
+        } {
+          Fl_Check_Browser UGridCheckBrowser {
+            callback {//int item = UGridCheckBrowser->value();
+
+//if ((UGridCheckBrowser->checked(item) == 0) && (UGridCheckBrowser->nitems() == 1))
+  //{
+  //UGridCheckBrowser->set_checked(item);
+  //}
+//else
+  //{
+  //if (UGridCheckBrowser->checked(item))
+    //{
+    //UGridCheckBrowser->check_none();
+    //UGridCheckBrowser->set_checked(item);
+    //}
+  //}
+  
+/*
+
+this->Reset();
+if(this->GetUGridCheckedItem())
+{
+this->GetUGridCheckedItem()->GetActor()->GetProperty()->SetColor(1.0,0.0,0.0);
+this->VTKRenderer->RemoveActor(this->GetUGridCheckedItem()->GetActor());
+this->VTKRenderer->AddActor(this->GetUGridCheckedItem()->GetActor());
+this->FitView();
+}
+
+*/}
+            tooltip {Triangulated Surface} xywh {23 135 320 105} type Hold color 49 when 4 resizable
+            code0 {\#include "vtkMimxSTLSource.h"}
+          }
+          Fl_Group EditBBMeshSeedGroup {
+            xywh {27 495 315 112} box UP_BOX hide
+          } {
+            Fl_Button EditBBMeshSeedCloseButton {
+              label X
+              callback {EditBBMeshSeedGroup->hide();}
+              xywh {322 495 20 20}
+            }
+            Fl_Value_Input EditBBMeshSeedAverageElementLengthInputButton {
+              label {Average Element Length : }
+              xywh {213 520 44 25} maximum 100 value 2
+            }
+            Fl_Return_Button EditBBMeshSeedComputeButton {
+              label Compute
+              callback {/*StructuredHexahedronMesh->SetInput(GetUGridCheckedItem()->UGrid);
+StructuredHexahedronMesh->EstimateMeshSeedsBasedOnAverageElementLength(
+double(EditBBMeshSeedAverageElementLengthInputButton->value()));*/
+GetUGridCheckedItem()->ComputeMeshSeed(double(EditBBMeshSeedAverageElementLengthInputButton->value()));}
+              xywh {232 572 100 25}
+            }
+          }
+          Fl_Group EditBBMergeNodesGroup {
+            xywh {27 496 234 78} box UP_BOX hide
+          } {
+            Fl_Value_Input EditBBMergeNodesToleranceInput {
+              label {Tolerance : }
+              xywh {116 526 39 25} maximum 100
+            }
+            Fl_Return_Button EditBBMergeNodesMergeButton {
+              label Merge
+              callback {if(InteractorStyleSelect->GetInteractorStyleSelectState() == 11)
+{
+	unstructuredgridwidget->SetEnabled(0);
+}
+//editunstructuredhexahedrongrid->SetUGrid(this->GetUGridCheckedItem()->UGrid);
+//editunstructuredhexahedrongrid->MergeNodes(
+//	double(this->EditBBMergeNodesToleranceInput->value()));
+	this->vtkUGridList.Add(new vtkMimxUGrid);
+	this->UGridCheckBrowser->add("MergeCells");
+	this->UGridCheckBrowser->redraw();
+
+	vtkMergeCells* mergecells = vtkMergeCells::New();
+	mergecells->SetUnstructuredGrid(this->vtkUGridList.GetLastItem()->UGrid);
+	mergecells->SetPointMergeTolerance(double(EditBBMergeNodesToleranceInput->value()));
+	mergecells->MergeDuplicatePointsOn();
+	mergecells->SetTotalNumberOfDataSets(this->UGridCheckBrowser->nchecked());
+	mergecells->SetTotalNumberOfCells(1000);
+	mergecells->SetTotalNumberOfPoints(1000);
+	for(int i=1; i <=this->UGridCheckBrowser->nitems(); i++)
+	{
+		if(this->UGridCheckBrowser->checked(i))
+		{
+		mergecells->MergeDataSet(this->vtkUGridList.GetValue(i)->UGrid);
+		}
+	}
+	mergecells->Finish();
+	
+
+	this->GetUGridCheckedItem()->UGrid->Modified();	
+        this->VTKRenderer->AddActor(this->vtkUGridList.GetLastItem()->GetActor());
+	
+	mergecells->Delete();
+	
+	UGridCheckBrowser->check_none();
+        UGridCheckBrowser->set_checked(UGridCheckBrowser->nitems());
+
+this->FitView();}
+              xywh {182 527 75 25}
+              code0 {\#include "vtkMergeCells.h"}
+            }
+            Fl_Button EditBBMergeNodesGroupCloseButton {
+              label X
+              callback {EditBBMergeNodesGroup->hide();}
+              xywh {242 498 17 16}
+            }
+          }
+          Fl_Group EditBBMirrorGroup {open
+            xywh {47 493 230 93} box UP_BOX hide
+          } {
+            Fl_Group EditBBMirrorSelectAxisGroup {
+              xywh {57 506 60 60} box UP_BOX
+            } {
+              Fl_Round_Button EditBBMirrorXAxisButton {
+                label X
+                xywh {77 506 20 24} type Radio down_box ROUND_DOWN_BOX value 1 align 4
+              }
+              Fl_Round_Button EditBBMirrorYAxisButton {
+                label Y
+                xywh {78 528 20 20} type Radio down_box ROUND_DOWN_BOX align 4
+              }
+              Fl_Round_Button EditBBMirrorZAxisButton {
+                label Z
+                xywh {77 546 20 20} type Radio down_box ROUND_DOWN_BOX align 4
+              }
+            }
+            Fl_Group EditBBMirrorPosNegSelectGroup {
+              xywh {137 512 45 50} box UP_BOX
+            } {
+              Fl_Round_Button EditBBPosRadioButton {
+                label {+}
+                xywh {149 516 20 20} type Radio down_box ROUND_DOWN_BOX value 1
+              }
+              Fl_Round_Button EditBBNegRadioButton {
+                label {-}
+                xywh {150 535 25 25} type Radio down_box ROUND_DOWN_BOX
+              }
+            }
+            Fl_Return_Button EditBBMirrorButton {
+              label Mirror
+              callback {/*if(InteractorStyleSelect->GetInteractorStyleSelectState() == 11)
+{
+	unstructuredgridwidget->SetEnabled(0);
+}
+
+if(this->GetUGridCheckedItem()->UGrid)
+{
+vtkMimxMirrorUnstructuredHexahedronGridCell *mirror = vtkMimxMirrorUnstructuredHexahedronGridCell::New();
+int axis;	int edge;
+if(EditBBMirrorXAxisButton->value())	axis = 0;
+if(EditBBMirrorYAxisButton->value())	axis = 1;
+if(EditBBMirrorZAxisButton->value())	axis = 2;
+if(EditBBPosRadioButton->value())	edge = 1;
+if(EditBBNegRadioButton->value())	edge = 0;
+//editunstructuredhexahedrongrid->SetUGrid(this->GetUGridCheckedItem()->UGrid);
+//editunstructuredhexahedrongrid->Mirror(axis, edge);
+		mirror->SetInput(this->GetUGridCheckedItem()->UGrid);
+		mirror->SetAxis(axis);
+		double bounds[6]; 
+		this->GetUGridCheckedItem()->UGrid->GetBounds(bounds);
+		mirror->SetMirrorPoint(bounds[2*axis+edge]);
+		mirror->Update();
+		this->VTKRenderer->RemoveActor(this->GetUGridCheckedItem()->GetActor());
+       		UGridCheckBrowser->check_none();
+		this->vtkUGridList.Add(new vtkMimxUGrid);
+		this->UGridCheckBrowser->add("Mirror");
+        	UGridCheckBrowser->set_checked(UGridCheckBrowser->nitems());
+		this->GetUGridCheckedItem()->UGrid->DeepCopy(mirror->GetOutput());
+		this->GetUGridCheckedItem()->UGrid->Modified();	
+        	this->VTKRenderer->AddActor(this->vtkUGridList.GetLastItem()->GetActor());
+		mirror->Delete();
+
+
+this->FitView();
+}*/
+cout <<"Mirroring option no longer available"<<endl;}
+              xywh {199 551 73 25}
+              code0 {\#include "vtkMimxMirrorUnstructuredHexahedronGridCell.h"}
+            }
+            Fl_Button EditBBMirrorGroupCloseButton {
+              label X
+              callback {EditBBMirrorGroup->hide();}
+              xywh {252 496 20 20}
+            }
+          }
+          Fl_Group ChangeMeshSeedGroup {
+            label {Change Mesh Seed} open
+            xywh {100 460 180 110} box UP_BOX hide
+          } {
+            Fl_Button ChangeMeshSeedGroupCloseButton {
+              label X
+              callback {unstructuredgridextractwidget->SetEnabled(0);
+this->VTKRenderer->RemoveActor(this->LocalAxesActor);
+if(this->LocalAxesActor)	this->LocalAxesActor->Delete();
+this->LocalAxesActor = NULL;
+ChangeMeshSeedGroup->hide();
+this->FitView();}
+              xywh {260 460 20 20}
+            }
+            Fl_Group ChangeMeshSeedChoiceRadioButton {open
+              xywh {119 486 46 46}
+            } {
+              Fl_Round_Button ChangeMeshSeedXAxisButton {
+                label {  X}
+                xywh {119 489 36 15} type Radio down_box ROUND_DOWN_BOX
+                code0 {\#include "vtkIntArray.h"}
+              }
+              Fl_Round_Button ChangeMeshSeedYAxisButton {
+                label {  Y}
+                xywh {119 503 46 15} type Radio down_box ROUND_DOWN_BOX
+              }
+              Fl_Round_Button ChangeMeshSeedZAxisButton {
+                label {  Z}
+                xywh {119 517 46 15} type Radio down_box ROUND_DOWN_BOX
+                code0 {\#include "vtkCellData.h"}
+              }
+            }
+            Fl_Return_Button ChangeMeshSeedComputeButton {
+              label Change
+              callback {if(ChangeMeshSeedXAxisButton->value())
+{
+this->GetUGridCheckedItem()->ChangeMeshSeed(unstructuredgridextractwidget->ReturnPickedCell(),
+	0, int(ChangeMeshSeedValueInput->value()));
+				
+}
+else{
+if(ChangeMeshSeedYAxisButton->value())
+{
+this->GetUGridCheckedItem()->ChangeMeshSeed(unstructuredgridextractwidget->ReturnPickedCell(),
+	1, int(ChangeMeshSeedValueInput->value()));	
+}
+else
+{
+this->GetUGridCheckedItem()->ChangeMeshSeed(unstructuredgridextractwidget->ReturnPickedCell(),
+	2, int(ChangeMeshSeedValueInput->value()));
+}
+}}
+              xywh {190 530 84 25}
+            }
+            Fl_Value_Input ChangeMeshSeedValueInput {
+              label {Mesh Seed}
+              xywh {247 497 28 24} value 1
+            }
+          }
+          Fl_Group CreateIntervertebralDiscElementSetsGroup {open
+            xywh {35 460 306 150} box UP_BOX hide
+          } {
+            Fl_Button CreateIntervertebralDiscElementSetsGroupCloseButton {
+              label X
+              callback {CreateIntervertebralDiscElementSetsGroup->hide();}
+              xywh {321 460 19 20}
+            }
+            Fl_Choice CreateIntervertebralDiscElementSetsGroupInput {
+              label {Input : } open
+              xywh {100 491 115 25} down_box BORDER_BOX
+            } {
+              MenuItem CreateIntervertebralDiscElementSetsGroupSelectNoneMenuItem {
+                label None
+                xywh {30 30 30 20}
+              }
+              MenuItem CreateIntervertebralDiscElementSetsGroupSelectMenuItem {
+                label {Intervertebral Disc}
+                callback {HideAll();
+CreateIntervertebralDiscElementSetsGroup->show();
+UnstructuredMeshGroup->show();
+strcpy(choice , "Disc");}
+                xywh {40 40 30 20}
+              }
+              MenuItem CreateIntervertebralDiscElementSetsGroupBoundingBoxSelectMenuItem {
+                label {Bounding Box}
+                callback {HideAll();
+CreateIntervertebralDiscElementSetsGroup->show();
+UnstructuredMeshGroup->show();
+strcpy(choice , "BoundingBox");}
+                xywh {10 10 30 20}
+              }
+            }
+            Fl_Button CreateIntervertebralDiscElementSetsGroupSelectButton {
+              label Select
+              callback {if(!strcmp(choice, "BoundingBox"))
+{
+	BoundingBoxUGrid = GetUGridCheckedItem()->UGrid;
+}
+
+if(!strcmp(choice, "Disc"))
+{
+	UGrid = GetUGridCheckedItem()->UGrid;
+}}
+              xywh {234 494 64 20}
+            }
+            Fl_Return_Button CreateIntervertebralDiscElementSetsGroupCreateButton {
+              label Create
+              callback {if(UGrid && BoundingBoxUGrid)
+{
+	vtkMimxCreateIntervertebralDiscElementSets *create = new vtkMimxCreateIntervertebralDiscElementSets;
+	create->SetUnstructuredGrid(UGrid);
+	create->SetBoundingBox(BoundingBoxUGrid);
+	create->SetElementSetsName(
+		CreateIntervertebralElementSetsNameInput->value());
+//	create->SetStartingElementSetNumber(int(
+	//	CreateIntervertebralDiscElementSetsGroupStartingElementSetNumberInput->value()));
+	create->CreateElementSetArrays();
+	delete create;
+}}
+              xywh {250 572 75 23}
+              code0 {\#include "vtkMimxCreateIntervertebralDiscElementSets.h"}
+            }
+            Fl_Input CreateIntervertebralElementSetsNameInput {
+              label {Element Sets Name}
+              xywh {194 531 100 24}
+            }
+          }
+        }
+      }
+      Fl_Menu_Bar CommonMenuBar {open
+        xywh {1 11 330 30}
+      } {
+        Submenu FileSubMenu {
+          label { File } open
+          xywh {0 0 100 20} labeltype EMBOSSED_LABEL
+        } {
+          Submenu FileOpenSubMenu {
+            label Open open
+            xywh {0 0 100 20} labelsize 12
+          } {
+            MenuItem FileOpenSTLMenuItem {
+              label STL
+              callback {char* FileName = NULL;
+if(!(FilePath = fl_file_chooser("Open: ", "STL Files (*.stl)",FileName))) return;
+else
+{
+	this->vtkSTLSourceList.Add(vtkMimxSTLSource::New());
+	this->STLCheckBrowser->add(FilePath);
+	this->STLCheckBrowser->redraw();
+
+        STLCheckBrowser->check_none();
+        STLCheckBrowser->set_checked(STLCheckBrowser->nitems());
+        SurfaceGroup->show();
+
+
+        vtkSTLReader *reader = vtkSTLReader::New();
+        
+	reader->SetFileName(FilePath);
+	reader->Update();
+  	
+	this->GetSTLCheckedItem()->GetPolyData()->DeepCopy(reader->GetOutput());
+	this->GetSTLCheckedItem()->GetPolyData()->Modified();	
+        this->VTKRenderer->AddActor(this->GetSTLCheckedItem()->GetActor());
+	this->FitView();
+        HideAll();
+        SurfaceGroup->show();
+
+};}
+              xywh {0 0 100 20} labelsize 12
+              code0 {\#include <FL/Fl_File_Chooser.H>}
+              code1 {\#include "vtkSTLReader.h"}
+            }
+            Submenu FileOpenVTKSubMenu {
+              label VTK open
+              xywh {0 0 100 20}
+            } {
+              MenuItem FileOpenVTKUnstructuredGridMenuItem {
+                label {Unstructured Grid}
+                callback {const char *FileName = NULL;
+if(!(FilePath = fl_file_chooser("Open UnstructuredGrid: ", "VTK Files (*.vtk)",FileName))) return;
+else
+{
+	this->vtkUGridList.Add(new vtkMimxUGrid);
+	this->UGridCheckBrowser->add(FilePath);
+	this->UGridCheckBrowser->redraw();
+
+        UGridCheckBrowser->check_none();
+        UGridCheckBrowser->set_checked(UGridCheckBrowser->nitems());
+	
+	vtkUnstructuredGridReader *reader = vtkUnstructuredGridReader::New();
+	reader->SetFileName(FilePath);
+	reader->Update(); 
+	
+	this->GetUGridCheckedItem()->UGrid->DeepCopy(reader->GetOutput());
+	this->GetUGridCheckedItem()->UGrid->Modified();	
+        this->VTKRenderer->AddActor(this->vtkUGridList.GetLastItem()->GetActor());
+	this->FitView();
+        HideAll();
+	UnstructuredMeshGroup->show();
+ };}
+                xywh {0 0 100 20}
+                code0 {\#include "vtkUnstructuredGridReader.h"}
+                code1 {\#include "vtkMimxUGrid.h"}
+              }
+              Submenu FileOpenPolyDataSubMenu {
+                label {Poly Data} open
+                xywh {0 0 62 20}
+              } {
+                MenuItem FileOpenCurveMenuItem {
+                  label Curve
+                  callback {const char *FileName = NULL;
+if(!(FilePath = fl_file_chooser("Open: ", "VTK Files (*.vtk)",FileName))) return;
+else
+{
+	this->vtkCurveList.Add(vtkMimxCurve::New());
+	this->CurveCheckBrowser->add(FilePath);
+	this->CurveCheckBrowser->redraw();
+
+        CurveCheckBrowser->check_none();
+        CurveCheckBrowser->set_checked(CurveCheckBrowser->nitems());
+	
+	vtkPolyDataReader *reader = vtkPolyDataReader::New();
+	reader->SetFileName(FilePath);
+	reader->Update(); 
+	
+	this->GetCurveCheckedItem()->PolyData->DeepCopy(reader->GetOutput());
+	this->GetCurveCheckedItem()->PolyData->GetPoints()->
+		DeepCopy(reader->GetOutput()->GetPoints());
+	this->GetCurveCheckedItem()->PolyData->Modified();	
+        this->VTKRenderer->AddActor(this->vtkCurveList.GetLastItem()->GetActor());
+	this->FitView();
+        HideAll();
+	CurveGroup->show();
+ };}
+                  xywh {5 5 100 20}
+                  code0 {\#include "vtkPolyDataReader.h"}
+                }
+                MenuItem FileOpenSurfaceMenuItem {
+                  label Surface
+                  callback {const char *FileName = NULL;
+if(!(FilePath = fl_file_chooser("Open: ", "VTK Files (*.vtk)",FileName))) return;
+else
+{
+	this->vtkSTLSourceList.Add(vtkMimxSTLSource::New());
+	this->STLCheckBrowser->add(FilePath);
+	this->STLCheckBrowser->redraw();
+
+        STLCheckBrowser->check_none();
+        STLCheckBrowser->set_checked(STLCheckBrowser->nitems());
+	
+	vtkPolyDataReader *reader = vtkPolyDataReader::New();
+	reader->SetFileName(FilePath);
+	reader->Update(); 
+	
+	this->GetSTLCheckedItem()->PolyData->DeepCopy(reader->GetOutput());
+
+	this->GetSTLCheckedItem()->PolyData->Modified();	
+        this->VTKRenderer->AddActor(this->vtkSTLSourceList.GetLastItem()->GetActor());
+	this->FitView();
+        HideAll();
+	SurfaceGroup->show();
+ };}
+                  xywh {0 0 30 20}
+                }
+              }
+            }
+            MenuItem FileOpenImageMenuItem {
+              label Image
+              callback {const char *FileName = NULL;
+if(!(FilePath = fl_file_chooser("Open Image files: ", "Img Files (*.hdr)",FileName))) return;
+else
+{
+	this->vtkImageList.Add(new vtkMimxClipImageFromBox);
+	this->ImageCheckBrowser->add(FilePath);
+	this->ImageCheckBrowser->redraw();
+ 	
+ 
+        ImageCheckBrowser->check_none();
+        ImageCheckBrowser->set_checked(ImageCheckBrowser->nitems());
+	this->GetImageCheckedItem()->SetFileName(FilePath);
+
+	this->GetImageCheckedItem()->SetInteractor(VTKFlWindow);
+	this->GetImageCheckedItem()->DisplayWidgets();
+
+	this->FitView();
+        HideAll();
+       ImageGroup->show();
+	
+};}
+              xywh {5 5 100 20}
+              code0 {\#include "vtkMimxClipImageFromBox.h"}
+            }
+            Submenu FileOpenStructuredGridSubMenu {
+              label {Structured Grid} open
+              xywh {0 0 62 20}
+            } {
+              MenuItem FileOpenPlanarStructuredGridMenuItem {
+                label Planar
+                callback {const char *FileName = NULL;
+if(!(FilePath = fl_file_chooser("Open Structured Planar Grid: ", "VTK Files (*.vtk)",FileName))) return;
+else
+{
+	this->vtkPlanarStructuredGridList.Add(vtkMimxPlanarStructuredGridSource::New());
+	this->StructuredPlanarMeshCheckBrowser->add(FilePath);
+	this->StructuredPlanarMeshCheckBrowser->redraw();
+
+        StructuredPlanarMeshCheckBrowser->check_none();
+        StructuredPlanarMeshCheckBrowser->set_checked(StructuredPlanarMeshCheckBrowser->nitems());
+	
+	vtkStructuredGridReader *reader = vtkStructuredGridReader::New();
+	reader->SetFileName(FilePath);
+	reader->Update(); 
+	
+	this->GetPlanarStructuredGridCheckedItem()->SGrid->DeepCopy(reader->GetOutput());
+	this->GetPlanarStructuredGridCheckedItem()->SGrid->Modified();	
+        this->VTKRenderer->AddActor(this->vtkPlanarStructuredGridList.GetLastItem()->Actor);
+	this->FitView();
+	reader->Delete();
+
+ };}
+                xywh {0 0 30 20}
+                code0 {\#include "vtkStructuredGridReader.h"}
+              }
+              MenuItem FileOpenSolidStructuredGridMenuItem {
+                label Solid
+                callback {const char *FileName = NULL;
+if(!(FilePath = fl_file_chooser("Open Structured Solid Grid: ", "VTK Files (*.vtk)",FileName))) return;
+else
+{
+	this->vtkSolidStructuredGridSourceList.Add(vtkMimxSolidStructuredGridSource::New());
+	this->StructuredSolidMeshCheckBrowser->add(FilePath);
+	this->StructuredSolidMeshCheckBrowser->redraw();
+
+        StructuredSolidMeshCheckBrowser->check_none();
+        StructuredSolidMeshCheckBrowser->set_checked(StructuredSolidMeshCheckBrowser->nitems());
+	
+	vtkStructuredGridReader *reader = vtkStructuredGridReader::New();
+	reader->SetFileName(FilePath);
+	reader->Update(); 
+	
+	this->GetSolidStructuredGridCheckedItem()->StructuredGrid->DeepCopy(reader->GetOutput());
+	this->GetSolidStructuredGridCheckedItem()->StructuredGrid->Modified();	
+        this->VTKRenderer->AddActor(this->vtkSolidStructuredGridSourceList.GetLastItem()->Actor);
+	this->FitView();
+	reader->Delete();
+	StructuredSolidMeshGroup->show();
+	
+
+ };}
+                xywh {0 0 30 20}
+              }
+            }
+          }
+          MenuItem FileWriteMenuItem {
+            label {Write VTK}
+            callback {if(CurveGroup->visible())
+{const char* FileName = NULL;
+
+if(!(FilePath = fl_file_chooser("Write: ", "PolyData (VTK) Files (*.vtk)",FileName))) return;
+else
+{
+	if(this->GetCurveCheckedItem())
+{
+	vtkPolyDataWriter *writer = vtkPolyDataWriter::New();
+	writer->SetFileName(FilePath);
+	writer->SetInput(this->GetCurveCheckedItem()->PolyData);
+	writer->Write();
+	writer->Delete();
+}
+};
+}
+
+if(ImageGroup->visible())
+{
+const char* FileName = NULL;
+
+if(!(FilePath = fl_file_chooser("Write: ", "Image Files (*.hdr)",FileName))) return;
+else
+{
+	if(this->GetImageCheckedItem())
+	{
+	typedef itk::Image<signed short, 3>  ImageType;
+	typedef itk::ImageFileWriter<ImageType> WriterType;
+	WriterType::Pointer writer = WriterType::New();
+
+	writer->SetInput(GetImageCheckedItem()->GetitkImageInput());
+	writer->SetFileName(FilePath);
+	writer->Update();
+
+	}
+	}
+}
+
+if(UnstructuredMeshGroup->visible())
+{
+const char* FileName = NULL;
+
+if(!(FilePath = fl_file_chooser("Write: ", "Unstrucutred Mesh Files (*.vtk)",FileName))) return;
+else
+{
+	if(this->GetUGridCheckedItem())
+	{
+		vtkUnstructuredGridWriter *writer = vtkUnstructuredGridWriter::New();
+		writer->SetFileName(FilePath);
+		writer->SetInput(this->GetUGridCheckedItem()->UGrid);
+		writer->Write();
+		writer->Delete();
+		
+	}
+	}
+}
+
+if(StructuredPlanarMeshGroup->visible())
+{const char* FileName = NULL;
+
+if(!(FilePath = fl_file_chooser("Write: ", "Structured Planar Mesh (VTK) Files (*.vtk)",FileName))) return;
+else
+{
+	if(this->GetPlanarStructuredGridCheckedItem())
+{
+	vtkStructuredGridWriter *writer = vtkStructuredGridWriter::New();
+	writer->SetFileName(FilePath);
+	writer->SetInput(this->GetPlanarStructuredGridCheckedItem()->SGrid);
+	writer->Write();
+	writer->Delete();
+}
+};
+}
+
+if(SurfaceGroup->visible())
+{const char* FileName = NULL;
+
+if(!(FilePath = fl_file_chooser("Write: ", "PolyData (VTK) Files (*.vtk)",FileName))) return;
+else
+{
+	if(this->GetSTLCheckedItem())
+{
+	vtkPolyDataWriter *writer = vtkPolyDataWriter::New();
+	writer->SetFileName(FilePath);
+	writer->SetInput(this->GetSTLCheckedItem()->PolyData);
+	writer->Write();
+	writer->Delete();
+}
+};
+}}
+            xywh {0 0 100 20} divider
+            code0 {\#include "vtkPolyDataWriter.h"}
+            code1 {\#include "itkImageFileWriter.h"}
+            code2 {\#include "itkImage.h"}
+            code3 {\#include "vtkUnstructuredGridWriter.h"}
+          }
+          MenuItem WriteAbaqusFileFormatMenuItem {
+            label Abaqus
+            callback {if(UnstructuredMeshGroup->visible())
+{
+const char* FileName = NULL;
+
+if(!(FilePath = fl_file_chooser("Write: ", "Unstrucutred Abaqus Format Files (*.inp)",FileName))) return;
+else
+{
+	if(this->GetUGridCheckedItem())
+	{
+		vtkMimxAbaqusFileWriter *writer = vtkMimxAbaqusFileWriter::New();
+		writer->SetFileName(FilePath);
+		writer->SetInput(this->GetUGridCheckedItem()->UGrid);
+		writer->Write();
+		writer->Delete();
+		
+	}
+	}
+}
+
+if(StructuredSolidMeshGroup->visible())
+{
+const char* FileName = NULL;
+
+if(!(FilePath = fl_file_chooser("Write: ", "Structured Abaqus Format Files (*.inp)",FileName))) return;
+else
+{
+	if(this->GetSolidStructuredGridCheckedItem())
+	{
+		vtkMimxAbaqusFileWriter *writer = vtkMimxAbaqusFileWriter::New();
+		writer->SetFileName(FilePath);
+		writer->SetInput(this->GetSolidStructuredGridCheckedItem()->StructuredGrid);
+		writer->Write();
+		writer->Delete();
+		
+	}
+	}
+}
+
+if(SurfaceGroup->visible())
+{
+const char* FileName = NULL;
+
+if(!(FilePath = fl_file_chooser("Write: ", "Surface Abaqus Format Files (*.inp)",FileName))) return;
+else
+{
+	if(this->GetSTLCheckedItem())
+	{
+		vtkMimxAbaqusFileWriter *writer = vtkMimxAbaqusFileWriter::New();
+		writer->SetFileName(FilePath);
+		writer->SetInput(this->GetSTLCheckedItem()->GetPolyData());
+		writer->Write();
+		writer->Delete();
+		
+	}
+	}
+}}
+            xywh {5 5 30 20}
+            code0 {\#include "vtkMimxAbaqusFileWriter.h"}
+          }
+          MenuItem WriteSTLMenuItem {
+            label {Write STL}
+            callback {if(SurfaceGroup->visible())
+{const char* FileName = NULL;
+
+if(!(FilePath = fl_file_chooser("Write: ", "StereoLithography (STL) Files (*.stl)",FileName))) return;
+else
+{
+	if(this->GetSTLCheckedItem())
+{
+
+	vtkSTLWriter *writer = vtkSTLWriter::New();
+	writer->SetInput(this->GetSTLCheckedItem()->PolyData);
+	writer->SetFileName(FilePath);
+	writer->Write();
+	writer->Delete();
+}
+};
+}}
+            xywh {0 0 30 20}
+            code0 {\#include "vtkSTLWriter.h"}
+          }
+          MenuItem ExitFileMenuItem {
+            label Exit
+            callback {int choice = fl_choice("Are you sure that you want to quite", "Yes", "No", NULL);
+if (choice == 0)
+  {
+  exit(0);
+  }} selected
+            xywh {20 20 30 20} shortcut 0x40071
+          }
+        }
+        Submenu {} {
+          label View
+          xywh {0 0 100 20} labeltype EMBOSSED_LABEL
+        } {
+          Submenu BackGroundViewProperties {
+            label {Back Ground}
+            callback {Fl_Color_Chooser *colorchooser =  new Fl_Color_Chooser(0,0,200,95,"BackGround Color");
+colorchooser->show();} open
+            xywh {0 0 100 20}
+            code0 {\#include <FL/Fl_Color_Chooser.H>}
+          } {}
+        }
+        Submenu CreateSubMenu {
+          label Create open
+          xywh {0 0 100 20} labeltype EMBOSSED_LABEL
+        } {
+          Submenu CreateAutoSubMenu {
+            label Auto open
+            xywh {0 0 100 20}
+          } {
+            Submenu PlanarMeshSubMenu {
+              label {Planar Mesh} open
+              xywh {5 5 100 20}
+            } {
+              MenuItem PlanarMeshTransinterpMenuItem {
+                label {Trans Interp}
+                callback {PlanarTransInterpGroup->show();}
+                xywh {5 5 100 20}
+              }
+              MenuItem PlanarMeshFromBoundingBoxMenuItem {
+                label {Bounding Box}
+                callback {/*this->vtkBoundingBoxSurfaceMeshList.Add(vtkBoundingBoxSurfaceMesh::New());
+this->vtkBoundingBoxSurfaceMeshList.GetLastItem()->
+	CreateSurfaceMesh(boundingbox->BoundingBoxPolyData);
+this->VTKRenderer->AddActor(this->vtkBoundingBoxSurfaceMeshList.GetLastItem()
+	->BoundingBoxSurfaceMeshActor);
+this->VTKRenderWindow->Render();*/}
+                xywh {5 5 100 20}
+                code0 {\#include "vtkMimxBoundingBoxSurfaceMesh.h"}
+                code1 {\#include "vtkMimxEditUnstructuredHexahedronGrid.h"}
+                code2 {\#include "vtkDataSetMapper.h"}
+              }
+            }
+            Submenu CreateBoundingBoxSubMenu {
+              label {B Box} open
+              xywh {5 5 100 20}
+              code0 {\#include "vtkMimxBoundingBoxSource.h"}
+            } {
+              MenuItem CreateBoundingBoxFromBoundsMenuItem {
+                label {From bounds}
+                callback {this->vtkUGridList.Add(new vtkMimxUGrid);
+	this->vtkUGridList.GetLastItem()->CreateBoundingBox(this->vtkSTLSourceList.GetLastItem());
+	editunstructuredhexahedrongrid->SetUGrid(this->vtkUGridList.GetLastItem()->UGrid);
+	unstructuredgridwidget->SetUGrid(this->vtkUGridList.GetLastItem()->UGrid);
+	this->UGridCheckBrowser->add("Bounding Box");	
+	this->UGridCheckBrowser->redraw();
+	UGridCheckBrowser->check_none();
+	UGridCheckBrowser->set_checked(UGridCheckBrowser->nitems());
+	this->VTKRenderer->AddActor(this->vtkUGridList.GetLastItem()->Actor);
+	this->VTKRenderWindow->Render();
+      	HideAll();
+        UnstructuredMeshGroup->show();}
+                xywh {5 5 100 20}
+                code0 {\#include "vtkUnstructuredGrid.h"}
+                code1 {editunstructuredhexahedrongrid = vtkMimxEditUnstructuredHexahedronGrid::New(); unstructuredgridwidget = vtkMimxUnstructuredGridWidget::New();unstructuredgridactor = vtkActor::New();}
+                code2 {boundingbox = vtkMimxBoundingBoxSource::New();}
+              }
+              MenuItem CreateBoundingBoxFromFourPoints {
+                label {4 Points}
+                callback {ExtractWidgetPropertyGroup->show();
+unstructuredgridextractwidget->State = 1;
+unstructuredgridextractwidget->DeleteHandles();
+unstructuredgridextractwidget->SetUGrid(this->GetUGridCheckedItem()->UGrid);
+unstructuredgridextractwidget->SetInteractor(this->VTKFlWindow);
+if(InteractorStyleSelect->GetInteractorStyleSelectState() == 11)
+{
+	unstructuredgridwidget->SetEnabled(0);
+}
+unstructuredgridextractwidget->SetEnabled(1);
+InteractorStyleSelect->SetInteractorStyleSelectState(0);
+DoneButton->show();}
+                xywh {0 0 30 20}
+              }
+            }
+            Submenu CreateSolidMeshSubMenu {
+              label {Solid Mesh} open
+              xywh {5 5 100 20}
+            } {
+              MenuItem CreateSolidMeshFromPointsMenuItem {
+                label Points
+                callback {/*vtkBoundingBoxToitkStrucutredSolidMesh* BoundingBoxToitkStrucutredSolidMesh = 
+	new vtkBoundingBoxToitkStrucutredSolidMesh;
+	BoundingBoxToitkStructuredSolidMesh->
+	SetInput(this->vtkBoundingBoxSurfaceMeshList.GetLastItem());
+BoundingBoxToitkStructuredSolidMesh->ConvertvtkToitk();
+//typedef itk::StructuredPlanarMeshToStructuredSolidMesh<3> SolidMeshType3D;
+
+//typedef itk::Mesh<double,3> MeshType;
+//itk::StructuredPlanarMeshToStructuredSolidMesh<MeshType,MeshType>::Pointer
+//   StructuredPlanarMeshToStructuredSolidMeshPointer = 
+//	itk::StructuredPlanarMeshToStructuredSolidMesh<MeshType,MeshType>::New();
+    BoundingBoxToitkStructuredSolidMesh->GetOutput()->SolidTransfiniteInterpolation();
+     BoundingBoxToitkStructuredSolidMesh->GetOutput()->GenerateHexahedronMeshConnectivity();
+    itkHexMeshTovtkPolyData* convert = new itkHexMeshTovtkPolyData;
+   convert->SetInput(BoundingBoxToitkStructuredSolidMesh->GetOutput()->GetOutput());
+   vtkPolyDataMapper* mapper = vtkPolyDataMapper::New();
+   mapper->SetInput(convert->GetOutput());
+   vtkActor* solidactor = vtkActor::New();
+   solidactor->SetMapper(mapper);
+   interpactor->GetProperty()->SetColor(1.0,0.0,0.0);
+   this->VTKRenderer->AddActor(solidactor);*/}
+                xywh {5 5 100 20}
+                code0 {//\#include "vtkBoundingBoxToitkStructuredSolidMesh.h"}
+                code1 {//\#include "itkStructuredPlanarMeshStrucutredSolidMesh.h"}
+                code2 {//\#include "itkHexMeshTovtkPolyData.h"}
+              }
+              MenuItem CreateStructuredMeshFromBoundingBoxMenuItem {
+                label {Bounding Box}
+                callback {HideAll();
+UnstructuredMeshGroup->show();
+InitializeAll();
+CreateMeshFromBoundingBoxGroup->show();
+//MorphBoundingBoxGroup->show();}
+                xywh {5 5 100 20}
+                code0 {\#include "vtkMimxGenerateHexahedronMesh.h"}
+                code3 {StructuredHexahedronMesh = vtkMimxGenerateHexahedronMesh::New();}
+              }
+              MenuItem MergeSolidMeshMenuItem {
+                label {Merge Solid Meshes}
+                callback {MergeSolidMeshGroup->show();}
+                xywh {0 0 30 20}
+                code0 {\#include "vtkMergeCells.h"}
+              }
+            }
+          }
+          Submenu CreateManualSubMenu {
+            label Manual open
+            xywh {0 0 100 20}
+          } {
+            Submenu LineCurveSubMenu {
+              label {Line/Curve} open
+              xywh {10 10 100 20}
+            } {
+              MenuItem PickMenuItem {
+                label Pick
+                callback {CreateCurveGroup->show();}
+                xywh {10 10 100 20}
+              }
+            }
+            MenuItem CreateEdgeToSurfaceMeshMenuItem {
+              label {Edge To Surface Mesh}
+              xywh {0 0 100 20}
+              code3 {\#include "vtkStructuredGrid.h"}
+            }
+            MenuItem CreateEdgeToSolidMeshMenuItem {
+              label {Edge To Solid Mesh}
+              callback {for(int i=0; i<12; i++)	this->Curve[i] = NULL;
+EdgeSolidTransInterpGroup->show();}
+              xywh {0 0 100 20}
+            }
+            Submenu GeometricPrimitiveSubMenu {
+              label {Geometric primitive} open
+              xywh {0 0 100 20}
+            } {
+              MenuItem CreateIrregularCylinder {
+                label {Irregular Cylinder}
+                callback {for(int i=0; i<5; i++)
+	Curve[i] = NULL;
+CreateIrregularCylindricalMeshGroup->show();}
+                xywh {0 0 100 20}
+              }
+            }
+            MenuItem MergeFacesToSurfaceMesh {
+              label {Create surface from faces}
+              callback {unstructuredgridextractwidget->State = 7;
+unstructuredgridextractwidget->SetUGrid(this->GetUGridCheckedItem()->UGrid);
+unstructuredgridextractwidget->SetInteractor(this->VTKFlWindow);
+if(InteractorStyleSelect->GetInteractorStyleSelectState() == 11)
+{
+	unstructuredgridwidget->SetEnabled(0);
+}
+unstructuredgridextractwidget->SetEnabled(1);
+DoneButton->show();}
+              tooltip {creates a single surface from group of faces} xywh {0 0 30 20}
+            }
+            MenuItem PosteriorElementMeshMenuItem {
+              label {Posterior Element Mesh}
+              callback {CompleteSurface = NULL;
+CutSurface = NULL;
+BoundingBoxUGrid = NULL;
+UGrid = NULL;
+PosteriorElementMeshGroup->show();}
+              xywh {0 0 30 20}
+            }
+            MenuItem IntervertebralDiscMenuItem {
+              label {Intervertebral Disc}
+              callback {CreateIntervertebralDiscMeshGroup->show();}
+              xywh {0 0 30 20}
+            }
+          }
+        }
+        Submenu ProjectSubMenu {
+          label Project
+          xywh {0 0 100 20} labeltype ENGRAVED_LABEL
+        } {
+          MenuItem ClosestPointProjectionMenuItem {
+            label {Closest Point}
+            callback {StructuredHexahedronMesh->MorphRectilinearHexahedronMesh(this->vtkSTLSourceList.GetLastItem()->GetPolyData());
+for(int i=0; i < StructuredHexahedronMesh->StructuredGridActorCollection->
+			GetNumberOfItems(); i++)
+{
+this->VTKRenderer->RemoveActor(((vtkActor*)(StructuredHexahedronMesh->StructuredGridActorCollection->
+			GetItemAsObject(i))));
+}
+
+this->VTKRenderer->AddActor(StructuredHexahedronMesh->Actor);
+this->FitView();}
+            xywh {0 0 100 20}
+          }
+        }
+        Submenu EditSubMenu {
+          label Edit open
+          xywh {0 0 100 20} labeltype ENGRAVED_LABEL
+        } {
+          Submenu EditBBSubMenu {
+            label BB open
+            xywh {0 0 100 20}
+          } {
+            MenuItem EditBBSplitCellMenuItem {
+              label {Split Cell}
+              callback {unstructuredgridextractwidget->State = 2;
+unstructuredgridextractwidget->SetUGrid(this->GetUGridCheckedItem()->UGrid);
+unstructuredgridextractwidget->SetUGridActor(this->GetUGridCheckedItem()->GetActor());
+unstructuredgridextractwidget->SetInteractor(this->VTKFlWindow);
+if(InteractorStyleSelect->GetInteractorStyleSelectState() == 11)
+{
+	unstructuredgridwidget->SetEnabled(0);
+}
+unstructuredgridextractwidget->SetEnabled(1);
+DoneButton->show();
+//this->FitView();}
+              xywh {0 0 100 20}
+              code0 {\#include "vtkMimxUnstructuredGridExtractWidget.h"}
+              code3 {unstructuredgridextractwidget = vtkMimxUnstructuredGridExtractWidget::New();}
+            }
+            MenuItem EditBBAddCellMenuItem {
+              label {Add Cell}
+              callback {unstructuredgridextractwidget->State = 3;
+unstructuredgridextractwidget->SetUGrid(this->GetUGridCheckedItem()->UGrid);
+unstructuredgridextractwidget->SetUGridActor(this->GetUGridCheckedItem()->GetActor());
+unstructuredgridextractwidget->SetInteractor(this->VTKFlWindow);
+if(InteractorStyleSelect->GetInteractorStyleSelectState() == 11)
+{
+	unstructuredgridwidget->SetEnabled(0);
+}
+unstructuredgridextractwidget->SetEnabled(1);
+DoneButton->show();
+//this->FitView();}
+              xywh {0 0 100 20}
+            }
+            Submenu MergeBBSubMenu {
+              label Merge open
+              xywh {0 0 100 20}
+            } {
+              MenuItem MergeBBNodesMenuItem {
+                label Nodes
+                callback {HideAll();
+unstructuredgridextractwidget->State = 5;
+unstructuredgridextractwidget->SetUGrid(this->GetUGridCheckedItem()->UGrid);
+unstructuredgridextractwidget->SetUGridActor(this->GetUGridCheckedItem()->GetActor());
+unstructuredgridextractwidget->SetInteractor(this->VTKFlWindow);
+EditBBMergeNodesGroup->show();}
+                xywh {0 0 100 20}
+              }
+            }
+            MenuItem MirrorBBMenuItem {
+              label Mirror
+              callback {HideAll();
+UnstructuredMeshGroup->show();
+EditBBMirrorGroup->show();}
+              xywh {0 0 100 20}
+            }
+            Submenu EditBBMeshSeedSubMenu {
+              label {Mesh Seed} open
+              xywh {0 0 100 20}
+            } {
+              MenuItem EditBBMeshSeedFromAverageElementLengthMenuItem {
+                label {From Average Element length}
+                callback {/*unstructuredgridextractwidget->State = 4;
+unstructuredgridextractwidget->SetUGrid(this->GetUGridCheckedItem()->UGrid);
+unstructuredgridextractwidget->SetInteractor(this->VTKFlWindow);
+unstructuredgridwidget->SetEnabled(0);
+unstructuredgridextractwidget->SetEnabled(1);
+DoneButton->show();*/
+HideAll();
+UnstructuredMeshGroup->show();
+EditBBMeshSeedGroup->show();}
+                xywh {5 5 100 20}
+                code0 {\#include "vtkLocalAxesActor.h"}
+                code1 {this->LocalAxesActor = NULL;}
+              }
+              MenuItem ChangeMeshSeedMenuItem {
+                label {Change Mesh Seed}
+                callback {//if(!unstructuredgridextractwidget->GetEnabled())
+unstructuredgridextractwidget->State = 4;
+unstructuredgridextractwidget->SetUGrid(this->GetUGridCheckedItem()->UGrid);
+unstructuredgridextractwidget->SetUGridActor(this->GetUGridCheckedItem()->GetActor());
+unstructuredgridextractwidget->SetInteractor(this->VTKFlWindow);
+unstructuredgridextractwidget->SetEnabled(1);
+DoneButton->show();
+ChangeMeshSeedGroup->show();}
+                xywh {0 0 30 20}
+              }
+            }
+            MenuItem EditBBDeleteCellMenuItem {
+              label {Delete Cell}
+              callback {unstructuredgridextractwidget->State = 5;
+unstructuredgridextractwidget->SetUGrid(this->GetUGridCheckedItem()->UGrid);
+unstructuredgridextractwidget->SetUGridActor(this->GetUGridCheckedItem()->GetActor());
+unstructuredgridextractwidget->SetInteractor(this->VTKFlWindow);
+if(InteractorStyleSelect->GetInteractorStyleSelectState() == 11)
+{
+	unstructuredgridwidget->SetEnabled(0);
+}
+unstructuredgridextractwidget->SetEnabled(1);
+DoneButton->show();}
+              xywh {0 0 100 20}
+              code0 {\#include "vtkMimxDeleteUnstructuredHexahedronGridCell.h"}
+            }
+          }
+          MenuItem EditCopyMenuItem {
+            label Copy
+            callback {if(CurveGroup->visible())
+{
+	if(this->GetCurveCheckedItem())
+	{
+		this->vtkCurveList.Add(vtkMimxCurve::New());
+		char name[10];
+		strcpy(name, "Curve");
+		int num = CurveCheckBrowser->nitems();
+		char buffer[10];
+		sprintf(buffer, "%d", num);
+                //char *numchar = itoa(num,buffer,10);
+		//strcat(name, numchar);
+                strcat(name, buffer);
+		this->CurveCheckBrowser->add(name);
+		this->vtkCurveList.GetLastItem()->PolyData->DeepCopy(this->GetCurveCheckedItem()->PolyData);
+		this->vtkCurveList.GetLastItem()->PolyData->GetPoints()->
+			DeepCopy(this->GetCurveCheckedItem()->PolyData->GetPoints());
+        	CurveCheckBrowser->check_none();
+        	CurveCheckBrowser->set_checked(CurveCheckBrowser->nitems());
+		this->vtkCurveList.GetLastItem()->PolyData->Modified();	
+        	this->VTKRenderer->AddActor(this->vtkCurveList.GetLastItem()->GetActor());
+		this->FitView();
+        	HideAll();
+		this->CurveCheckBrowser->redraw();
+		CurveGroup->show();
+	}
+}}
+            xywh {0 0 100 20}
+            code0 {\#include <string.h>}
+          }
+          MenuItem EdittransformMenuItem {
+            label Transform
+            callback {TransformGroup->show();}
+            xywh {0 0 100 20}
+          }
+          MenuItem EditClipMenuItem {
+            label Clip
+            callback {ClipImageFromBoxGroup->show();}
+            xywh {0 0 100 20}
+          }
+          MenuItem RecalculateInteriorNodesMenuItem {
+            label {Recalculate Interior Nodes}
+            callback {//this->StructuredHexahedronMesh->ReCalculateInteriorNodes();
+//this->FitView();
+RecalculateInteriorNodesGroup->show();}
+            xywh {5 5 30 20}
+          }
+          MenuItem EditPickSurfaceMenuItem {
+            label {Pick Surface}
+            callback {PickSurfacePropertyGroup->show();
+/*unstructuredgridextractwidget->State = 1;
+unstructuredgridextractwidget->DeleteHandles();
+unstructuredgridextractwidget->SetUGrid(this->GetUGridCheckedItem()->UGrid);
+unstructuredgridextractwidget->SetInteractor(this->VTKFlWindow);
+if(InteractorStyleSelect->GetInteractorStyleSelectState() == 11)
+{
+	unstructuredgridwidget->SetEnabled(0);
+}
+unstructuredgridextractwidget->SetEnabled(1);
+InteractorStyleSelect->SetInteractorStyleSelectState(0);*/}
+            xywh {0 0 30 20}
+          }
+          MenuItem ExtrudeSurfaceMenuItem {
+            label {Extrude Surface}
+            callback {ExtrudeSurfaceGroup->show();}
+            xywh {0 0 30 20}
+          }
+          MenuItem PatchSurfaceMenItem {
+            label {Patch Surface}
+            callback {SurfaceGroup->show();
+PatchSurfaceGroup->show();}
+            xywh {0 0 30 20}
+          }
+          Submenu SurfaceSmoothSubMenu {
+            label Smooth open
+            xywh {5 5 100 20} labeltype ENGRAVED_LABEL
+          } {
+            MenuItem LaplacianSmoothingMenuItem {
+              label Laplacian
+              callback {LaplacianSmoothingGroup->show();}
+              xywh {5 5 100 20}
+            }
+          }
+          Submenu EditNodeAndElementNumbersNodeSetsElementSetsEtc {
+            label {Node and Element Numbers and Sets} open
+            xywh {0 0 62 20}
+          } {
+            MenuItem EditNodeandElementNumbers {
+              label {Node and Element Numbers}
+              callback {AbaqusFormatPropertiesGroup->show();}
+              xywh {0 0 30 20}
+            }
+            Submenu CreateElementSetsSubMenu {
+              label {Create Element Sets} open
+              xywh {0 0 62 20}
+            } {
+              MenuItem CreateIntervertebralDiscElementSetsMenuItem {
+                label IntervertebralDisc
+                callback {UnstructuredMeshGroup->show();
+CreateIntervertebralDiscElementSetsGroup->show();}
+                xywh {0 0 30 20}
+              }
+            }
+          }
+        }
+        Submenu PropertySubMenu {
+          label Property
+          xywh {0 0 100 20} labeltype EMBOSSED_LABEL
+        } {
+          MenuItem GeometryPropertyMenuItem {
+            label Geometry
+            callback {if(CurveGroup->visible())
+{
+	if(this->GetCurveCheckedItem())
+	{
+		double center[3];
+		this->GetCurveCheckedItem()->CalculateCenter(center);
+		GeometricCenterPropertyX->value(center[0]);
+		GeometricCenterPropertyX->precision(2);
+		GeometricCenterPropertyY->value(center[1]);
+		GeometricCenterPropertyY->precision(2);
+		GeometricCenterPropertyZ->value(center[2]);
+		GeometricCenterPropertyZ->precision(2);
+		GeometryPropertyGroup->show();	
+	}
+}}
+            xywh {0 0 100 20}
+          }
+          Submenu WidgetPropertySubMenu {
+            label Widgets
+            xywh {0 0 100 20}
+          } {
+            MenuItem BBWidgetMenuItem {
+              label BB
+              callback {BBWidgetPropertyGroup->show();}
+              xywh {0 0 100 20}
+            }
+          }
+          MenuItem MeshQualityMeasureMenuItem {
+            label {Mesh Quality}
+            callback {MeshQualityGroup->show();
+if(!MeshQuality) 
+{ MeshQuality = vtkMeshQualityClass::New();
+
+	MeshQuality->InitializeFromExternalMesh(this->GetUGridCheckedItem()->UGrid);
+	MeshQuality->SetQualityMeasure(4);
+//	MeshQuality->SetElementShrinkFactor(double(MeshQualityShrinkFactor->value()));
+	this->VTKRenderer->AddActor(MeshQuality->CalculateMeshQuality());
+  	this->FitView();
+}}
+            xywh {0 0 30 20}
+            code0 {MeshQuality = NULL;}
+          }
+        }
+      }
+      Fl_Menu_Bar SurfaceMenuBar {open
+        xywh {334 10 390 30}
+      } {
+        Submenu SurfaceDistMapSubMenu {
+          label {Dist Map}
+          tooltip {Distance map between two surfaces} xywh {0 0 100 20} labeltype ENGRAVED_LABEL
+        } {
+          MenuItem SurfaceDistMapClosestPointItem {
+            label {Closest Point}
+            callback {SurfaceDistanceMapGroup->show();
+SurfaceSource = NULL;
+SurfaceTarget = NULL;}
+            tooltip {Euclidean (shortest ) distance map} xywh {10 10 100 20} labeltype EMBOSSED_LABEL
+          }
+        }
+        Submenu SurfaceRigidRegistrationSubMenu {
+          label {Rig Reg} open
+          tooltip {Rigid Registration of two Surfaces} xywh {0 0 100 20} labeltype ENGRAVED_LABEL
+        } {
+          MenuItem SurfaceRigRegICPMenuItem {
+            label ICP
+            tooltip {Iterative Closest Point} xywh {10 10 100 20} labeltype EMBOSSED_LABEL
+          }
+        }
+      }
+      Fl_Box VTKFlWindow {
+        xywh {383 79 614 620} box BORDER_FRAME
+        code0 {\#include "vtkFlRenderWindowInteractor.h"}
+        code1 {\#include "vtkRenderer.h"}
+        code2 {\#include "vtkRenderWindow.h"}
+        code3 {VTKRenderer = vtkRenderer::New(); VTKRenderWindow = vtkRenderWindow::New(); AxisRenderer = vtkRenderer::New();}
+        class vtkFlRenderWindowInteractor
+      }
+      Fl_Menu_Bar InteractionModeMenuBar {
+        xywh {730 7 220 35}
+        code0 {\#include "vtkInteractorStyleSelect.h"}
+        code1 {InteractorStyleSelect = vtkInteractorStyleSelect::New();PVAxesActor = vtkPVAxesActor::New(); CallBackCommand = vtkCallbackCommand::New();}
+        code2 {\#include "vtkCallbackCommand.h"}
+        code3 {\#include "vtkPVAxesActor.h"}
+      } {
+        MenuItem InteractionRotateMenuItem {
+          label Rotate
+          callback {if(InteractorStyleSelect->GetInteractorStyleSelectState() == 11)
+{
+	unstructuredgridwidget->SetEnabled(0);
+}
+if(unstructuredgridextractwidget->GetEnabled())
+	unstructuredgridextractwidget->SetEnabled(0);
+InteractorStyleSelect->SetInteractorStyleSelectState(1);
+BBWidgetPropertyGroup->hide();}
+          tooltip Rotate image {rotate.gif} xywh {0 0 0 0} shortcut 0x40072
+          code0 {\#include "vtkCamera.h"}
+        }
+        MenuItem InteractorPanMenuItem {
+          label Pan
+          callback {if(InteractorStyleSelect->GetInteractorStyleSelectState() == 11)
+{
+	unstructuredgridwidget->SetEnabled(0);
+}
+if(unstructuredgridextractwidget->GetEnabled())
+	unstructuredgridextractwidget->SetEnabled(0);
+InteractorStyleSelect->SetInteractorStyleSelectState(2);
+BBWidgetPropertyGroup->hide();}
+          tooltip Pan image {pan.gif} xywh {0 0 100 20} shortcut 0x40073
+        }
+        MenuItem InteractorZoomMenuItem {
+          label Zoom
+          callback {if(InteractorStyleSelect->GetInteractorStyleSelectState() == 11)
+{
+	unstructuredgridwidget->SetEnabled(0);
+}
+if(unstructuredgridextractwidget->GetEnabled())
+	unstructuredgridextractwidget->SetEnabled(0);
+InteractorStyleSelect->SetInteractorStyleSelectState(4);
+BBWidgetPropertyGroup->hide();}
+          tooltip Zoom image {zoom.gif} xywh {0 0 100 20} shortcut 0x4007a
+        }
+        MenuItem InteractorTraceMenuItem {
+          label item
+          callback {if(unstructuredgridextractwidget->GetEnabled())
+	unstructuredgridextractwidget->SetEnabled(0);
+HideAll();
+CurveGroup->show();
+CreateCurveGroup->show();
+CurvePickStartEndGroup->show();
+BBWidgetPropertyGroup->hide();}
+          tooltip Trace image {trace.gif} xywh {0 0 100 20} shortcut 0x40074
+        }
+        MenuItem InteractionBoundingBoxMenuItem {
+          label BB
+          callback {if(unstructuredgridextractwidget->GetEnabled())
+	unstructuredgridextractwidget->SetEnabled(0);
+unstructuredgridwidget->SetInteractor(this->VTKFlWindow);
+if(!unstructuredgridwidget->GetEnabled())
+{
+	editunstructuredhexahedrongrid->SetUGrid(this->GetUGridCheckedItem()->UGrid);
+	unstructuredgridwidget->SetUGrid(this->GetUGridCheckedItem()->UGrid);
+	InteractorStyleSelect->SetInteractorStyleSelectState(11);
+	unstructuredgridwidget->Execute();
+	unstructuredgridwidget->SetEnabled(1);
+	BBWidgetPropertyGroup->show();
+}
+else
+{
+	unstructuredgridwidget->SetEnabled(0);
+	BBWidgetPropertyGroup->hide();
+}}
+          xywh {0 0 100 20} shortcut 0x40062
+          code1 {\#include "vtkMimxUnstructuredGridWidget.h"}
+          code2 {//boundingbox = vtkMimxBoundingBoxSource::New();}
+          code3 {unstructuredgridwidget = vtkMimxUnstructuredGridWidget::New();}
+        }
+      }
+      Fl_Button DoneButton {
+        label Done
+        callback {unstructuredgridextractwidget->SetEnabled(0);
+
+if(unstructuredgridextractwidget->State == 2)
+{
+//editunstructuredhexahedrongrid->SplitCell
+
+	if(this->GetUGridCheckedItem()->UGrid)
+	{
+		vtkMimxSplitUnstructuredHexahedronGridCell *split = vtkMimxSplitUnstructuredHexahedronGridCell::New();
+		split->SetInput(this->GetUGridCheckedItem()->UGrid);
+		vtkIdList *idlist = vtkIdList::New();
+		idlist->SetNumberOfIds(2);
+		idlist->SetId(0,unstructuredgridextractwidget->PointsList[0]);
+		idlist->SetId(1,unstructuredgridextractwidget->PointsList[1]);
+		split->SetIdList(idlist);
+		split->Update();
+	//(unstructuredgridextractwidget->PointsList);
+	this->vtkUGridList.Add(new vtkMimxUGrid);
+	this->UGridCheckBrowser->add("Split Cell");
+	this->UGridCheckBrowser->redraw();
+	this->VTKRenderer->RemoveActor(this->GetUGridCheckedItem()->GetActor());
+       		UGridCheckBrowser->check_none();
+
+        	UGridCheckBrowser->set_checked(UGridCheckBrowser->nitems());
+		this->GetUGridCheckedItem()->UGrid->DeepCopy(split->GetOutput());
+		this->GetUGridCheckedItem()->UGrid->Modified();	
+        	this->VTKRenderer->AddActor(this->vtkUGridList.GetLastItem()->GetActor());
+        	
+        	this->vtkUGridList.GetLastItem()->GetActor()->GetProperty()->SetRepresentationToWireframe( );
+        	
+		split->Delete();
+		idlist->Delete();	
+	}
+}
+
+if(unstructuredgridextractwidget->State == 3)
+{
+//editunstructuredhexahedrongrid->AddCell
+	//(unstructuredgridextractwidget->PointsList);
+	if(this->GetUGridCheckedItem()->UGrid)
+	{
+		vtkMimxAddUnstructuredHexahedronGridCell *add = vtkMimxAddUnstructuredHexahedronGridCell::New();
+		add->SetInput(this->GetUGridCheckedItem()->UGrid);
+		add->SetExtrusionLength(5.0);
+		vtkIdList *idlist = vtkIdList::New();
+		idlist->SetNumberOfIds(4);
+for(int i=0; i<4; i++)	idlist->SetId(i,unstructuredgridextractwidget->PointsList[i]);
+		add->SetIdList(idlist);
+		add->Update();
+	this->vtkUGridList.Add(new vtkMimxUGrid);
+	this->UGridCheckBrowser->add("Add Cell");
+	this->UGridCheckBrowser->redraw();
+	this->VTKRenderer->RemoveActor(this->GetUGridCheckedItem()->GetActor());
+       		UGridCheckBrowser->check_none();
+        	UGridCheckBrowser->set_checked(UGridCheckBrowser->nitems());
+		this->GetUGridCheckedItem()->UGrid->DeepCopy(add->GetOutput());
+		this->GetUGridCheckedItem()->UGrid->Modified();	
+        	this->VTKRenderer->AddActor(this->vtkUGridList.GetLastItem()->GetActor());
+        	this->vtkUGridList.GetLastItem()->GetActor()->GetProperty()->SetRepresentationToWireframe( );
+		add->Delete();
+		idlist->Delete();	
+	}
+
+}
+
+if(unstructuredgridextractwidget->State == 4)
+{
+//this->LocalAxesActor->Initialize();
+if(!this->LocalAxesActor)	LocalAxesActor = vtkLocalAxesActor::New();
+vtkPoints *points = vtkPoints::New();
+points->SetNumberOfPoints(3);
+points->SetPoint(0,this->GetUGridCheckedItem()->UGrid->GetPoint(
+unstructuredgridextractwidget->PointsList[3]));
+points->SetPoint(1,this->GetUGridCheckedItem()->UGrid->GetPoint(
+unstructuredgridextractwidget->PointsList[4]));
+points->SetPoint(2,this->GetUGridCheckedItem()->UGrid->GetPoint(
+unstructuredgridextractwidget->PointsList[1]));
+this->LocalAxesActor->SetOrigin(this->GetUGridCheckedItem()->UGrid->GetPoint(
+unstructuredgridextractwidget->PointsList[0]));
+this->LocalAxesActor->SetAxesPoints(points);
+points->Delete();
+this->VTKRenderer->AddViewProp(this->LocalAxesActor);
+int dim[3];
+if(unstructuredgridextractwidget->ReturnPickedCell() !=-1)
+{
+	((vtkIntArray*)this->GetUGridCheckedItem()->UGrid->GetCellData()->GetVectors())->GetTupleValue(
+	unstructuredgridextractwidget->ReturnPickedCell(), dim);
+cout << "Cell Num "<< unstructuredgridextractwidget->ReturnPickedCell()<< "  "<<dim[0]<<
+"  "<<dim[1]<<"  "<<dim[2]<<endl;
+}
+}
+
+if(unstructuredgridextractwidget->State == 5)
+{
+	if(this->GetUGridCheckedItem()->UGrid)
+	{
+		vtkMimxDeleteUnstructuredHexahedronGridCell *deletecell = vtkMimxDeleteUnstructuredHexahedronGridCell::New();
+		deletecell->SetInput(this->GetUGridCheckedItem()->UGrid);
+		deletecell->SetCellNum(unstructuredgridextractwidget->ReturnPickedCell());
+		deletecell->Update();
+	this->vtkUGridList.Add(new vtkMimxUGrid);
+	this->UGridCheckBrowser->add("Delete Cell");
+	this->UGridCheckBrowser->redraw();
+	this->VTKRenderer->RemoveActor(this->GetUGridCheckedItem()->GetActor());
+       		UGridCheckBrowser->check_none();
+        	UGridCheckBrowser->set_checked(UGridCheckBrowser->nitems());
+		this->GetUGridCheckedItem()->UGrid->DeepCopy(deletecell->GetOutput());
+		this->GetUGridCheckedItem()->UGrid->Modified();	
+		this->vtkUGridList.GetLastItem()->GetActor()->GetProperty()->SetColor(
+			this->vtkUGridList.GetLastItem()->GetActor()->GetProperty()->GetColor());
+        	this->VTKRenderer->AddActor(this->vtkUGridList.GetLastItem()->GetActor());
+        	this->vtkUGridList.GetLastItem()->GetActor()->GetProperty()->SetRepresentationToWireframe( );
+		deletecell->Delete();
+
+	}		
+
+}
+
+this->VTKRenderWindow->Render();
+//this->FitView();
+DoneButton->hide();}
+        xywh {915 50 40 25}
+        code0 {\#include "vtkMimxSplitUnstructuredHexahedronGridCell.h"}
+        code1 {\#include "vtkIdList.h"}
+        code2 {\#include "vtkMimxAddUnstructuredHexahedronGridCell.h"}
+      }
+      Fl_Group TransformGroup {
+        label Transform open
+        xywh {10 478 355 190} box UP_BOX labeltype EMBOSSED_LABEL hide
+      } {
+        Fl_Group TransformTypeGroup {open
+          xywh {15 537 90 91}
+        } {
+          Fl_Round_Button RotateTransformRadioButton {
+            label Rotate
+            xywh {20 537 25 25} type Radio down_box ROUND_DOWN_BOX
+          }
+          Fl_Round_Button ScaleTransformRadioButton {
+            label Scale
+            xywh {21 572 25 25} type Radio down_box ROUND_DOWN_BOX
+          }
+          Fl_Round_Button TranslateTransformRadioButton {
+            label Translate
+            xywh {21 603 25 25} type Radio down_box ROUND_DOWN_BOX
+          }
+        }
+        Fl_Choice RotateTransformAxisChoice {
+          label About open
+          xywh {148 537 40 24} down_box BORDER_BOX
+        } {
+          MenuItem RotateNoneMenuItem {
+            label none
+            xywh {0 0 100 20}
+          }
+          MenuItem RotateXMenuItem {
+            label X
+            xywh {0 0 100 20}
+          }
+          MenuItem RotateYMenuItem {
+            label Y
+            xywh {0 0 100 20}
+          }
+          MenuItem RotateZMenuItem {
+            label Z
+            xywh {0 0 100 20}
+          }
+        }
+        Fl_Value_Input {} {
+          label {Angle : }
+          xywh {257 536 39 25} minimum -360 maximum 360
+        }
+        Fl_Value_Input TransformCenterX {
+          label {Center :  X  : }
+          xywh {97 499 55 25} minimum -360 maximum 360
+        }
+        Fl_Value_Input TransformCenterY {
+          label {Y  : }
+          xywh {189 499 57 25} minimum -360 maximum 360
+        }
+        Fl_Value_Input TransformCenterZ {
+          label {Z  : }
+          xywh {279 499 56 25} minimum -360 maximum 360
+        }
+        Fl_Value_Input TransformScaleFactor {
+          label {Factor  : }
+          xywh {144 571 57 26}
+        }
+        Fl_Value_Input TransformTranslateX {
+          label {X  : }
+          xywh {142 603 45 25} minimum -360 maximum 360
+        }
+        Fl_Value_Input TransformTranslateY {
+          label {Y  : }
+          xywh {226 602 41 25} minimum -360 maximum 360
+        }
+        Fl_Value_Input TransformTranslateZ {
+          label {Z  : }
+          xywh {296 602 46 25} minimum -360 maximum 360
+        }
+        Fl_Button TransformGroupCloseButton {
+          label X
+          callback {TransformGroup->hide();}
+          xywh {340 478 25 21}
+        }
+        Fl_Return_Button TransformDoneButton {
+          label Done
+          callback {if(CurveGroup->visible())
+{
+	if(this->GetCurveCheckedItem())
+	{
+		if(TranslateTransformRadioButton->value())
+		{
+		this->GetCurveCheckedItem()->Translate(double(TransformTranslateX->value()),
+			double(TransformTranslateY->value()), double(TransformTranslateZ->value()));
+		}
+		if(ScaleTransformRadioButton->value())
+		{
+			double Center[3];
+			Center[0] = double(this->TransformCenterX->value());
+			Center[1] = double(this->TransformCenterY->value());
+			Center[2] = double(this->TransformCenterZ->value());
+			this->GetCurveCheckedItem()->Scale(Center,
+				double(this->TransformScaleFactor->value()));
+		}
+		this->FitView();
+	}
+}
+
+/*if(SurfaceGroup->visible())
+{
+	if(this->GetSTLCheckedItem())
+	{
+		if(TranslateTransformRadioButton->value())
+		{
+		this->GetSTLCheckedItem()->Translate(double(TransformTranslateX->value()),
+			double(TransformTranslateY->value()), double(TransformTranslateZ->value()));
+		}
+		if(ScaleTransformRadioButton->value())
+		{
+			double Center[3];
+			Center[0] = double(this->TransformCenterX->value());
+			Center[1] = double(this->TransformCenterY->value());
+			Center[2] = double(this->TransformCenterZ->value());
+			this->GetSTLCheckedItem()->Scale(Center,
+				double(this->TransformScaleFactor->value()));
+		}
+		if(RotateTransformRadioButton->value())
+		{
+			double Center[3];
+			Center[0] = double(this->TransformCenterX->value());
+			Center[1] = double(this->TransformCenterY->value());
+			Center[2] = double(this->TransformCenterZ->value());
+			this->GetSTLCheckedItem()->Rotate(Center,
+				double(this->TransformScaleFactor->value()));
+	
+		}
+		this->FitView();
+	}
+}*/}
+          xywh {265 638 70 25}
+        }
+      }
+      Fl_Group GeometryPropertyGroup {
+        xywh {5 635 360 70} box UP_BOX hide
+      } {
+        Fl_Value_Output GeometricCenterPropertyX {
+          label {Geometric Center : }
+          xywh {138 664 65 25}
+        }
+        Fl_Value_Output GeometricCenterPropertyZ {
+          xywh {295 664 65 25}
+        }
+        Fl_Value_Output GeometricCenterPropertyY {
+          label { }
+          xywh {218 664 65 25}
+        }
+        Fl_Button GeometryPropertyGroupCloseButton {
+          label X
+          callback {GeometryPropertyGroup->hide();}
+          xywh {345 635 20 20}
+        }
+      }
+      Fl_Box VTKFlWindowNormal {
+        xywh {393 89 600 600} box BORDER_FRAME
+        class vtkFlRenderWindowInteractor
+      }
+      Fl_Group BBWidgetPropertyGroup {
+        xywh {792 46 95 30} box UP_BOX hide
+      } {
+        Fl_Value_Input BBWidgetRadiusInput {
+          label Radius
+          callback {unstructuredgridwidget->SetEnabled(0);
+unstructuredgridwidget->SetHandleSize(double(BBWidgetRadiusInput->value()));
+unstructuredgridwidget->SetEnabled(1);}
+          xywh {845 50 35 23} value 1
+        }
+      }
+      Fl_Group PickSurfacePropertyGroup {open
+        xywh {70 540 215 105} box UP_BOX hide
+      } {
+        Fl_Value_Input PickSurfaceRadiusInput {
+          label Radius
+          callback {unstructuredgridextractwidget->SetEnabled(0);
+unstructuredgridextractwidget->SetHandleSize(double(ExtractWidgetRadiusInput->value()));
+
+unstructuredgridextractwidget->SetEnabled(1);}
+          xywh {123 544 35 23} value 1
+        }
+        Fl_Button PickSurfaceClearButton {
+          label Clear
+          callback {unstructuredgridextractwidget->SetEnabled(0);
+unstructuredgridextractwidget->GetPointIdList()->Initialize();
+unstructuredgridextractwidget->DeleteHandles();
+unstructuredgridextractwidget->SetEnabled(1);}
+          xywh {84 609 64 25}
+        }
+        Fl_Button PickSurfacePropertyGroupCloseButton {
+          label X
+          callback {PickSurfacePropertyGroup->hide();}
+          xywh {253 540 20 20}
+        }
+        Fl_Return_Button PickSurfacePropertyGroupDoneButton {
+          label Done
+          callback {// for the unstructured grid cell
+vtkPointLocator *poiloc = vtkPointLocator::New();
+poiloc->SetDataSet(GetSTLCheckedItem()->GetPolyData());
+poiloc->BuildLocator();
+vtkIdList *idlist = vtkIdList::New();
+
+if(this->GetCurveCheckedItem())
+{
+	idlist->SetNumberOfIds(this->GetCurveCheckedItem()->PolyData->GetNumberOfPoints());
+	for(int i=0; i<this->GetCurveCheckedItem()->PolyData->GetNumberOfPoints(); i++)
+	{
+		idlist->SetId(i, poiloc->FindClosestPoint(
+			this->GetCurveCheckedItem()->PolyData->GetPoint(i)));		
+	}
+vtkMimxSelectSurface *selectsurface = vtkMimxSelectSurface::New();
+selectsurface->SetInput(GetSTLCheckedItem()->GetPolyData());
+selectsurface->SetLoop(idlist);
+selectsurface->Update();
+if(selectsurface->GetOutput())
+{     
+  	this->vtkSTLSourceList.Add(vtkMimxSTLSource::New());
+	this->STLCheckBrowser->add("Select Surface");
+	this->STLCheckBrowser->redraw();
+
+        STLCheckBrowser->check_none();
+        STLCheckBrowser->set_checked(STLCheckBrowser->nitems());
+
+  	
+	this->GetSTLCheckedItem()->GetPolyData()->DeepCopy(selectsurface->GetOutput());
+	this->GetSTLCheckedItem()->GetPolyData()->Modified();	
+        this->VTKRenderer->AddActor(this->GetSTLCheckedItem()->GetActor());
+	this->FitView();
+        HideAll();
+        SurfaceGroup->show();
+}
+selectsurface->Delete();
+}
+poiloc->Delete();
+idlist->Delete();}
+          xywh {204 613 66 20}
+          code0 {\#include "vtkMimxSelectSurface.h"}
+          code1 {\#include "vtkPointLocator.h"}
+        }
+        Fl_Button SelectSurfaceStopPickingButton {
+          label {Stop Picking}
+          callback {unstructuredgridextractwidget->SetEnabled(0);}
+          xywh {76 580 95 20}
+        }
+        Fl_Button SelectSurfaceStartPickingButton {
+          label {Start Picking}
+          callback {unstructuredgridextractwidget->SetEnabled(1);}
+          xywh {185 580 95 20}
+        }
+      }
+      Fl_Group MeshQualityGroup {
+        label {Mesh Quality}
+        xywh {75 543 185 95} box UP_BOX hide
+        code0 {\#include "vtkMeshQualityClass.h"}
+      } {
+        Fl_Value_Input MeshQualityShrinkFactor {
+          label {Shrink Factor : }
+          callback {if(this->GetUGridCheckedItem()->UGrid)
+{
+	MeshQuality->SetElementShrinkFactor(double(MeshQualityShrinkFactor->value()));
+	MeshQuality->UpdatePipeline();
+  	this->FitView();
+}}
+          xywh {199 590 41 24} value 0.8
+        }
+        Fl_Button MeshQualityGroupCloseButton {
+          label X
+          callback {MeshQualityGroup->hide();}
+          xywh {239 544 20 20}
+        }
+      }
+      Fl_Group MergeSolidMeshGroup {
+        label {Merge Solid Meshes} open
+        xywh {77 580 150 100} box UP_BOX hide
+      } {
+        Fl_Return_Button MergeSolidMeshMergeButton {
+          label Merge
+          callback {int numele = 0;
+	int numnodes = 0;
+	int dim[3];
+	//	estimate number of nodes and elements
+	int i = 1;
+	int count = 0;
+	do
+	{
+		if(this->UGridCheckBrowser->checked(i))	
+		{
+			count++;
+			numnodes = numnodes + this->vtkUGridList.GetValue(i)->UGrid->GetNumberOfPoints();
+			numele = numele + this->vtkUGridList.GetValue(i)->UGrid->GetNumberOfCells();			
+		}
+		i++;
+	}while(i <= this->UGridCheckBrowser->nitems());
+
+
+	if(numele && numnodes)
+	{
+
+		vtkDataSetCollection *collection = vtkDataSetCollection::New();
+		collection->InitTraversal();
+	
+		vtkMimxMergeNodesPointAndCellData *merge = new vtkMimxMergeNodesPointAndCellData;
+
+
+		i=1;	
+		do
+		{
+			if(this->UGridCheckBrowser->checked(i))	
+			{
+				collection->AddItem(this->vtkUGridList.GetValue(i)->UGrid);		
+			}
+		i++;
+		}while(i <= this->UGridCheckBrowser->nitems());
+		
+		merge->SetDataSetCollection(collection);
+		if(merge->MergeDataSets())
+		{
+			this->vtkUGridList.Add(new vtkMimxUGrid);
+			this->UGridCheckBrowser->add("MergeSolidGrids");
+			this->UGridCheckBrowser->redraw();
+			UGridCheckBrowser->check_none();
+        		UGridCheckBrowser->set_checked(UGridCheckBrowser->nitems());
+
+        		this->GetUGridCheckedItem()->UGrid->DeepCopy(merge->GetMergedDataSet());
+			this->GetUGridCheckedItem()->UGrid->Modified();	
+        		this->VTKRenderer->AddActor(this->vtkUGridList.GetLastItem()->GetActor());
+        		this->FitView();
+
+		}	
+		collection->Delete();
+		delete merge;	
+		
+	}}
+          xywh {141 649 80 25}
+          code0 {\#include "vtkDataSetCollection.h"}
+          code1 {\#include "vtkMimxMergeNodesPointAndCellData.h"}
+        }
+        Fl_Button MergeSolidMeshGroupCloseButton {
+          label X
+          callback {MergeSolidMeshGroup->hide();}
+          xywh {200 583 25 20}
+        }
+      }
+      Fl_Group AbaqusFormatPropertiesGroup {open
+        xywh {20 487 344 191} box UP_BOX hide
+        code0 {\#include "vtkMimxApplyNodeElementNumbers.h"}
+      } {
+        Fl_Button AbaqusFormatPropertiesGroupCloseButton {
+          label X
+          callback {AbaqusFormatPropertiesGroup->hide();}
+          xywh {339 487 25 20}
+        }
+        Fl_Value_Input AbaqusFormatPropertiesGroupStartingNodeNumberInput {
+          label {Starting Node Number}
+          xywh {195 605 85 24} value 1
+        }
+        Fl_Value_Input AbaqusFormatPropertiesGroupStartingElementNumberInput {
+          label {Starting Element  Number}
+          xywh {197 642 85 24} value 1
+        }
+        Fl_Choice ApplyNodesElementNumbersMeshInput {
+          label {Mesh  : } open
+          xywh {104 505 115 25} down_box BORDER_BOX
+        } {
+          MenuItem ApplyNodesElementNumbersNoneSelectMenuItem {
+            label None
+            callback {strcpy(choice ,"");}
+            xywh {40 40 30 20}
+          }
+          MenuItem ApplyNodesElementNumbersUnstructuredGridSelectMenuItem {
+            label {Unstructured Grid}
+            callback {HideAll();
+AbaqusFormatPropertiesGroup->show();
+UnstructuredMeshGroup->show();
+strcpy(choice ,"UGrid");}
+            xywh {70 70 30 20}
+          }
+        }
+        Fl_Button ApplyNodesElementNumbersMeshSelectButton {
+          label Select
+          callback {if(!strcmp(choice, "UGrid"))
+{
+	UGrid = GetUGridCheckedItem()->UGrid;
+}}
+          xywh {243 506 64 20}
+        }
+        Fl_Button ApplyNodeElementNumberNodeNumberApplyButton {
+          label Apply
+          callback {if(UGrid)
+{
+	vtkMimxApplyNodeElementNumbers *apply = new vtkMimxApplyNodeElementNumbers;
+	apply->SetUnstructuredGrid(UGrid);
+	apply->SetStartingNodeNumber(int(AbaqusFormatPropertiesGroupStartingNodeNumberInput->value()));
+	apply->ApplyNodeNumbers();
+	delete apply;
+}}
+          xywh {290 607 64 20}
+        }
+        Fl_Button ApplyNodeElementNumberElementNumberApplyButton {
+          label Apply
+          callback {if(UGrid)
+{
+	vtkMimxApplyNodeElementNumbers *apply = new vtkMimxApplyNodeElementNumbers;
+	apply->SetElementSetName(AbaqusFormatElementSetNameInput->value());
+	apply->SetUnstructuredGrid(UGrid);
+	apply->SetStartingElementNumber(int(AbaqusFormatPropertiesGroupStartingElementNumberInput->value()));
+	apply->ApplyElementNumbers();
+	delete apply;
+}}
+          xywh {292 643 64 20}
+        }
+        Fl_Input AbaqusFormatElementSetNameInput {
+          label {Element Set Name}
+          xywh {192 541 125 24}
+        }
+      }
+      Fl_Group DisplayGroup {
+        xywh {31 260 315 145} box UP_BOX
+      } {
+        Fl_Button DisplayGroupShowButton {
+          label Show
+          callback {if(SurfaceGroup->visible())
+{
+	if(this->GetSTLCheckedItem())
+		this->VTKRenderer->AddActor(this->GetSTLCheckedItem()->GetActor());
+}
+
+if(ImageGroup->visible())
+{
+	if(this->GetImageCheckedItem())
+		this->GetImageCheckedItem()->EnableImagePlaneWidget(1);
+}
+
+if(CurveGroup->visible())
+{
+	if(this->GetCurveCheckedItem())
+		this->VTKRenderer->AddActor(this->GetCurveCheckedItem()->GetActor());
+}
+
+if(UnstructuredMeshGroup->visible())
+{
+	if(this->GetUGridCheckedItem())
+		this->VTKRenderer->AddActor(this->GetUGridCheckedItem()->GetActor());
+}
+this->FitView();}
+          xywh {45 270 65 25}
+        }
+        Fl_Button DisplayGroupHideButton {
+          label Hide
+          callback {if(SurfaceGroup->visible())
+{
+	if(this->GetSTLCheckedItem())
+		this->VTKRenderer->RemoveActor(this->GetSTLCheckedItem()->GetActor());
+}
+
+if(ImageGroup->visible())
+{
+	if(this->GetImageCheckedItem())
+		this->GetImageCheckedItem()->EnableImagePlaneWidget(0);
+}
+
+if(CurveGroup->visible())
+{
+	if(this->GetCurveCheckedItem())
+		this->VTKRenderer->RemoveActor(this->GetCurveCheckedItem()->GetActor());
+}
+
+if(UnstructuredMeshGroup->visible())
+{
+	if(this->GetUGridCheckedItem())
+		this->VTKRenderer->RemoveActor(this->GetUGridCheckedItem()->GetActor());
+}
+this->FitView();}
+          xywh {125 270 65 25}
+        }
+        Fl_Button DisplayGroupDeleteButton {
+          label Delete
+          callback {if(SurfaceGroup->visible())
+{
+	if(this->GetSTLCheckedItem())
+	{
+		DeleteSTLCheckBrowserEntries();
+	}
+}
+
+/*if(ImageGroup->visible())
+{
+	if(this->GetImageCheckedItem())
+		this->GetImageCheckedItem()->EnableImagePlaneWidget(1);
+}
+
+if(CurveGroup->visible())
+{
+	if(this->GetCurveCheckedItem())
+		this->VTKRenderer->AddActor(this->GetCurveCheckedItem()->GetActor());
+}*/
+
+if(UnstructuredMeshGroup->visible())
+{
+	if(this->GetUGridCheckedItem())
+	{
+		DeleteUGridCheckBrowserEntries();
+	}
+}}
+          xywh {275 273 64 20}
+        }
+      }
+      Fl_Group PosteriorElementMeshGroup {open
+        xywh {45 412 285 308} box UP_BOX hide
+      } {
+        Fl_Group PosteriorElementSurfaceDefinitions {
+          label {Surface Definitions} open
+          xywh {66 450 85 48}
+        } {
+          Fl_Round_Button PosteriorElementCompleteSurfaceRadioButton {
+            label Complete
+            callback {if(GetSTLCheckedItem())
+{
+	CompleteSurface = GetSTLCheckedItem()->GetPolyData();
+}
+else
+{
+	cout << "Should choose a Complete surface"<<endl;
+}}
+            xywh {66 460 85 15} type Radio down_box ROUND_DOWN_BOX
+          }
+          Fl_Round_Button PosteriorElementCutSurfaceRadioButton {
+            label Cut
+            callback {if(GetSTLCheckedItem())
+{
+	CutSurface = GetSTLCheckedItem()->GetPolyData();
+}
+else
+{
+	cout << "Should choose a Cut surface"<<endl;
+}}
+            xywh {66 478 64 20} type Radio down_box ROUND_DOWN_BOX
+          }
+        }
+        Fl_Group PosteriorElementUnstructuredMeshGroup {
+          label {Unstructured Mesh} open
+          xywh {207 449 118 45}
+        } {
+          Fl_Round_Button PosteriorElementBoundingBoxRadioButton {
+            label {Bounding Box}
+            callback {if(GetUGridCheckedItem())
+{
+	BoundingBoxUGrid = GetUGridCheckedItem()->UGrid;
+}
+else
+{
+	cout << "Should choose a Bounding box structure"<<endl;
+}}
+            xywh {211 461 64 15} type Radio down_box ROUND_DOWN_BOX
+          }
+          Fl_Round_Button PosteriorElementVertebralBodyRadioButton {
+            label {Vertebral Body}
+            callback {if(GetUGridCheckedItem())
+{
+	UGrid = GetUGridCheckedItem()->UGrid;
+}
+else
+{
+	cout << "Should choose a Vertebral Body Mesh"<<endl;
+}}
+            xywh {212 484 64 10} type Radio down_box ROUND_DOWN_BOX
+          }
+        }
+        Fl_Return_Button PosteriorElementMeshReturnButton {
+          label Mesh
+          callback {vtkMimxAttachBoundingBoxMesh *attach = vtkMimxAttachBoundingBoxMesh::New();
+
+	attach->SetInput(UGrid);
+	attach->SetBoundingBox(BoundingBoxUGrid);
+	attach->SetCompleteSource(CompleteSurface);
+	attach->SetCutSource(CutSurface);
+	attach->Update();
+	if(attach->GetOutput())
+	{
+		this->vtkUGridList.Add(new vtkMimxUGrid);
+		this->UGridCheckBrowser->add("Modified Input");
+		this->UGridCheckBrowser->redraw();
+
+        	UGridCheckBrowser->check_none();
+       		UGridCheckBrowser->set_checked(UGridCheckBrowser->nitems());
+	
+		this->GetUGridCheckedItem()->UGrid->DeepCopy(attach->GetModifiedInput());
+		this->GetUGridCheckedItem()->UGrid->Modified();	
+        	this->VTKRenderer->AddActor(this->vtkUGridList.GetLastItem()->GetActor());
+		this->FitView();
+
+		this->vtkUGridList.Add(new vtkMimxUGrid);
+		this->UGridCheckBrowser->add("Attach");
+
+		this->UGridCheckBrowser->redraw();
+
+        	UGridCheckBrowser->check_none();
+       		UGridCheckBrowser->set_checked(UGridCheckBrowser->nitems());
+	
+		this->GetUGridCheckedItem()->UGrid->DeepCopy(attach->GetOutput());
+		this->GetUGridCheckedItem()->UGrid->Modified();	
+        	this->VTKRenderer->AddActor(this->vtkUGridList.GetLastItem()->GetActor());
+		this->FitView();
+ 
+	}
+	attach->Delete();}
+          xywh {141 523 79 25}
+          code0 {\#include "vtkMimxAttachBoundingBoxMesh.h"}
+        }
+        Fl_Button PosteriorElementMeshGroupCloseButton {
+          label X
+          callback {PosteriorElementMeshGroup->hide();}
+          xywh {305 412 25 20}
+        }
+        Fl_Return_Button PosteriorElementMeshSmoothReturnButton {
+          label Smooth
+          callback {vtkMimxSmoothUnstructuredGridFilter *smooth = vtkMimxSmoothUnstructuredGridFilter::New();
+//	smooth->SetConstrainedSmoothing(1);
+	smooth->SetSource(CompleteSurface);
+	smooth->SetInput(GetUGridCheckedItem()->UGrid);
+	smooth->SetNumberOfIterations(int(PosteriorElementMeshSmoothingNumberOfIterations->value()));
+	smooth->Update();
+	if(smooth->GetOutput())
+	{
+	vtkGeometryFilter *fil = vtkGeometryFilter::New();
+	fil->SetInput(GetUGridCheckedItem()->UGrid);
+	fil->Update();
+	for (int i=0; i < fil->GetOutput()->GetNumberOfCells(); i++) 
+	{
+		double maxangle = vtkMeshQuality::QuadMaxAngle(fil->GetOutput()->GetCell(i));
+		double minangle = vtkMeshQuality::QuadMinAngle(fil->GetOutput()->GetCell(i));
+		if(maxangle > 179)
+		{
+			cout << endl;
+			cout << "Cell Num " << i<<"Angle  "<<maxangle<<endl;
+		}
+		if(minangle < 1)
+		{
+			cout << "Cell Num " <<i<<"Angle  "<<maxangle<<endl;
+		}
+	}
+	fil->Delete();	
+	GetUGridCheckedItem()->UGrid->GetPoints()->DeepCopy(smooth->GetOutput()->GetPoints());
+	GetUGridCheckedItem()->UGrid->GetPointData()->SetScalars(smooth->GetOutput()->GetPointData()->GetScalars());
+
+	}
+	smooth->Delete();
+	this->FitView();}
+          xywh {230 572 85 25}
+          code0 {\#include "vtkGeometryFilter.h"}
+          code1 {\#include "vtkMeshQuality.h"}
+          code2 {\#include "vtkMimxSmoothUnstructuredGridFilter.h"}
+          code3 {\#include "vtkPointData.h"}
+        }
+        Fl_Value_Input PosteriorElementMeshSmoothingNumberOfIterations {
+          label {Num of Iter :}
+          xywh {155 572 45 24} value 1
+        }
+        Fl_Button PosteriorElementRecalculateInteriorNodesButton {
+          label {Recalculate Interior Nodes}
+          callback {vtkMimxRecalculateInteriorNodes *recalc = vtkMimxRecalculateInteriorNodes::New();
+//	smooth->SetConstrainedSmoothing(1);
+	recalc->SetBoundingBox(BoundingBoxUGrid);
+	recalc->SetInput(GetUGridCheckedItem()->UGrid);
+
+	recalc->Update();
+	if(recalc->GetOutput())
+	{
+		GetUGridCheckedItem()->UGrid->GetPoints()->DeepCopy(recalc->GetOutput()->GetPoints());
+		GetUGridCheckedItem()->UGrid->GetPointData()->SetScalars(recalc->GetOutput()->GetPointData()->GetScalars());
+	}
+	recalc->Delete();
+	this->FitView();}
+          xywh {106 627 170 25}
+          code0 {\#include "vtkMimxRecalculateInteriorNodes.h"}
+        }
+      }
+      Fl_Group CreateMeshFromBoundingBoxGroup {
+        label {Create Mesh} open
+        xywh {75 440 284 120} box UP_BOX hide
+      } {
+        Fl_Button CreateMeshFromBoundingBoxGoupCloseButton {
+          label X
+          callback {CreateMeshFromBoundingBoxGroup->hide();}
+          xywh {339 440 19 20}
+        }
+        Fl_Choice CreateMeshFromBoundingBoxGroupInput {
+          label {Input : } open
+          xywh {140 465 115 25} down_box BORDER_BOX
+        } {
+          MenuItem CreateMeshFromBoundingBoxNoneMenuItem {
+            label None
+            xywh {0 0 30 20}
+          }
+          MenuItem CreateMeshFromBoundingBoxBoundingBoxSelectMenuItem {
+            label {Bounding Box}
+            callback {HideAll();
+CreateMeshFromBoundingBoxGroup->show();
+UnstructuredMeshGroup->show();
+strcpy(choice , "BoundingBox");}
+            xywh {10 10 30 20}
+          }
+          MenuItem CreateMeshFromBoundingBoxSurfaceSelectMenuItem {
+            label Surface
+            callback {HideAll();
+CreateMeshFromBoundingBoxGroup->show();
+SurfaceGroup->show();
+strcpy(choice ,"Surface");}
+            xywh {20 20 30 20}
+          }
+        }
+        Fl_Button CreateMeshFromBoundingBoxSelectButton {
+          label Select
+          callback {if(!strcmp(choice, "BoundingBox"))
+{
+	BoundingBoxUGrid = GetUGridCheckedItem()->UGrid;
+}
+
+if(!strcmp(choice, "Surface"))
+{
+	CompleteSurface = GetSTLCheckedItem()->GetPolyData();
+}}
+          xywh {267 468 64 20}
+        }
+        Fl_Return_Button CreateMeshFromBoundingBoxMeshButton {
+          label Mesh
+          callback {vtkMimxUnstructuredGridFromBoundingBox *ugrid = vtkMimxUnstructuredGridFromBoundingBox::New();
+	ugrid->SetSurface(CompleteSurface);
+	ugrid->SetBoundingBox(BoundingBoxUGrid);
+	ugrid->Update();
+	if(ugrid->GetOutput())
+	{
+	this->vtkUGridList.Add(new vtkMimxUGrid);
+	this->UGridCheckBrowser->add("UGridFromBox");
+	this->UGridCheckBrowser->redraw();
+
+        UGridCheckBrowser->check_none();
+        UGridCheckBrowser->set_checked(UGridCheckBrowser->nitems());
+	
+	
+	this->GetUGridCheckedItem()->UGrid->DeepCopy(ugrid->GetOutput());
+	this->GetUGridCheckedItem()->UGrid->Modified();	
+        this->VTKRenderer->AddActor(this->vtkUGridList.GetLastItem()->GetActor());
+	this->FitView();
+        HideAll();
+	UnstructuredMeshGroup->show();
+	}
+	ugrid->Delete();
+	this->FitView();}
+          xywh {159 510 70 25}
+          code0 {\#include "vtkMimxUnstructuredGridFromBoundingBox.h"}
+        }
+      }
+      Fl_Group RecalculateInteriorNodesGroup {
+        label {Recalculate Interior Nodes} open
+        xywh {53 460 274 110} box UP_BOX hide
+      } {
+        Fl_Button RecalculateInteriorNodesGoupCloseButton {
+          label X
+          callback {RecalculateInteriorNodesGroup->hide();}
+          xywh {307 460 19 20}
+        }
+        Fl_Choice RecalculateInteriorNodesGoupInput {
+          label {Input : } open
+          xywh {118 485 115 25} down_box BORDER_BOX
+        } {
+          MenuItem RecalculateInteriorNodesNoneSelectMenuItem {
+            label None
+            callback {strcpy(choice ,"");}
+            xywh {0 0 30 20}
+          }
+          MenuItem RecalculateInteriorNodesBoundingBoxSelectMenuItem {
+            label {Bounding Box}
+            callback {UnstructuredMeshGroup->show();
+strcpy(choice ,"BoundingBox");}
+            xywh {30 30 30 20}
+          }
+          MenuItem RecalculateInteriorNodesUnstructuredGridSelectMenuItem {
+            label {Unstructured Grid}
+            callback {UnstructuredMeshGroup->show();
+strcpy(choice ,"UnstructuredSolidMesh");}
+            xywh {40 40 30 20}
+          }
+        }
+        Fl_Button RecalculateInteriorNodesSelectButton {
+          label Select
+          callback {if(!strcmp(choice, "BoundingBox"))
+{
+	BoundingBoxUGrid = GetUGridCheckedItem()->UGrid;
+}
+
+if(!strcmp(choice, "UnstructuredSolidMesh"))
+{
+	UGrid = GetUGridCheckedItem()->UGrid;
+}}
+          xywh {245 488 64 20}
+        }
+        Fl_Return_Button RecalculateInteriorNodesButton {
+          label Recalculate
+          callback {vtkMimxRecalculateInteriorNodes *recalc = vtkMimxRecalculateInteriorNodes::New();
+//	smooth->SetConstrainedSmoothing(1);
+	recalc->SetBoundingBox(BoundingBoxUGrid);
+	recalc->SetInput(UGrid);
+
+	recalc->Update();
+	if(recalc->GetOutput())
+	{
+	this->vtkUGridList.Add(new vtkMimxUGrid);
+	this->UGridCheckBrowser->add("Recalc");
+	this->UGridCheckBrowser->redraw();
+
+        UGridCheckBrowser->check_none();
+        UGridCheckBrowser->set_checked(UGridCheckBrowser->nitems());
+	
+	
+	this->GetUGridCheckedItem()->UGrid->DeepCopy(recalc->GetOutput());
+	this->GetUGridCheckedItem()->UGrid->Modified();	
+        this->VTKRenderer->AddActor(this->vtkUGridList.GetLastItem()->GetActor());
+	this->FitView();
+        HideAll();
+	UnstructuredMeshGroup->show();
+	}
+	recalc->Delete();
+	this->FitView();}
+          xywh {213 530 110 25}
+        }
+      }
+      Fl_Group LaplacianSmoothingGroup {open
+        xywh {36 454 320 120} box UP_BOX hide
+      } {
+        Fl_Button LaplacinaSmoothingGroupCloseButton {
+          label X
+          callback {LaplacianSmoothingGroup->hide();}
+          tooltip Close xywh {341 454 13 20} labeltype EMBOSSED_LABEL
+        }
+        Fl_Choice LaplacianSmoothingGroupInput {
+          label {Input : } open
+          xywh {117 483 115 25} down_box BORDER_BOX
+        } {
+          MenuItem LaplacianSmoothingSelectNoneMenuItem {
+            label None
+            xywh {10 10 30 20}
+          }
+          MenuItem LaplacianSmoothingUGridSelectMenuItem {
+            label {Unstructured Mesh}
+            callback {HideAll();
+LaplacianSmoothingGroup->show();
+UnstructuredMeshGroup->show();
+strcpy(choice , "UnstructuredMesh");}
+            xywh {20 20 30 20}
+          }
+          MenuItem LaplacianSmoothingSurfaceSelectMenuItem {
+            label Surface
+            callback {HideAll();
+LaplacianSmoothingGroup->show();
+SurfaceGroup->show();
+strcpy(choice ,"Surface");}
+            xywh {30 30 30 20}
+          }
+        }
+        Fl_Button LaplacianSmoothingSelectButton {
+          label Select
+          callback {if(!strcmp(choice, "UnstructuredMesh"))
+{
+	UGrid = GetUGridCheckedItem()->UGrid;
+}
+
+if(!strcmp(choice, "Surface"))
+{
+	CompleteSurface = GetSTLCheckedItem()->GetPolyData();
+}}
+          xywh {271 485 64 20}
+        }
+        Fl_Return_Button LaplacianSmoothingMeshButton {
+          label Smooth
+          callback {vtkMimxSmoothUnstructuredGridFilter *smooth = vtkMimxSmoothUnstructuredGridFilter::New();
+//	interp->SetConstrainedSmoothing(1);
+	smooth->SetSource(CompleteSurface);
+	smooth->SetInput(UGrid);
+//	interp->SetNumberOfIterations(5);
+	smooth->Update();
+	
+	if(smooth->GetOutput())
+	{
+		UGrid->GetPoints()->DeepCopy(smooth->GetOutput()->GetPoints());
+		UGrid->GetPoints()->Modified();
+		FitView();
+	}
+	smooth->Delete();}
+          xywh {131 527 86 25}
+          code0 {\#include "vtkMimxUnstructuredGridFromBoundingBox.h"}
+        }
+      }
+      Fl_Group CreateIrregularCylindricalMeshGroup {
+        label {Irregular Cylinder} open
+        xywh {25 469 330 170} box UP_BOX hide
+      } {
+        Fl_Return_Button IrregularCylinderMeshButton {
+          label Mesh
+          callback {if(Curve[0] != NULL && Curve[1] != NULL &&
+	Curve[2] != NULL && Curve[3] != NULL )
+{
+
+	this->vtkUGridList.Add(new vtkMimxUGrid);
+	this->UGridCheckBrowser->add("Cylindrical Mesh");
+	this->UGridCheckBrowser->redraw();
+
+        UGridCheckBrowser->check_none();
+        UGridCheckBrowser->set_checked(UGridCheckBrowser->nitems());
+	vtkMimxCylindricalMesh *cylmesh = vtkMimxCylindricalMesh::New();
+	for(int i=0; i <4; i++)	cylmesh->SetCurve(i,Curve[i]->PolyData);
+	cylmesh->SetBoundingBox(BoundingBoxUGrid);
+	cylmesh->SetSource(CompleteSurface);
+	cylmesh->Update();
+        UGridCheckBrowser->check_none();
+        UGridCheckBrowser->set_checked(UGridCheckBrowser->nitems());
+	
+	this->GetUGridCheckedItem()->UGrid->DeepCopy(cylmesh->GetOutput());
+	this->GetUGridCheckedItem()->UGrid->Modified();	
+        this->VTKRenderer->AddActor(this->vtkUGridList.GetLastItem()->GetActor());
+	this->FitView();
+        HideAll();
+	UnstructuredMeshGroup->show();
+}}
+          xywh {277 605 70 25} box BORDER_BOX
+          code0 {\#include "vtkMimxCylindricalMesh.h"}
+        }
+        Fl_Button CreateIrregularCylinderMeshGroupCloseButton {
+          label X
+          callback {CreateIrregularCylindricalMeshGroup->hide();}
+          xywh {330 469 25 25}
+        }
+        Fl_Choice CreateIrregularCylinderGoupTraceInput {
+          label {Trace : } open
+          xywh {128 495 115 25} down_box BORDER_BOX
+        } {
+          MenuItem CreateIrregularCylinderCurveNoneSelectMenuItem {
+            label None
+            callback {strcpy(choice ,"");}
+            xywh {10 10 30 20}
+          }
+          MenuItem CreateIrregularCylinderCurveSuperiorInnerSelectMenuItem {
+            label {Superior Inner}
+            callback {HideAll();
+CreateIrregularCylindricalMeshGroup->show();
+CurveGroup->show();
+strcpy(choice ,"SuperiorInner");}
+            xywh {40 40 30 20}
+          }
+          MenuItem CreateIrregularCylinderCurveSuperiorOuterSelectMenuItem {
+            label {Superior Outer}
+            callback {HideAll();
+CreateIrregularCylindricalMeshGroup->show();
+CurveGroup->show();
+strcpy(choice ,"SuperiorOuter");}
+            xywh {50 50 30 20}
+          }
+          MenuItem CreateIrregularCylinderCurveInferiorInnerSelectMenuItem {
+            label {Inferior Inner}
+            callback {HideAll();
+CreateIrregularCylindricalMeshGroup->show();
+CurveGroup->show();
+strcpy(choice ,"InferiorInner");}
+            xywh {50 50 30 20}
+          }
+          MenuItem CreateIrregularCylinderCurveInferiorOuterSelectMenuItem {
+            label {Inferior Outer}
+            callback {HideAll();
+CreateIrregularCylindricalMeshGroup->show();
+CurveGroup->show();
+strcpy(choice ,"InferiorOuter");}
+            xywh {60 60 30 20}
+          }
+        }
+        Fl_Button CreateIrregularCylinderCurveSelectButton {
+          label Select
+          callback {if(!strcmp(choice, "SuperiorInner"))
+{
+	Curve[0] = GetCurveCheckedItem();
+}
+
+if(!strcmp(choice, "SuperiorOuter"))
+{
+	Curve[1] = GetCurveCheckedItem();
+}
+
+if(!strcmp(choice, "InferiorInner"))
+{
+	Curve[2] = GetCurveCheckedItem();
+}
+if(!strcmp(choice, "InferiorOuter"))
+{
+	Curve[3] = GetCurveCheckedItem();
+}}
+          xywh {255 498 64 20}
+        }
+        Fl_Choice CreateIrregularCylinderGoupBoundingBoxInput {
+          label {Bounding Box : } open
+          xywh {127 569 115 25} down_box BORDER_BOX
+        } {
+          MenuItem CreateIrregularCylinderBoundingBoxNoneSelectMenuItem {
+            label None
+            callback {strcpy(choice ,"");}
+            xywh {20 20 30 20}
+          }
+          MenuItem CreateIrregularCylinderCurveCreateBoundingBoxNewSelectMenuItem {
+            label {Create New}
+            callback {HideAll();
+CreateIrregularCylindricalMeshGroup->show();
+UnstructuredMeshGroup->show();
+strcpy(choice ,"CreateNewBoundingBox");}
+            xywh {50 50 30 20}
+          }
+          MenuItem CreateIrregularCylinderCurveSelectExistingBoundingBoxSelectMenuItem {
+            label {Select Existing}
+            callback {HideAll();
+CreateIrregularCylindricalMeshGroup->show();
+UnstructuredMeshGroup->show();
+strcpy(choice ,"SelectExisting");}
+            xywh {60 60 30 20}
+          }
+        }
+        Fl_Button CreateIrregularCylinderBoundingBoxSelectButton {
+          label Select
+          callback {if(!strcmp(choice, "CreateNewBoundingBox"))
+{
+	if(CompleteSurface)
+	{
+		vtkMimxButterflyMeshFromBounds *butterfly = 
+			vtkMimxButterflyMeshFromBounds::New();
+		butterfly->SetBounds(CompleteSurface->GetBounds());
+		butterfly->SetNumberOfLayers(2);
+		butterfly->Update();
+		if(butterfly->GetOutput())
+		{
+			this->vtkUGridList.Add(new vtkMimxUGrid);
+			this->UGridCheckBrowser->add("Butterfly Mesh");
+			this->UGridCheckBrowser->redraw();
+	
+ 		       UGridCheckBrowser->check_none();
+ 		       UGridCheckBrowser->set_checked(UGridCheckBrowser->nitems());	
+	
+			this->GetUGridCheckedItem()->UGrid->DeepCopy(butterfly->GetOutput());
+			this->GetUGridCheckedItem()->UGrid->Modified();	
+  		      this->VTKRenderer->AddActor(this->vtkUGridList.GetLastItem()->GetActor());
+			this->FitView();
+
+			UnstructuredMeshGroup->show();
+
+		}
+		butterfly->Delete();
+		BoundingBoxUGrid = this->GetUGridCheckedItem()->UGrid;	
+	}
+}
+
+
+if(!strcmp(choice, "SelectExisting"))
+{
+	BoundingBoxUGrid = this->GetUGridCheckedItem()->UGrid;	
+}}
+          xywh {254 572 64 20}
+          code0 {\#include "vtkMimxButterflyMeshFromBounds.h"}
+        }
+        Fl_Choice CreateIrregularCylinderGoupSurfaceInput {
+          label {Surface  : } open
+          xywh {127 534 115 25} down_box BORDER_BOX
+        } {
+          MenuItem CreateIrregularCylinderSurfaceNoneSelectMenuItem {
+            label None
+            callback {strcpy(choice ,"");}
+            xywh {30 30 30 20}
+          }
+          MenuItem CreateIrregularCylinderSurfaceSelectMenuItem {
+            label Surface
+            callback {HideAll();
+CreateIrregularCylindricalMeshGroup->show();
+SurfaceGroup->show();
+strcpy(choice ,"Surface");}
+            xywh {60 60 30 20}
+          }
+        }
+        Fl_Button CreateIrregularCylinderSurfaceSelectButton {
+          label Select
+          callback {if(!strcmp(choice, "Surface"))
+{
+	CompleteSurface = GetSTLCheckedItem()->GetPolyData();
+}}
+          xywh {254 537 64 20}
+        }
+      }
+      Fl_Group CreateIntervertebralDiscMeshGroup {
+        label {Create Intervertebral Disc} open
+        xywh {39 455 305 130} box UP_BOX hide
+      } {
+        Fl_Button CreateIntervertebralDiscMeshGroupCloseButton {
+          label X
+          callback {CreateIntervertebralDiscMeshGroup->hide();}
+          xywh {314 455 30 20}
+        }
+        Fl_Choice CreateIntervertebralDiscMeshGroupInput {
+          label {Input : } open
+          xywh {90 481 115 25} down_box BORDER_BOX
+        } {
+          MenuItem CreateIntervertebralDiscMeshSelectNoneMenuItem {
+            label None
+            xywh {20 20 30 20}
+          }
+          MenuItem CreateIntervertebraDiscMeshLowVertebraSelectMenuItem {
+            label {Lower Vertebra}
+            callback {HideAll();
+CreateIntervertebralDiscMeshGroup->show();
+UnstructuredMeshGroup->show();
+strcpy(choice , "LowerVertebra");}
+            xywh {30 30 30 20}
+          }
+          MenuItem CreateIntervertebralDiscMeshUpperVertebraSelectMenuItem {
+            label {Upper Vertebra}
+            callback {HideAll();
+CreateIntervertebralDiscMeshGroup->show();
+UnstructuredMeshGroup->show();
+strcpy(choice ,"UpperVertebra");}
+            xywh {40 40 30 20}
+          }
+          MenuItem CreateIntervertebraDiscMeshBoundingBoxSelectMenuItem {
+            label {Bounding Box}
+            callback {HideAll();
+CreateIntervertebralDiscMeshGroup->show();
+UnstructuredMeshGroup->show();
+strcpy(choice , "BoundingBox");}
+            xywh {0 0 30 20}
+          }
+        }
+        Fl_Button CreateIntervertebralDiscMeshGroupSelectButton {
+          label Select
+          callback {if(!strcmp(choice, "BoundingBox"))
+{
+	BoundingBoxUGrid = GetUGridCheckedItem()->UGrid;
+}
+
+if(!strcmp(choice, "LowerVertebra"))
+{
+	UGrid = GetUGridCheckedItem()->UGrid;
+}
+if(!strcmp(choice, "UpperVertebra"))
+{
+	UGrid1 = GetUGridCheckedItem()->UGrid;
+}}
+          xywh {224 484 64 20}
+        }
+        Fl_Return_Button CreateIntervertebralDiscMeshGroupMeshButton {
+          label Mesh
+          callback {if(BoundingBoxUGrid && UGrid && UGrid1)
+{
+	vtkMimxGenerateIntervertebralDisc *getdisc = vtkMimxGenerateIntervertebralDisc::New();
+	getdisc->SetLowerVertebralBody(UGrid);
+	getdisc->SetUpperVertebralBody(UGrid1);
+	getdisc->SetBoundingBox(BoundingBoxUGrid);
+	getdisc->SetDivisionsAlongAxis((int)NumberOfDivisionsAlongThicknessValueInput->value());
+	getdisc->SetInnerBulgeOffset(0.0);
+	getdisc->SetOuterBulgeOffset(0.0);
+	getdisc->Update();
+	if(getdisc->GetOutput())
+	{
+	vtkUnstructuredGridWriter *writer = vtkUnstructuredGridWriter::New();
+	writer->SetFileName("ugrid.vtk");
+	writer->SetInput(getdisc->GetOutput());
+	writer->Write();
+	vtkUnstructuredGridWriter *writer1 = vtkUnstructuredGridWriter::New();
+	writer1->SetFileName("bbox.vtk");
+	writer1->SetInput(getdisc->GetDiscBoundingBox());
+	writer1->Write();
+	this->vtkUGridList.Add(new vtkMimxUGrid);
+	this->UGridCheckBrowser->add("Disc Bounding Box");
+	this->UGridCheckBrowser->redraw();
+
+        UGridCheckBrowser->check_none();
+        UGridCheckBrowser->set_checked(UGridCheckBrowser->nitems());
+	
+	this->GetUGridCheckedItem()->UGrid->DeepCopy(getdisc->GetDiscBoundingBox());
+	this->GetUGridCheckedItem()->UGrid->Modified();	
+	this->vtkUGridList.GetLastItem()->GetActor()->GetProperty()->SetRepresentationToWireframe();
+        this->VTKRenderer->AddActor(this->vtkUGridList.GetLastItem()->GetActor());
+	this->FitView();
+        HideAll();
+	UnstructuredMeshGroup->show();
+	
+	this->vtkUGridList.Add(new vtkMimxUGrid);
+	this->UGridCheckBrowser->add("Intervertebral Disc");
+	this->UGridCheckBrowser->redraw();
+
+        UGridCheckBrowser->check_none();
+        UGridCheckBrowser->set_checked(UGridCheckBrowser->nitems());
+	
+	this->GetUGridCheckedItem()->UGrid->DeepCopy(getdisc->GetOutput());
+	this->GetUGridCheckedItem()->UGrid->Modified();	
+//	this->vtkUGridList.GetLastItem()->GetActor()->GetProperty()->SetRepresentationToWireFrame();
+        this->VTKRenderer->AddActor(this->vtkUGridList.GetLastItem()->GetActor());
+	this->FitView();
+        HideAll();
+	UnstructuredMeshGroup->show();
+
+	}
+}}
+          xywh {255 555 76 25}
+          code0 {\#include "vtkMimxGenerateIntervertebralDisc.h"}
+        }
+        Fl_Value_Input NumberOfDivisionsAlongThicknessValueInput {
+          label {Num of Div along thickness of Disc}
+          xywh {270 516 29 24} value 1
+        }
+      }
+      Fl_Group ExtractWidgetPropertyGroup {open
+        xywh {85 555 205 95} box UP_BOX hide
+      } {
+        Fl_Value_Input ExtractWidgetRadiusInput {
+          label Radius
+          callback {unstructuredgridextractwidget->SetEnabled(0);
+unstructuredgridextractwidget->SetHandleSize(double(ExtractWidgetRadiusInput->value()));
+
+unstructuredgridextractwidget->SetEnabled(1);}
+          xywh {138 559 35 23} value 1
+        }
+        Fl_Button ExtractWidgetClearButton {
+          label Clear
+          callback {unstructuredgridextractwidget->SetEnabled(0);
+unstructuredgridextractwidget->GetPointIdList()->Initialize();
+unstructuredgridextractwidget->DeleteHandles();
+unstructuredgridextractwidget->SetEnabled(1);}
+          xywh {91 620 64 25}
+        }
+        Fl_Button ExtractWidgetPropertyGroupCloseButton {
+          label X
+          callback {ExtractWidgetPropertyGroup->hide();}
+          xywh {268 555 20 20}
+        }
+        Fl_Return_Button ExtractWidgetPropertyGroupDoneButton {
+          label Done
+          callback {vtkPoints *points = vtkPoints::New();
+	points->SetNumberOfPoints(4);
+
+	// for the unstructured grid cell	
+	for(int i=0; i < 4; i++){	
+	points->SetPoint(i, unstructuredgridextractwidget->GetUGrid()->GetPoint(unstructuredgridextractwidget->GetPointIdList()->GetId(i)));
+	}
+	vtkMimxUnstructuredGridFromFourPoints* gridfromfourpoints = vtkMimxUnstructuredGridFromFourPoints::New();
+	gridfromfourpoints->SetPoints(points);
+	gridfromfourpoints->SetExtrusionLength(5.0);
+	gridfromfourpoints->Update();
+	
+	this->vtkUGridList.Add(new vtkMimxUGrid);
+	this->UGridCheckBrowser->add("UGridFromFourPoints");
+	this->UGridCheckBrowser->redraw();
+
+	this->vtkUGridList.GetLastItem()->UGrid->DeepCopy(gridfromfourpoints->GetOutput());
+	this->vtkUGridList.GetLastItem()->UGrid->Modified();	
+        this->VTKRenderer->AddActor(this->vtkUGridList.GetLastItem()->GetActor());
+        
+        // for structured surface mesh
+        
+ /*       vtkGeometryFilter *geofil = vtkGeometryFilter::New();
+	geofil->SetInput(unstructuredgridextractwidget->GetUGrid());
+	vtkMimxFourPointsToStructuredPlanarMesh *con = vtkMimxFourPointsToStructuredPlanarMesh::New();
+	con->SetInput(geofil->GetOutput());
+	vtkIdList *idlist = vtkIdList::New();
+	idlist->SetNumberOfIds(4);
+	for(int i=0; i < 4; i++){	
+	idlist->SetId(i, unstructuredgridextractwidget->GetPointIdList()->GetId(i));
+	}
+	con->SetPointList(idlist);
+	con->Update();
+        
+        this->vtkPlanarStructuredGridList.Add(vtkMimxPlanarStructuredGridSource::New());
+	this->StructuredPlanarMeshCheckBrowser->add("MeshFrom4Points");
+	this->StructuredPlanarMeshCheckBrowser->redraw();
+
+        StructuredPlanarMeshCheckBrowser->check_none();
+        StructuredPlanarMeshCheckBrowser->set_checked(StructuredPlanarMeshCheckBrowser->nitems());
+	
+	this->GetPlanarStructuredGridCheckedItem()->SGrid->DeepCopy(con->GetOutput());
+	this->GetPlanarStructuredGridCheckedItem()->SGrid->Modified();	
+        this->VTKRenderer->AddActor(this->vtkPlanarStructuredGridList.GetLastItem()->Actor);
+	this->FitView();*/
+	this->FitView();
+	points->Delete();
+	gridfromfourpoints->Delete();
+//	idlist->Delete();
+//	con->Delete();}
+          xywh {219 623 66 20}
+          code0 {\#include "vtkMimxUnstructuredGridFromFourPoints.h"}
+          code1 {\#include "vtkMimxFourPointsToStructuredPlanarMesh.h"}
+          code2 {\#include "vtkPoints.h"}
+          code3 {\#include "vtkGeometryFilter.h"}
+        }
+      }
+    }
+  }
+  Function {Show()} {} {
+    code {this->MainWindow->show();
+HideAll();
+this->VTKRenderer->SetBackground(0.5,0.5,0.5);
+this->VTKRenderWindow->AddRenderer(this->VTKRenderer);
+this->VTKFlWindow->SetInteractorStyle(InteractorStyleSelect);
+this->AxisRenderer->SetBackground(0.2,0.2,0.2);
+this->AxisRenderer->InteractiveOff();
+this->VTKRenderWindow->SetNumberOfLayers(2);
+this->VTKRenderer->SetLayer(0);
+this->AxisRenderer->SetLayer(1);
+this->AxisRenderer->SetViewport(0.0,0.0,0.25,0.25);
+this->AxisRenderer->AddActor(this->PVAxesActor);
+this->CallBackCommand->SetCallback(updateAxis);
+this->CallBackCommand->SetClientData(this);
+this->VTKRenderer->AddObserver(vtkCommand::AnyEvent,this->CallBackCommand);
+this->VTKRenderWindow->AddRenderer(this->AxisRenderer);
+InteractorStyleSelect->SetInteractorStyleSelectState(0);
+this->VTKFlWindow->SetRenderWindow(this->VTKRenderWindow);
+this->VTKFlWindow->Initialize();
+this->VTKFlWindow->show();} {}
+  }
+  decl {vtkRenderer* VTKRenderer;} {public
+  }
+  decl {vtkRenderWindow* VTKRenderWindow;} {public
+  }
+  Function {FitView()} {open
+  } {
+    code {double XYZ[6];
+this->VTKRenderer->ComputeVisiblePropBounds(XYZ);
+this->VTKRenderer->ResetCamera(XYZ);
+this->VTKRenderWindow->Render();} {}
+  }
+  decl {vtkInteractorStyleSelect* InteractorStyleSelect;} {}
+  Function {HideAll()} {open
+  } {
+    code {SurfaceDistanceMapGroup->hide();
+CreateCurveGroup->hide();
+PlanarTransInterpGroup->hide();
+LaplacianSmoothingGroup->hide();
+this->MainWindow->show();
+this->DoneButton->hide();
+EdgeSolidTransInterpGroup->hide();
+ImageGroup->hide();
+SurfaceGroup->hide();
+CurveGroup->hide();
+StructuredPlanarMeshGroup->hide();
+StructuredSolidMeshGroup->hide();
+UnstructuredMeshGroup->hide();
+TransformGroup->hide();
+GeometryPropertyGroup->hide();
+ClipImageFromBoxGroup->hide();
+EditBBMeshSeedGroup->hide();
+CreateIrregularCylindricalMeshGroup->hide();
+EditBBMergeNodesGroup->hide();
+EditBBMirrorGroup->hide();
+BBWidgetPropertyGroup->hide();
+ExtractWidgetPropertyGroup->hide();
+MeshQualityGroup->hide();
+MergeSolidMeshGroup->hide();
+//MorphBoundingBoxGroup->hide();
+AbaqusFormatPropertiesGroup->hide();
+ExtrudeSurfaceGroup->hide();
+PickSurfacePropertyGroup->hide();
+ChangeMeshSeedGroup->hide();
+PosteriorElementMeshGroup->hide();
+PatchSurfaceGroup->hide();
+CreateMeshFromBoundingBoxGroup->hide();
+RecalculateInteriorNodesGroup->hide();
+CreateIntervertebralDiscMeshGroup->hide();
+CreateIntervertebralDiscElementSetsGroup->hide();} {}
+  }
+  Function {GetSTLCheckedItem()} {open return_type {vtkMimxSTLSource*}
+  } {
+    code {int i = 1;
+bool status = false;
+
+do
+{
+	if(this->STLCheckBrowser->checked(i))	
+	{
+		return this->vtkSTLSourceList.GetValue(i);
+		break;
+	status = true;}
+	i++;
+}while(!this->STLCheckBrowser->checked(i-1) && i <= this->STLCheckBrowser->nitems());
+
+if(!status) return NULL;} {}
+  }
+  decl {vtkMimxSTLSource* SurfaceSource;} {}
+  decl {vtkMimxSTLSource* SurfaceTarget;} {}
+  decl {vtkScalarBarActor* ScalarBarActor;} {}
+  decl {vtkPVAxesActor* PVAxesActor;} {}
+  decl {vtkRenderer* AxisRenderer;} {public
+  }
+  decl {vtkCallbackCommand* CallBackCommand;} {}
+  decl {CLinkedList<vtkMimxCurve*> vtkCurveList;} {}
+  decl {vtkMimxCurve *Curve[12];} {}
+  Function {GetCurveCheckedItem()} {open return_type {vtkMimxCurve*}
+  } {
+    code {int i = 1;
+bool status = false;
+
+do
+{
+	if(this->CurveCheckBrowser->checked(i))	
+	{
+		return this->vtkCurveList.GetValue(i);
+		break;
+	status = true;}
+	i++;
+}while(!this->CurveCheckBrowser->checked(i-1) && i <= this->CurveCheckBrowser->nitems());
+
+if(!status) return NULL;} {}
+  }
+  decl {CLinkedList<vtkMimxSTLSource*> vtkSTLSourceList;} {}
+  decl {CLinkedList<vtkMimxSolidStructuredGridSource*> vtkSolidStructuredGridSourceList;} {}
+  decl {vtkMimxBoundingBoxSource* boundingbox;} {}
+  decl {vtkMimxEditUnstructuredHexahedronGrid* editunstructuredhexahedrongrid;} {}
+  decl {vtkMimxUnstructuredGridWidget* unstructuredgridwidget;} {}
+  decl {vtkActor* unstructuredgridactor;} {}
+  decl {vtkMimxUnstructuredGridExtractWidget *unstructuredgridextractwidget;} {}
+  decl {vtkMimxGenerateHexahedronMesh* StructuredHexahedronMesh;} {}
+  Function {Reset()} {} {
+    code {for(int i = 1; i <= this->STLCheckBrowser->nitems(); i++)
+{
+	double color[3];	
+	this->vtkSTLSourceList.GetValue(i)->GetPrevColor(color);	
+	this->vtkSTLSourceList.GetValue(i)->GetActor()->GetProperty()
+		->SetColor(color);
+}
+
+for(int i = 1; i <= this->CurveCheckBrowser->nitems(); i++)
+{
+	double color[3];	
+	this->vtkCurveList.GetValue(i)->GetPrevColor(color);	
+	this->vtkCurveList.GetValue(i)->GetActor()->GetProperty()
+		->SetColor(color);
+}
+this->FitView();} {}
+  }
+  decl {const char* FilePath;} {}
+  decl {CLinkedList<vtkMimxUGrid*> vtkUGridList;} {}
+  Function {GetUGridCheckedItem()} {open return_type {vtkMimxUGrid*}
+  } {
+    code {int i = 1;
+bool status = false;
+
+do
+{
+	if(this->UGridCheckBrowser->checked(i))	
+	{
+		return this->vtkUGridList.GetValue(i);
+		break;
+	status = true;}
+	i++;
+}while(!this->UGridCheckBrowser->checked(i-1) && i <= 
+	this->UGridCheckBrowser->nitems());
+
+if(!status) return NULL;} {}
+  }
+  Function {GetImageCheckedItem()} {return_type {vtkMimxClipImageFromBox*}
+  } {
+    code {int i = 1;
+bool status = false;
+
+do
+{
+	if(this->ImageCheckBrowser->checked(i))	
+	{
+		return this->vtkImageList.GetValue(i);
+		break;
+	status = true;}
+	i++;
+}while(!this->ImageCheckBrowser->checked(i-1) && i <= 
+	this->ImageCheckBrowser->nitems());
+
+if(!status) return NULL;} {}
+  }
+  decl {CLinkedList<vtkMimxClipImageFromBox*> vtkImageList;} {}
+  decl {CLinkedList<vtkMimxBoundingBoxSource*> vtkBoundingBoxList;} {}
+  decl {vtkLocalAxesActor *LocalAxesActor;} {}
+  Function {GetPlanarStructuredGridCheckedItem()} {return_type {vtkMimxPlanarStructuredGridSource*}
+  } {
+    code {int i = 1;
+bool status = false;
+
+do
+{
+	if(this->StructuredPlanarMeshCheckBrowser->checked(i))	
+	{
+		return this->vtkPlanarStructuredGridList.GetValue(i);
+		break;
+	status = true;}
+	i++;
+}while(!this->StructuredPlanarMeshCheckBrowser->checked(i-1) && i <= 
+	this->StructuredPlanarMeshCheckBrowser->nitems());
+
+if(!status) return NULL;} {}
+  }
+  decl {CLinkedList<vtkMimxPlanarStructuredGridSource*> vtkPlanarStructuredGridList;} {}
+  decl {vtkMeshQualityClass *MeshQuality;} {}
+  Function {GetSTLCheckedNumber()} {open return_type int
+  } {
+    code {int i = 1;
+bool status = false;
+
+do
+{
+	if(this->STLCheckBrowser->checked(i))	
+	{
+		status = true;
+		return i;		
+	}
+	i++;
+}while(!this->CurveCheckBrowser->checked(i-1) && i <= this->CurveCheckBrowser->nitems());
+
+if(!status) return 0;} {}
+  }
+  decl {vtkPolyData *CompleteSurface;} {}
+  decl {vtkPolyData *CutSurface;} {}
+  decl {vtkUnstructuredGrid *BoundingBoxUGrid;} {}
+  decl {vtkUnstructuredGrid *UGrid;} {}
+  Function {GetSolidStructuredGridCheckedItem()} {open return_type {vtkMimxSolidStructuredGridSource*}
+  } {
+    code {int i = 1;
+bool status = false;
+
+do
+{
+	if(this->StructuredSolidMeshCheckBrowser->checked(i))	
+	{
+		return this->vtkSolidStructuredGridSourceList.GetValue(i);
+		break;
+	status = true;}
+	i++;
+}while(!this->StructuredSolidMeshCheckBrowser->checked(i-1) && i <= 
+	this->StructuredSolidMeshCheckBrowser->nitems());
+
+if(!status) return NULL;} {}
+  }
+  decl {char choice[30];} {}
+  Function {InitializeAll()} {open
+  } {
+    code {UGrid = NULL;
+BoundingBoxUGrid = NULL;
+CompleteSurface = NULL;
+CutSurface = NULL;
+UGrid1 = NULL;} {}
+  }
+  decl {vtkUnstructuredGrid *UGrid1;} {}
+  Function {GetSTLCheckedItemNumber()} {open return_type int
+  } {
+    code {int i = 1;
+bool status = false;
+
+do
+{
+	if(this->STLCheckBrowser->checked(i))	
+	{
+		return i;
+		break;
+	status = true;}
+	i++;
+}while(!this->STLCheckBrowser->checked(i-1) && i <= this->STLCheckBrowser->nitems());
+
+if(!status) return 0;} {}
+  }
+  Function {DeleteSTLCheckBrowserEntries()} {open
+  } {
+    code {// create the list of names associated with the
+CLinkedList<char*> charlist;
+CLinkedList<vtkMimxSTLSource*> localsurfacelist;
+
+int i;
+for(i=1; i<=this->STLCheckBrowser->nitems(); i++)
+{
+	if(!this->STLCheckBrowser->checked(i))
+	{
+		char name[256];
+		strcpy(name, this->STLCheckBrowser->text(i));
+		charlist.Add(name);
+		localsurfacelist.Add(this->vtkSTLSourceList.GetValue(i));
+	}
+}
+
+// delete and hide all the objects to be removed
+for(i=1; i<= this->STLCheckBrowser->nitems(); i++)
+{
+		if(this->STLCheckBrowser->checked(i))
+		{
+	        this->VTKRenderer->RemoveActor(this->vtkSTLSourceList.GetValue(i)->GetActor());
+	        this->vtkSTLSourceList.GetValue(i)->Delete();
+	        }
+}
+
+int numitems = this->STLCheckBrowser->nitems();
+do
+{
+	this->vtkSTLSourceList.Remove(this->vtkSTLSourceList.GetValue(numitems));
+	numitems --;
+}while(numitems !=0);
+
+// clear the browser and reenter only the unmarked contents
+this->STLCheckBrowser->clear();
+
+for(i=1; i<= charlist.Size(); i++)
+{
+	this->vtkSTLSourceList.Add(localsurfacelist.GetValue(i));
+	this->STLCheckBrowser->add(charlist.GetValue(i));
+}
+
+numitems = charlist.Size();
+int count = 0;
+if(numitems)
+{
+do
+{
+	localsurfacelist.Remove(localsurfacelist.GetValue(numitems));
+	if(!count)
+		charlist.Remove(charlist.GetValue(numitems));
+	count ++;
+	numitems --;
+}while(numitems !=0);
+}
+		this->FitView();
+		this->STLCheckBrowser->redraw();} {}
+  }
+  Function {DeleteUGridCheckBrowserEntries()} {open
+  } {
+    code {// create the list of names associated with the
+CLinkedList<char*> charlist;
+CLinkedList<vtkMimxUGrid*> localugridlist;
+
+int i;
+for(i=1; i<=this->UGridCheckBrowser->nitems(); i++)
+{
+	if(!this->UGridCheckBrowser->checked(i))
+	{
+		char name[256];
+		strcpy(name, this->UGridCheckBrowser->text(i));
+		charlist.Add(name);
+		localugridlist.Add(this->vtkUGridList.GetValue(i));
+	}
+}
+
+// delete and hide all the objects to be removed
+for(i=1; i<= this->UGridCheckBrowser->nitems(); i++)
+{
+		if(this->UGridCheckBrowser->checked(i))
+		{
+	        this->VTKRenderer->RemoveActor(this->vtkUGridList.GetValue(i)->GetActor());
+		delete        this->vtkUGridList.GetValue(i);
+	        }
+}
+
+int numitems = this->UGridCheckBrowser->nitems();
+do
+{
+	this->vtkUGridList.Remove(this->vtkUGridList.GetValue(numitems));
+	numitems --;
+}while(numitems !=0);
+
+// clear the browser and reenter only the unmarked contents
+this->UGridCheckBrowser->clear();
+
+for(i=1; i<= charlist.Size(); i++)
+{
+	this->vtkUGridList.Add(localugridlist.GetValue(i));
+	this->UGridCheckBrowser->add(charlist.GetValue(i));
+}
+
+numitems = charlist.Size();
+int count = 0;
+if(numitems)
+{
+do
+{
+	localugridlist.Remove(localugridlist.GetValue(numitems));
+	if(!count)
+		charlist.Remove(charlist.GetValue(numitems));
+	count++;
+	numitems --;
+}while(numitems !=0);
+}
+		this->FitView();
+		this->UGridCheckBrowser->redraw();} {}
+  }
+} 
+
+Function {updateAxis(vtkObject* caller, unsigned long , void* arg, void* )} {return_type void
+} {
+  code {double    cPos[3], cFoc[3], aFoc[3];
+	int       *size;
+
+	// set the axis camera according to the main renderer.
+	IaFeMesh *iafemesh = (IaFeMesh *)arg;
+	iafemesh->VTKRenderer->GetActiveCamera()->GetPosition(cPos);
+	iafemesh->VTKRenderer->GetActiveCamera()->GetFocalPoint(cFoc);
+	iafemesh->AxisRenderer->GetActiveCamera()->GetFocalPoint(aFoc);
+	iafemesh->AxisRenderer->GetActiveCamera()->SetViewUp(iafemesh->VTKRenderer->GetActiveCamera()->GetViewUp());
+	iafemesh->AxisRenderer->GetActiveCamera()->SetPosition(cPos[0] - cFoc[0] +
+		aFoc[0],\\
+		cPos[1] - cFoc[1] + aFoc[1],\\
+		cPos[2] - cFoc[2] + aFoc[2]);
+	iafemesh->AxisRenderer->ResetCamera();
+
+	// keep the axis window size a constant 120 pixels squared (ugly).
+//	size = iafemesh->VTKRenderWindow->GetSize();
+	//iafemesh->AxisRenderer->SetViewport(\\
+		//((float)size[0]-120.)/(float)size[0],\\
+		//0.,\\
+		//1.,\\
+		//(120.)/(float)size[1]);} {}
+} 

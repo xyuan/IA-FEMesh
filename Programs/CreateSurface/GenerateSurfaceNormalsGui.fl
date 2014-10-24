@@ -1,0 +1,82 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0107 
+header_name {.h} 
+code_name {.cxx}
+decl {\#include <stdio.h>} {} 
+
+decl {\#include <iostream>} {} 
+
+decl {\#include <GenerateNormals.h>} {} 
+
+decl {\#include <FL/Fl_File_Chooser.h>} {} 
+
+decl {\#include <FL/fl_ask.h>} {} 
+
+class SurfaceNormalGui {open
+} {
+  Function {SurfaceNormalGui()} {open
+  } {
+    Fl_Window ctrlWindow {
+      label {Normal Generation} open
+      xywh {264 193 605 220} type Double box PLASTIC_UP_BOX color 218 visible
+    } {
+      Fl_File_Input inputSurfaceEntry {
+        label {Input Surface}
+        xywh {124 35 391 35} box PLASTIC_DOWN_BOX
+      }
+      Fl_File_Input resultSurfaceEntry {
+        label {Output Surface}
+        xywh {127 83 390 35}
+      }
+      Fl_Button runIcpButton {
+        label Run
+        callback {std::cout << "Input Surface: " << inputSurfaceEntry->value() << std::endl;;
+std::cout << "Output Surface: " << resultSurfaceEntry->value() << std::endl;;
+
+GenerateNormals( inputSurfaceEntry->value(),
+		 resultSurfaceEntry->value());
+
+
+fl_message("Normal Generation Complete");}
+        tooltip {Orient Surface} xywh {125 149 105 25} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 183 selection_color 183 labelfont 1 align 16
+      }
+      Fl_Button quitButton {
+        label Quit
+        callback {exit(0);}
+        tooltip {Load Tensor image from file} xywh {403 150 105 25} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 1 selection_color 1 labelfont 1 align 16
+      }
+      Fl_Button selectFixedSurface {
+        label Select
+        callback {char * fileName = fl_file_chooser("Fixed Surface", "*.stl", "");
+
+
+
+if (fileName != NULL)
+{
+  std::cout << fileName << std::endl;
+  inputSurfaceEntry->value(fileName);
+  //SetFixedSurfaceFile(fileName);
+}} selected
+        xywh {520 45 60 25} box PLASTIC_UP_BOX color 5 labelfont 1
+      }
+      Fl_Button selectResultSurface {
+        label Select
+        callback {char * fileName = fl_file_chooser("Fixed Surface", "*.stl", "");
+
+
+
+if (fileName != NULL)
+{
+  std::cout << fileName << std::endl;
+  resultSurfaceEntry->value(fileName);
+  //SetRegisteredSurfaceFile(fileName);
+}}
+        xywh {520 95 60 25} box PLASTIC_UP_BOX color 5 labelfont 1
+      }
+    }
+  }
+  Function {show(int argc, char **argv)} {open
+  } {
+    code {ctrlWindow->show(argc, argv);} {}
+  }
+} 

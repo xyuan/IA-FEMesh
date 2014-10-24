@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<executable>
+  <category>
+  Meshing.MappedMesh
+  </category>
+  <title>
+  Mapped Mesh (Displacement Control)
+  </title>
+  <description>
+This program generates a hexahedral mesh for the given suject
+surface from template meshes using a deformable registration
+technique based on the surface nodes. The interior are mapped
+using a thinplate spline based on the location of the mapped
+surface nodes. This program uses Laplacian smoothing filter 
+to smooth the deformed surface.
+  </description>
+  <version>0.1.0.$Revision: 1.2 $(alpha)</version>
+  <documentation-url></documentation-url>
+  <license></license>
+  <contributor>This tool was developed by Vincent Magnotta, Nicole Grosland, and Wen Li. It was developed as part of an NIH NA-MIC Collaboration Grant EB005973.</contributor>
+  <acknowledgements>This command module was developed as part of an NIH NA-MIC Collaboration Grant EB005973.</acknowledgements>
+
+  <parameters>
+    <label>Meshing Input Files</label>
+    <description>Input files for the Mapped Mesh Algorithm</description>
+
+    <file>
+      <name>TemplateMesh</name>
+      <longflag>TemplateMesh</longflag>
+      <description>Template Mesh (VTK format) to be used for the registration.</description>
+      <label>Template Mesh</label>
+      <channel>input</channel>
+    </file>
+  
+    <file>
+      <name>SubjectSurface</name>
+      <longflag>SubjectSurface</longflag>
+      <description>Subject surface (STL format), ie target for mapped mesh algorithm.</description>
+      <label>Subject Surface</label>
+      <channel>input</channel>
+    </file>
+  </parameters>
+
+  <parameters>
+    <label>Meshing Output Files</label>
+    <description>Output files from Deformable Registration</description>
+
+    <file>
+      <name>OutputMesh</name>
+      <longflag>OutputMesh</longflag>
+      <description>Output mesh in VTK format (.vtk)</description>
+      <label>Output Mesh </label>
+      <channel>output</channel>
+    </file> 
+  </parameters>
+
+  <parameters>
+    <label>Registration Parameters</label>
+    <description>Parameter for registration</description>
+
+    <integer>
+      <name>numberOfIterations</name>
+      <longflag>numberOfIterations</longflag>
+      <description>Maximum number of iterations for the registration</description>
+      <label>Number of Iterations</label>
+      <default>5</default>
+    </integer>
+  
+    <double>
+      <name>tolerance</name>
+      <longflag>tolerance</longflag>
+      <description>Distance tolerance for applying displacment</description>
+      <label>Distance Tolerance</label>
+      <default>0.00000001</default>
+    </double>
+  </parameters>
+  
+  <parameters>
+    <label>Laplacian Smoothing Parameters</label>
+    <description>Parameters for Laplacian Smoothing</description>
+ 
+    <boolean>
+      <name>useLaplacianSmoothing</name>
+      <longflag>useLaplacianSmoothing</longflag>
+      <description>Flag to use laplacian smoothing during registration</description>
+      <label>Laplacian Smoothing</label>
+      <default>0</default>
+    </boolean>
+
+    <boolean>
+      <name>BoundarySmoothingFlag</name>
+      <longflag>BoundarySmoothingFlag</longflag>
+      <description>Flag to apply smoothing on boundaries</description>
+      <label>Boundary Smoothing</label>
+      <default>0</default>
+    </boolean>
+
+    <boolean>
+      <name>FeatureEdgeSmoothingFlag</name>
+      <longflag>FeatureEdgeSmoothingFlag</longflag>
+      <description>Turn on Feature Edge Smoothing</description>
+      <label>Feature Edge Smoothing</label>
+      <default>0</default>
+    </boolean>
+
+    <integer>
+      <name>SmoothingIterations</name>
+      <longflag>SmoothingIterations</longflag>
+      <description>Number of Iterations used for Laplacian Smoothing</description>
+      <label>Iterations for Smoothing</label>
+      <default>1000</default>
+    </integer>
+
+    <double>
+      <name>RelaxationFactor</name>
+      <longflag>RelaxationFactor</longflag>
+      <description>Set Relaxation Factor for smoothing</description>
+      <label>Set Relaxation Factor</label>
+      <default>0.01</default>
+    </double>
+
+    <double>
+      <name>EdgeAngle</name>
+      <longflag>EdgeAngle</longflag>
+      <description>Set Edge Angle for Smoothing</description>
+      <label>Edge Angle</label>
+      <default>120.0</default>
+    </double>
+
+    <double>
+      <name>FeatureAngle</name>
+      <longflag>FeatureAngle</longflag>
+      <description>Set Feature Angle for Smoothing</description>
+      <label>Feature Angle</label>
+      <default>120.0</default>
+    </double>
+
+    </parameters>
+
+  <parameters>
+    <label>Interpolation Parameters</label>
+    <description>Thin Plate Spline Parameters</description>
+
+    <integer>
+      <name>pointRatio</name>
+      <longflag>pointRatio</longflag>
+      <description>Choose every Nth point for TPS calculation</description>
+      <label>Point Ratio</label>
+      <default>1</default>
+    </integer>
+    
+    <boolean>
+      <name>randomPointSelection</name>
+      <longflag>randomPointSelection</longflag>
+      <description>Radomly select points for TPS Interpolation</description>
+      <label>Random Point Selection</label>
+      <default>0</default>
+    </boolean>
+
+  </parameters>
+
+
+  <parameters>
+    <label>Debug Options</label>
+    <description>Parameters for Debug Settings</description>
+
+    <boolean>
+      <name>debug</name>
+      <longflag>debug</longflag>
+      <description>Turn on debugging</description>
+      <default>0</default>
+      <label>Debug</label>
+    </boolean>
+
+    <file>
+      <name>intermediateMeshFileName</name>
+      <longflag>intermediateMeshFileName</longflag>
+      <description>Intermediate mesh filename</description>
+      <label>Intermediate Mesh Filename</label>            
+      <channel>output</channel>
+    </file> 
+  </parameters>
+
+</executable>

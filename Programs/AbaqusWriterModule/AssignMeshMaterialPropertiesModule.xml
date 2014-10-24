@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<executable>
+  <category>
+  Meshing.Assign Mesh Material Properties
+  </category>
+  <title>
+  Assign Mesh Material Properties
+  </title>
+  <description>
+This program will assign material propoerties to a mesh based on the image.
+  </description>
+  <version>0.1.0.$Revision: 1.1 $(alpha)</version>
+  <documentation-url>http:://mimx.ccad.uiowa.edu/mimx</documentation-url>
+  <license></license>
+  <contributor>This tool was developed by Nicole Grosland and Vincent Magnotta. It was developed as part of an NIH NA-MIC Collaboration Grant EB005973.</contributor>
+  <acknowledgements>This command module was developed as part of an NIH NA-MIC Collaboration Grant EB005973.</acknowledgements>
+
+  <parameters>
+    <label>Meshing Input Files</label>
+    <description>Input Mesh Parameters</description>
+
+    <file>
+      <name>vtkInputMeshFileName</name>
+      <longflag>vtkInputMeshFileName</longflag>
+      <description>VTK Input Mesh</description>
+      <label>VTK Input Mesh</label>
+      <channel>input</channel>
+    </file>
+    
+    <file>
+      <name>imageFileName</name>
+      <longflag>imageFileName</longflag>
+      <description>Image File Name</description>
+      <label>Image File Name</label>
+      <channel>input</channel>
+    </file>
+  </parameters>
+  
+  <parameters>
+    <label>Output Parameters</label>
+    <description>Output Abaqus File Parameters</description>
+  
+    <file>
+      <name>vtkOutputMeshFileName</name>
+      <longflag>vtkOutputMeshFileName</longflag>
+      <description>Output Mesh Filename</description>
+      <label>Output Mesh Filename</label>
+      <channel>output</channel>
+    </file> 
+    
+  </parameters>
+
+</executable>

@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<executable>
+  <category>
+  Meshing.MappedHexahedralMeshing
+  </category>
+  <title>
+  Mapped FE Registration
+  </title>
+  <description>
+This program generates a hexahedral mesh for the given suject 
+surface from template meshes using FE based deformable registration
+technique. The program uses ITKFEM framework and has been made 
+hierarchical so that multiple levels of mesh refinement can be
+used.
+  </description>
+  <version>0.1.0.$Revision: 1.5 $(alpha)</version>
+  <documentation-url>http:://mimx.ccad.uiowa.edu/mimx</documentation-url>
+  <license></license>
+  <contributor>This tool was developed by Nicole Grosland, Vincent Magnotta, and Ritesh Bafna. It was developed as part of an NIH NA-MIC Collaboration Grant EB005973.</contributor>
+  <acknowledgements>This command module was developed as part of an NIH NA-MIC Collaboration Grant EB005973.</acknowledgements>
+
+  <parameters>
+    <label>Meshing Input Files</label>
+    <description>Subject Surface file to be Meshed</description>
+
+    <file>
+      <name>SubjectSurface</name>
+      <longflag>SubjectFileName</longflag>
+      <description>Subject Surface File Name</description>
+      <label>Subject Surface</label>
+      <channel>input</channel>
+    </file>
+  </parameters>
+  
+  <parameters>
+    <label>Template Mesh Input Files</label>
+    <description>Template Meshes to be used for Meshing</description>
+  
+    <string-vector>
+      <name>TemplateMeshFileNames</name>
+      <longflag>TemplateMeshFileName</longflag>
+      <description>Templater Mesh File Names to be used for the registration</description>
+      <label>Template Mesh(es)</label>
+      <channel>input</channel>
+    </string-vector>
+  </parameters>
+
+  <parameters>
+    <label>Meshing Output Files</label>
+    <description>Output files from Mesh Generation</description>
+
+    <file>
+      <name>vtkFilename</name>
+      <longflag>VtkFileName</longflag>
+      <description>Output mesh VTK filename</description>
+      <label>Mesh VTK Filename</label>
+      <channel>output</channel>
+    </file> 
+ 
+    <file>
+      <name>interMeshFileName</name>
+      <longflag>InterMeshFileName</longflag>
+      <description>Intermediate mesh VTK filename</description>
+      <label>Intermediate VTK Filename</label>            
+      <channel>output</channel>
+    </file>    
+    
+  </parameters>
+ 
+  <parameters>
+    <label>FE Registration Parameters</label>
+    <description>Parameters for generation of the Hexahedral mesh</description>
+
+   <integer>
+      <name>numRefinementLevels</name>
+      <longflag>numRefinementLevels</longflag>
+      <description>Nmber of Mesh Refinement Levels to be used</description>
+      <label>Number of Mesh Refinment Levels</label>
+      <default>1</default>
+    </integer>
+    
+    <double-vector>
+      <name>youngsModulus</name>
+      <longflag>YoungsModulus</longflag>
+      <description>Young's Modulus for FE Registration</description>
+      <label>Young's Modulus</label>
+      <default>10</default>
+    </double-vector>
+
+    <double>
+      <name>poissonsRatio</name>
+      <longflag>PoissonsRatio</longflag>
+      <description>Poisson's Ratio for FE Registration</description>
+      <label>Poisson's Ratio</label>
+      <default>0.0</default>
+    </double>
+
+    <double>
+      <name>convergenceDistance</name>
+      <longflag>convergenceDistance</longflag>
+      <description>Distance used for convergence</description>
+      <label>Convergence Distance</label>
+      <default>0.0</default>
+    </double>
+
+    <string-enumeration>
+      <name>convergenceType</name>
+      <longflag>convergenceType</longflag>
+      <description>Rule used to determine convergence</description>
+      <label>Convergence Type</label>
+      <default>None</default>
+      <element>None</element>
+      <element>Average</element>
+      <element>Maximum</element>
+    </string-enumeration>
+    
+    
+    <integer-vector>
+      <name>numIterations</name>
+      <longflag>NumIterations</longflag>
+      <description>Maximum number of iterations at each mesh refinement level</description>
+      <label>Number of Iterations</label>
+      <default>20</default>      
+    </integer-vector>  
+    
+    <boolean>
+      <name>applyCenterBoundaryConditions</name>
+      <longflag>applyCenterBoundaryConditions</longflag>
+      <description>Flag to apply boundary conditions at the center of the mesh</description>
+      <label>Apply Center Boundary Conditions</label>
+    </boolean>  
+    
+    <double>
+      <name>tolerance</name>
+      <longflag>tolerance</longflag>
+      <description>Distance tolerance for applying FE loads</description>
+      <label>Distance Tolerance</label>
+      <default>0.0</default>
+    </double>
+
+    <boolean>
+      <name>debug</name>
+      <longflag>debug</longflag>
+      <description>Turn on debugging printing</description>
+      <label>Debug</label>
+    </boolean>
+
+   <boolean>
+      <name>distanceAlongNormals</name>
+      <longflag>distanceAlongNormals</longflag>
+      <description>Calculate distance to subject surface using normal surface intersecion instead of closest point</description>
+      <label>Compute Distance Along Normal</label>
+    </boolean>
+
+   <boolean>
+      <name>useExternalBoundaryConditions</name>
+      <longflag>useExternalBoundaryConditions</longflag>
+      <description>Apply boundary conditions to vertices that are within the distance specified by tolerance. The default value is off, and no load is applied to the point.</description>
+      <label>Use External Boundary Conditions</label>
+    </boolean>
+
+    </parameters>
+
+    <parameters>
+    <label>ICP Parameters</label>
+    <description>Parameters for initial registration</description>
+    
+    <string-enumeration>
+      <name>initialTransform</name>
+      <longflag>initialTransform</longflag>
+      <description>Initialization transform to be used for the FE registration</description>
+      <label>Initial Transform</label>
+      <default>None</default>
+      <element>None</element>
+      <element>ICP</element>
+      <element>Procrustes</element>
+    </string-enumeration>
+        
+   <integer>
+      <name>numberOfIcpIterations</name>
+      <longflag>icpIterations</longflag>
+      <description>Number of Iterations for Iterative Closest Point Registration</description>
+      <label>Num of Iterations for ICP</label>
+      <default>1000</default>
+    </integer>terations
+
+   <integer>
+      <name>numberOfLandmarks</name>
+      <longflag>numberOfLandmarks</longflag>
+      <description>Maximum number of landmarks for Iterative Closest Point Registration</description>
+      <label>Num of Landmarks for ICP</label>
+      <default>10000</default>
+    </integer>
+    
+   <float>
+      <name>maxMeanDistanace</name>
+      <longflag>maxMeanDistanace</longflag>
+      <description>Max Mean dist for ICP</description>
+      <label>Max Mean Distance</label>
+      <default>0.001</default>
+    </float>
+   
+  </parameters>
+
+  <parameters>
+  <label>TPS Parameters</label>
+  <description>Parameters for Thin Plate Spline registration</description>
+ 
+    <integer>
+      <name>PointRatio</name>
+      <longflag>pointRatio</longflag>
+      <description>Fraction of points to be considered for Thin Plate Spline</description>
+      <label>Point Ratio for TPS</label>
+      <default>1</default>
+    </integer>
+ 
+ </parameters>   
+
+</executable>
