@@ -86,7 +86,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkReadHistogramBinValuesFilter.txx"
+#include "itkMimxReadHistogramBinValuesFilter.txx"
 #endif
 
 #endif

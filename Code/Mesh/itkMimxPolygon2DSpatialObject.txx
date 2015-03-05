@@ -22,9 +22,9 @@ PURPOSE.  See the above copyright notices for more information.
 =========================================================================*/
 
 
-#ifndef __itk_Polygon2DSpatialObject_txx_
-#define __itk_Polygon2DSpatialObject_txx_
-#include "itkPolygon2DSpatialObject.h"
+#ifndef __itk_MimxPolygon2DSpatialObject_txx_
+#define __itk_MimxPolygon2DSpatialObject_txx_
+#include "itkMimxPolygon2DSpatialObject.h"
 #include "itkExceptionObject.h"
 
 namespace itk

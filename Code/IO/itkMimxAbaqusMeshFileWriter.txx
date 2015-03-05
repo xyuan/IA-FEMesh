@@ -21,10 +21,10 @@ PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
 
-#ifndef __itkAbaqusMeshFileWriter_txx
-#define __itkAbaqusMeshFileWriter_txx
+#ifndef __itkMimxAbaqusMeshFileWriter_txx
+#define __itkMimxAbaqusMeshFileWriter_txx
 
-#include "itkAbaqusMeshFileWriter.h"
+#include "itkMimxAbaqusMeshFileWriter.h"
 
 namespace itk
 {

@@ -139,7 +139,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkRebinHexahedronMeshTraitDataInPlaceFilter.txx"
+#include "itkMimxRebinHexahedronMeshTraitDataInPlaceFilter.txx"
 #endif
 
 #endif

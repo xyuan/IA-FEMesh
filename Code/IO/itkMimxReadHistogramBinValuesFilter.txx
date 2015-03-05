@@ -21,10 +21,10 @@ PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
 
-#ifndef __itkReadHistogramBinValuesFilter_txx
-#define __itkReadHistogramBinValuesFilter_txx
+#ifndef __itkMimxReadHistogramBinValuesFilter_txx
+#define __itkMimxReadHistogramBinValuesFilter_txx
 
-#include "itkReadHistogramBinValuesFilter.h"
+#include "itkMimxReadHistogramBinValuesFilter.h"
 
 namespace itk
 {

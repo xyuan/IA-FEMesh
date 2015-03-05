@@ -21,10 +21,10 @@ PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
 
-#ifndef __itRebinHexahedronMeshTraitDataInPlaceFilter_txx
-#define __itRebinHexahedronMeshTraitDataInPlaceFilter_txx
+#ifndef __itMimxRebinHexahedronMeshTraitDataInPlaceFilter_txx
+#define __itMimxRebinHexahedronMeshTraitDataInPlaceFilter_txx
 
-#include "itkRebinHexahedronMeshTraitDataInPlaceFilter.h"
+#include "itkMimxRebinHexahedronMeshTraitDataInPlaceFilter.h"
 
 namespace itk
 {

@@ -21,9 +21,9 @@ PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
 
-#ifndef _itkMeshToMeshFilter_txx
-#define _itkMeshToMeshFilter_txx
-#include "itkMeshToMeshFilter.h"
+#ifndef _itkMimxMeshToMeshFilter_txx
+#define _itkMimxMeshToMeshFilter_txx
+#include "itkMimxMeshToMeshFilter.h"
 
 
 namespace itk

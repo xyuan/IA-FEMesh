@@ -126,7 +126,7 @@ protected:
 } // namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkAbaqusMeshFileWriter.txx"
+#include "itkMimxAbaqusMeshFileWriter.txx"
 #endif
 
 #endif

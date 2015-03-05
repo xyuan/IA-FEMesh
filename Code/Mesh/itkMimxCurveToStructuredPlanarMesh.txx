@@ -21,9 +21,9 @@ PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
 
-#ifndef _itkCurveToStructuredm_PlanarMesh_txx
-#define _itkCurveToStructuredm_PlanarMesh_txx
-#include "itkCurveToStructuredPlanarMesh.h"
+#ifndef _itkMimxCurveToStructuredm_PlanarMesh_txx
+#define _itkMimxCurveToStructuredm_PlanarMesh_txx
+#include "itkMimxCurveToStructuredPlanarMesh.h"
 #include "itkExceptionObject.h"
 #include "itkMesh.h"
 namespace itk

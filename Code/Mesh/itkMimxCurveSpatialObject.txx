@@ -22,9 +22,9 @@ PURPOSE.  See the above copyright notices for more information.
 =========================================================================*/
 
 
-#ifndef __itk_CurveSpatialObject_txx_
-#define __itk_CurveSpatialObject_txx_
-#include "itkCurveSpatialObject.h"
+#ifndef __itk_MimxCurveSpatialObject_txx_
+#define __itk_MimxCurveSpatialObject_txx_
+#include "itkMimxCurveSpatialObject.h"
 #include "itkExceptionObject.h"
 
 namespace itk

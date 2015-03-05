@@ -98,7 +98,7 @@ private:
 };
 }
 #ifndef ITK_MANUAL_INSTANTIATION 
-#include "itkPolygon3DSpatialObject.txx" 
+#include "itkMimxPolygon3DSpatialObject.txx" 
 #endif 
 
 #endif  // __itkPolygon3DSpatialObject_h

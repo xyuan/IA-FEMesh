@@ -21,11 +21,11 @@ PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
 
-#ifndef _itkImageToHexahedronMeshFilter_txx
-#define _itkImageToHexahedronMeshFilter_txx
+#ifndef _itkMimxImageToHexahedronMeshFilter_txx
+#define _itkMimxImageToHexahedronMeshFilter_txx
 
 
-#include "itkImageToHexahedronMeshFilter.h"
+#include "itkMimxImageToHexahedronMeshFilter.h"
 #include "itkNumericTraits.h"
 
 namespace itk

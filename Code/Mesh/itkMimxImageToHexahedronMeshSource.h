@@ -144,7 +144,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkImageToHexahedronMeshSource.txx"
+#include "itkMimxImageToHexahedronMeshSource.txx"
 #endif
 
 #endif

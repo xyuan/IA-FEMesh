@@ -103,7 +103,7 @@ namespace itk
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkCurveToStructuredPlanarMesh.txx"
+#include "itkMimxCurveToStructuredPlanarMesh.txx"
 #endif
 
 #endif

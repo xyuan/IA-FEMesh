@@ -77,7 +77,7 @@ namespace itk
 	};
 }
 #ifndef ITK_MANUAL_INSTANTIATION 
-#include "itkCurveSpatialObject.txx" 
+#include "itkMimxCurveSpatialObject.txx" 
 #endif 
 
 #endif  // __itkCurveSpatialObject_h
